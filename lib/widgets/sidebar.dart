@@ -18,9 +18,9 @@ class SidebarWidget extends StatefulWidget {
 class _SidebarWidgetState extends State<SidebarWidget> {
   // A list of pages to be displayed as the destination content.
   final _pages = [
-    VerificatiosPage(),
-    UsersPage(),
     HomePage(),
+    UsersPage(),
+    VerificatiosPage(),
   ];
 
   // The index of the currently selected page.

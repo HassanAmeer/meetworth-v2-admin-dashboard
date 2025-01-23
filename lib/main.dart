@@ -136,7 +136,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
                             // color: AppColor.primary.withOpacity(0.1),
                           )).animate().scale()),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                  Text('Mom Nurture',
+                  Text('Meetworth V2',
                           textAlign: TextAlign.center,
                           style: Theme.of(context)
                               .textTheme

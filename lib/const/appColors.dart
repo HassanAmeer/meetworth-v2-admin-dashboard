@@ -28,6 +28,7 @@ class AppColors {
   static const iconSilver = Color.fromARGB(255, 229, 229, 229);
   static const textLight = Colors.white;
   static const textSilver = Color.fromARGB(255, 192, 192, 192);
+  static const textSilverDark = Color.fromARGB(255, 127, 127, 127);
   static const textGreen = Colors.green;
   static const textRed = Colors.red;
   static const textGold = Color(0xffE6B863);
