@@ -1,11 +1,14 @@
 import 'package:admin_panel_design/const/appColors.dart';
-import 'package:admin_panel_design/const/appImages.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 import 'package:countries_world_map/countries_world_map.dart';
 import 'package:countries_world_map/data/maps/world_map.dart';
+
+import '../widgets/headers.dart';
+import '../widgets/minicard.dart';
+import '../widgets/mintile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -856,187 +859,7 @@ class MsgChartWidget extends StatelessWidget {
   }
 }
 
-class MiniTileCardWidget extends StatelessWidget {
-  final double? widthRatio;
-  final Widget? title;
-  final Widget? subtitle;
-  final Widget? trailing;
-  final Widget? leading;
-  final EdgeInsetsGeometry padding;
-  final double borderRradius;
-
-  const MiniTileCardWidget({
-    super.key,
-    this.widthRatio,
-    this.title,
-    this.subtitle,
-    this.trailing,
-    this.leading,
-    this.borderRradius = 10,
-    this.padding = const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(5),
-      child: Container(
-          width: widthRatio != null
-              ? MediaQuery.of(context).size.width * widthRatio!
-              : null,
-          decoration: BoxDecoration(
-              color: AppColors.bgCard,
-              borderRadius: BorderRadius.circular(borderRradius)),
-          child: Padding(
-              padding: padding,
-              child:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Padding(
-                    padding: EdgeInsets.only(right: leading == null ? 0 : 11),
-                    child: leading ?? SizedBox.shrink()),
-                Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      title ?? SizedBox.shrink(),
-                      subtitle ?? SizedBox.shrink()
-                    ]),
-                Padding(
-                    padding: EdgeInsets.only(left: trailing == null ? 0 : 11),
-                    child: trailing ?? SizedBox.shrink()),
-              ]))),
-    );
-  }
-}
-
-class CardWidget extends StatelessWidget {
-  final double? widthRatio;
-  final double? heightRatio;
-  final Widget? child;
-  final EdgeInsetsGeometry padding;
-  final double borderRradius;
-
-  const CardWidget({
-    super.key,
-    this.widthRatio,
-    this.heightRatio,
-    this.child,
-    this.borderRradius = 10,
-    this.padding = const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(5),
-      child: Container(
-          width: widthRatio != null
-              ? MediaQuery.of(context).size.width * widthRatio!
-              : null,
-          height: heightRatio != null
-              ? MediaQuery.of(context).size.width * heightRatio!
-              : null,
-          decoration: BoxDecoration(
-              color: AppColors.bgCard,
-              borderRadius: BorderRadius.circular(borderRradius)),
-          child: Padding(padding: padding, child: child)),
-    );
-  }
-}
-
-class DashboardHeader extends StatelessWidget {
-  const DashboardHeader({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          // Left: Title and Breadcrumb
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text(
-                'Pages / Dashboard',
-                style: TextStyle(
-                  color: Colors.white54,
-                  fontSize: 14,
-                ),
-              ),
-              SizedBox(height: 4),
-              Text(
-                'Dashboard',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          // Right: Search, Icons, and Profile
-          Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: AppColors.bgCard,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.white.withOpacity(0.1),
-                      blurRadius: 4,
-                      offset: const Offset(0, 1),
-                    )
-                  ]),
-              child: Row(children: [
-                // Search Bar
-                Container(
-                    width: 200,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    padding: const EdgeInsets.all(4),
-                    child: TextField(
-                        cursorHeight: 12,
-                        cursorColor: Colors.grey,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 10),
-                          filled: true,
-                          fillColor: Colors.black,
-                          prefixIcon:
-                              Icon(Icons.search, color: Colors.white, size: 17),
-                          hintText: "Search",
-                          disabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide: BorderSide.none),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide: BorderSide.none),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide: BorderSide.none),
-                        ))),
-                const SizedBox(width: 16),
-                // Notification Icon
-                const Icon(Icons.notifications_outlined,
-                    color: Colors.white, size: 24),
-                const SizedBox(width: 16),
-                // Info Icon
-                const Icon(Icons.info_outline, color: Colors.white, size: 24),
-                const SizedBox(width: 16),
-                // Profile Image
-                ClipOval(
-                    child: Image.asset(AppImages.profile2,
-                        width: 36, height: 36, fit: BoxFit.cover)),
-                const SizedBox(width: 4),
-              ]))
-        ]));
-  }
-}
 /////////////
-
 class StatsCard extends StatelessWidget {
   final String title;
   final String value;

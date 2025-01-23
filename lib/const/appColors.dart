@@ -30,7 +30,7 @@ class AppColors {
   static const textSilver = Color.fromARGB(255, 192, 192, 192);
   static const textGreen = Colors.green;
   static const textRed = Colors.red;
-  static const textGold = const Color(0xffE6B863);
+  static const textGold = Color(0xffE6B863);
   static const bgColor = Color(0xff121212);
   static const transparenCardBlack = Colors.black45;
   static const bgField = Color(0xff4A4A4A);
@@ -43,6 +43,6 @@ class AppColors {
   static Color blackOp4 = Colors.black.withOpacity(0.4);
 
   // pieChartColor
-  static const pieChartColor1 = const Color(0xffB2B2B2);
-  static const pieChartColor2 = const Color(0xff9A5933);
+  static const pieChartColor1 = Color(0xffB2B2B2);
+  static const pieChartColor2 = Color(0xff9A5933);
 }

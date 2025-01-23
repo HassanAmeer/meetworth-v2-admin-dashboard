@@ -1,11 +1,11 @@
 import 'package:admin_panel_design/const/appColors.dart';
 import 'package:admin_panel_design/const/appImages.dart';
-import 'package:admin_panel_design/screens/he3.dart';
+import 'package:admin_panel_design/screens/verifications.dart';
 import 'package:cupertino_sidebar/cupertino_sidebar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../screens/h2.dart';
+import '../screens/users.dart';
 import '../screens/homePage.dart';
 
 class SidebarWidget extends StatefulWidget {
@@ -18,9 +18,9 @@ class SidebarWidget extends StatefulWidget {
 class _SidebarWidgetState extends State<SidebarWidget> {
   // A list of pages to be displayed as the destination content.
   final _pages = [
+    VerificatiosPage(),
+    UsersPage(),
     HomePage(),
-    HomePage3(),
-    DashboardScreen(),
   ];
 
   // The index of the currently selected page.
