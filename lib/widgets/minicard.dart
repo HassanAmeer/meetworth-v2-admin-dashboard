@@ -21,7 +21,7 @@ class CardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(5),
+      padding: const EdgeInsets.all(5),
       child: Container(
           width: widthRatio != null
               ? MediaQuery.of(context).size.width * widthRatio!

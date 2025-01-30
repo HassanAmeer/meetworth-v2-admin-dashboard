@@ -35,7 +35,7 @@ class AppColors {
   static const bgColor = Color(0xff121212);
   static const transparenCardBlack = Colors.black45;
   static const bgField = Color(0xff4A4A4A);
-  static Color btnColor = Color(0xFF00192D);
+  static Color btnColor = const Color(0xFF00192D);
   static const bgCard = Color.fromARGB(255, 36, 36, 36);
   static Color bgCard2 =
       const Color.fromARGB(255, 101, 96, 96).withOpacity(0.4);

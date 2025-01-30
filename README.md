@@ -1,4 +1,4 @@
-# admin_panel_design
+# admin_panel
 
 A new Flutter project.
 

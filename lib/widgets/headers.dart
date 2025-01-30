@@ -13,9 +13,9 @@ class DashboardHeader extends StatelessWidget {
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           // Left: Title and Breadcrumb
-          Column(
+          const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Text(
                 'Pages / Dashboard',
                 style: TextStyle(
@@ -60,12 +60,12 @@ class DashboardHeader extends StatelessWidget {
                         cursorColor: Colors.grey,
                         decoration: InputDecoration(
                           border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(
+                          contentPadding: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 10),
                           filled: true,
                           fillColor: Colors.black,
-                          prefixIcon:
-                              Icon(Icons.search, color: Colors.white, size: 17),
+                          prefixIcon: const Icon(Icons.search,
+                              color: Colors.white, size: 17),
                           hintText: "Search",
                           disabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),

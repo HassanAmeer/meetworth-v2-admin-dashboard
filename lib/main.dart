@@ -1,7 +1,8 @@
 import 'dart:async';
 
-import 'package:admin_panel_design/screens/homePage.dart';
-import 'package:admin_panel_design/widgets/sidebar.dart';
+import 'package:admin_panel/screens/homePage.dart';
+import 'package:admin_panel/widgets/sidebar.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -9,9 +10,15 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'const/appcolors.dart';
 import 'const/appimages.dart';
+import 'firebase_options.dart';
 
 void main() async {
-  runApp(ProviderScope(child: const MyApp()));
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -19,7 +26,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'MeetWorth',
+        title: 'MeetWorth Admin',
         debugShowCheckedModeBanner: false,
         themeMode: ThemeMode.dark,
         theme: ThemeData(
@@ -31,7 +38,7 @@ class MyApp extends StatelessWidget {
               cursorColor: AppColors.primaryMid,
               selectionColor: AppColors.primary,
             ),
-            textTheme: TextTheme(
+            textTheme: const TextTheme(
               headlineSmall: TextStyle(color: AppColors.textLight),
               headlineLarge: TextStyle(color: AppColors.textLight),
               headlineMedium: TextStyle(color: AppColors.textLight),
@@ -48,7 +55,7 @@ class MyApp extends StatelessWidget {
               displayMedium: TextStyle(color: AppColors.textLight),
               displaySmall: TextStyle(color: AppColors.textLight),
             ),
-            iconTheme: IconThemeData(color: AppColors.iconLight),
+            iconTheme: const IconThemeData(color: AppColors.iconLight),
             appBarTheme: AppBarTheme(
                 centerTitle: true,
                 titleTextStyle: TextStyle(color: AppColors.primaryMid))),
@@ -176,3 +183,186 @@ class _SplashPageState extends ConsumerState<SplashPage> {
                 ])));
   }
 }
+
+
+
+
+
+
+// ******** remainings in app side
+// totalShare in posts 
+// appInfo
+// loadtime
+
+/////////////////////////////////////////////////////////////////
+//
+// clienstjobs@gmail.com
+// A87WbTFgL3MVO3GFN5r0cxnpHmI3
+//
+////////
+
+
+
+//------------  new variables --------------
+/// splashTimes = [] ---> for seassion duration,Frequency of use, Retention rate, 
+///  , and ---->  churn rate >> if user not available from last 7 days divided by actvive last days users
+/// 
+/// creationDate
+///   
+/// 
+/// 
+
+
+
+//////////////////
+/// Connection made: 
+/// when users tender request > how much accept 
+///  
+
+//////////////////
+/// Session Duration: 
+/// login time and logout time + on home page should get click time every time 
+///  
+/// 
+//////////////////
+/// Frequency of use: 
+/// specific time period (daily, weekly, or monthly). 
+/// 
+//////////////////
+/// Retention Rate: 
+/// total clicks numbers / open app times number * 100
+/// 
+/// 
+//////////////////
+/// churn rate 
+/// Users who don’t open the app within a specific time frame
+/// or uninstall 
+/// --> for this count users from last month how much active
+/// 
+/// 
+/// 
+/////////////////
+// analytics logEvent
+// FirebaseAnalytics.instance.logAppOpen
+// userOnline
+// userOffline
+// paidMembership
+//  .logLogin(loginMethod: "SignIn Google", 
+// .logLogin(loginMethod: "SignUp Email"
+//  .logLogin(loginMethod: "SignIn Phone Number"
+// .logSignUp(signUpMethod: "SignUp Phone Number",
+// .logLogin(loginMethod: "SignIn Email",
+//  .logLogin(loginMethod: "SignIn Facebook", 
+//  .logSignUp(signUpMethod: "SignUp Facebook",
+//  .logLogin(loginMethod: "SignIn Apple"
+//   .logSignUp(signUpMethod: "SignUp Apple"
+//
+//
+//  ogEvent(name: "completeRegistration",
+//   .logSignUp(signUpMethod: "Email",
+//   .logEvent(name: "userOnline", 
+//   .logEvent(name: "userOffline",
+//
+// .logEvent(name: "⁠⁠tutorialStart",
+//  .logEvent(name: "⁠⁠skipTutorial", 
+//    .logEvent(name: "⁠⁠completeTutorial", 
+//
+// .logEvent(name: "⁠getMatch",
+//   .logEvent(name: "swipeCard",
+/// / FirebaseAnalytics.instance.logEvent(name: "swipeCard", 
+//
+//   .logEvent(name: "openMembershipScreen"
+//
+//  FirebaseAnalytics.instance.logEvent(name: "getReferance",
+//
+// await FirebaseAnalytics.instance.logEvent(name: "getReferance",
+//
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//
+//
+// 
+//
+
+
+
+
+
+//////////////////////////////
+// class AppUsageTracker with WidgetsBindingObserver {
+//   DateTime? _startTime;
+//   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+//     WidgetsBinding.instance.addObserver(this);
+//     _startTime = DateTime.now();
+//   }
+
+//   void stopTracking() {
+//     WidgetsBinding.instance.removeObserver(this);
+//     _logAppUsage();
+//   }
+
+//   @override
+//   void didChangeAppLifecycleState(AppLifecycleState state) {
+//     if (state == AppLifecycleState.paused) {
+//       // App went to the background
+//       _logAppUsage();
+//     } else if (state == AppLifecycleState.resumed) {
+//       // App came back to the foreground
+//       _startTime = DateTime.now();
+//     }
+//   }
+
+//   void _logAppUsage() async {
+//     if (_startTime != null) {
+//       final endTime = DateTime.now();
+//       final duration = endTime.difference(_startTime!);
+
+//       // Get the user ID (you can use Firebase Auth to get the UID)
+//       final userId = 'user123'; // Replace with actual user ID
+
+//       // Update the total usage time in Firestore
+//       final userRef = _firestore.collection('users').doc(userId);
+//       final userDoc = await userRef.get();
+
+//       int totalUsageTime = userDoc.exists ? userDoc['total_usage_time'] ?? 0 : 0;
+//       totalUsageTime += duration.inSeconds;
+
+//       await userRef.set({
+//         'total_usage_time': totalUsageTime,
+//         'last_updated': DateTime.now(),
+//       }, SetOptions(merge: true));
+
+//       _startTime = null;
+//     }
+//   }
+// }
+
+// in another page
+  // final AppUsageTracker _appUsageTracker = AppUsageTracker();
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _appUsageTracker.startTracking();
+  // }
+
+  // @override
+  // void dispose() {
+  //   _appUsageTracker.stopTracking();
+  //   super.dispose();
+  // }
+
+
+
+
+  ////////--------------
+  ///
+  ///
+  ///
+  ///
+  ///
+  ///
+  ///
+  ///
+  ///
+  ///

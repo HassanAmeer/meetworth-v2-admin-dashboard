@@ -1,6 +1,6 @@
-import 'package:admin_panel_design/const/appColors.dart';
-import 'package:admin_panel_design/const/appImages.dart';
-import 'package:admin_panel_design/screens/verifications.dart';
+import 'package:admin_panel/const/appColors.dart';
+import 'package:admin_panel/const/appImages.dart';
+import 'package:admin_panel/screens/verifications.dart';
 import 'package:cupertino_sidebar/cupertino_sidebar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,9 +18,9 @@ class SidebarWidget extends StatefulWidget {
 class _SidebarWidgetState extends State<SidebarWidget> {
   // A list of pages to be displayed as the destination content.
   final _pages = [
-    HomePage(),
-    UsersPage(),
-    VerificatiosPage(),
+    const HomePage(),
+    const UsersPage(),
+    const VerificatiosPage(),
   ];
 
   // The index of the currently selected page.
@@ -42,7 +42,7 @@ class _SidebarWidgetState extends State<SidebarWidget> {
           navigationBar: SidebarNavigationBar(
             title: Center(
               child: Transform.translate(
-                offset: Offset(0, -20),
+                offset: const Offset(0, -20),
                 child: Image.asset(
                     width: MediaQuery.of(context).size.width * 0.14,
                     AppImages.logoText),
@@ -94,7 +94,7 @@ class _SidebarWidgetState extends State<SidebarWidget> {
       SizedBox(
           width: MediaQuery.of(context).size.width * 0.82,
           child: CupertinoTabTransitionBuilder(
-              duration: Duration(milliseconds: 700),
+              duration: const Duration(milliseconds: 700),
               child: _pages.elementAt(_selectedIndex)))
     ]));
   }

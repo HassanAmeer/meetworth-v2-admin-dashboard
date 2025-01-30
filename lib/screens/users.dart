@@ -1,5 +1,5 @@
-import 'package:admin_panel_design/const/appColors.dart';
-import 'package:admin_panel_design/const/appimages.dart';
+import 'package:admin_panel/const/appColors.dart';
+import 'package:admin_panel/const/appimages.dart';
 import 'package:flutter/material.dart';
 import '../widgets/headers.dart';
 import '../widgets/minicard.dart';
@@ -21,12 +21,12 @@ class _UsersPageState extends State<UsersPage> {
         body: Padding(
       padding: const EdgeInsets.all(14),
       child: SingleChildScrollView(
-          physics: ClampingScrollPhysics(parent: BouncingScrollPhysics()),
+          physics: const ClampingScrollPhysics(parent: BouncingScrollPhysics()),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                DashboardHeader(),
+                const DashboardHeader(),
                 Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -38,14 +38,14 @@ class _UsersPageState extends State<UsersPage> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text("All Users",
+                                  const Text("All Users",
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 20)),
                                   Row(children: [
                                     OutlinedButton(
                                         onPressed: () {},
                                         style: OutlinedButton.styleFrom(
-                                          side: BorderSide(
+                                          side: const BorderSide(
                                               width: 1, color: AppColors.gold),
                                         ),
                                         child: Text("Download CSV",
@@ -53,7 +53,7 @@ class _UsersPageState extends State<UsersPage> {
                                                 .labelSmall!
                                                 .copyWith(
                                                     color: AppColors.gold))),
-                                    SizedBox(width: 15),
+                                    const SizedBox(width: 15),
                                     Container(
                                         width: 200,
                                         height: 40,
@@ -68,12 +68,13 @@ class _UsersPageState extends State<UsersPage> {
                                             decoration: InputDecoration(
                                               border: InputBorder.none,
                                               contentPadding:
-                                                  EdgeInsets.symmetric(
+                                                  const EdgeInsets.symmetric(
                                                       horizontal: 12,
                                                       vertical: 10),
                                               filled: true,
                                               fillColor: Colors.black,
-                                              prefixIcon: Icon(Icons.search,
+                                              prefixIcon: const Icon(
+                                                  Icons.search,
                                                   color: Colors.white,
                                                   size: 17),
                                               hintText: "Search",
@@ -102,10 +103,10 @@ class _UsersPageState extends State<UsersPage> {
                                   columnSpacing: 0,
                                   // dataRowHeight: 40,
                                   dividerThickness: 0.1,
-                                  border: TableBorder(
+                                  border: const TableBorder(
                                       horizontalInside: BorderSide.none,
                                       verticalInside: BorderSide.none),
-                                  columns: [
+                                  columns: const [
                                     DataColumn(
                                         label: Text('User',
                                             style: TextStyle(fontSize: 11))),
@@ -144,7 +145,7 @@ class _UsersPageState extends State<UsersPage> {
                                                     radius: 13,
                                                     backgroundImage: AssetImage(
                                                         AppImages.profile2))),
-                                            SizedBox(
+                                            const SizedBox(
                                                 width: 70,
                                                 child: Text(
                                                     textAlign: TextAlign.center,
@@ -155,7 +156,7 @@ class _UsersPageState extends State<UsersPage> {
                                                         TextOverflow.visible,
                                                     maxLines: 3))
                                           ])),
-                                      DataCell(SizedBox(
+                                      const DataCell(SizedBox(
                                         width: 90,
                                         child: Wrap(
                                           children: [
@@ -165,12 +166,12 @@ class _UsersPageState extends State<UsersPage> {
                                           ],
                                         ),
                                       )),
-                                      DataCell(Row(children: [
+                                      const DataCell(Row(children: [
                                         Text('Male  ',
                                             style: TextStyle(fontSize: 10)),
                                         Icon(Icons.male, size: 12),
                                       ])),
-                                      DataCell(SizedBox(
+                                      const DataCell(SizedBox(
                                           width: 80,
                                           child: Text(
                                               textAlign: TextAlign.start,
@@ -178,7 +179,7 @@ class _UsersPageState extends State<UsersPage> {
                                               style: TextStyle(fontSize: 10),
                                               overflow: TextOverflow.visible,
                                               maxLines: 3))),
-                                      DataCell(SizedBox(
+                                      const DataCell(SizedBox(
                                           width: 80,
                                           child: Text(
                                               textAlign: TextAlign.start,
@@ -186,7 +187,7 @@ class _UsersPageState extends State<UsersPage> {
                                               style: TextStyle(fontSize: 10),
                                               overflow: TextOverflow.visible,
                                               maxLines: 3))),
-                                      DataCell(
+                                      const DataCell(
                                         Text('FREE',
                                             style: TextStyle(fontSize: 10)),
                                       ),
@@ -195,10 +196,11 @@ class _UsersPageState extends State<UsersPage> {
                                             onTap: () {},
                                             borderRadius:
                                                 BorderRadius.circular(10),
-                                            child: Icon(Icons.check_circle,
+                                            child: const Icon(
+                                                Icons.check_circle,
                                                 size: 18,
                                                 color: AppColors.textGreen)),
-                                        Text(' ACTIVE',
+                                        const Text(' ACTIVE',
                                             style: TextStyle(fontSize: 10))
                                       ])),
                                       DataCell(Row(children: [
@@ -206,10 +208,10 @@ class _UsersPageState extends State<UsersPage> {
                                             onTap: () {},
                                             borderRadius:
                                                 BorderRadius.circular(10),
-                                            child: Icon(Icons.cancel,
+                                            child: const Icon(Icons.cancel,
                                                 size: 18,
                                                 color: AppColors.textRed)),
-                                        SizedBox(width: 7),
+                                        const SizedBox(width: 7),
                                         InkWell(
                                             onTap: () {},
                                             borderRadius:
@@ -223,20 +225,20 @@ class _UsersPageState extends State<UsersPage> {
                           ])),
                       Column(children: [
                         CardWidget(
-                            padding: EdgeInsets.all(15),
+                            padding: const EdgeInsets.all(15),
                             widthRatio: 0.25,
                             child: Column(children: [
                               Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text("Filters",
+                                    const Text("Filters",
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 20)),
                                     OutlinedButton(
                                         onPressed: () {},
                                         style: OutlinedButton.styleFrom(
-                                          side: BorderSide(
+                                          side: const BorderSide(
                                               width: 1, color: AppColors.gold),
                                         ),
                                         child: Text("Recent Filters",
@@ -245,7 +247,7 @@ class _UsersPageState extends State<UsersPage> {
                                                 .copyWith(
                                                     color: AppColors.gold))),
                                   ]),
-                              Row(children: [
+                              const Row(children: [
                                 Text("GENDER: ",
                                     style:
                                         TextStyle(color: AppColors.silverGold)),
@@ -255,8 +257,8 @@ class _UsersPageState extends State<UsersPage> {
                                   Icon(Icons.male, size: 12)
                                 ])
                               ]),
-                              Divider(thickness: 0.1),
-                              Row(children: [
+                              const Divider(thickness: 0.1),
+                              const Row(children: [
                                 Text("VARIFICATION: ",
                                     style:
                                         TextStyle(color: AppColors.silverGold)),
@@ -266,8 +268,8 @@ class _UsersPageState extends State<UsersPage> {
                                   Icon(Icons.check, size: 12)
                                 ])
                               ]),
-                              Divider(thickness: 0.1),
-                              Row(children: [
+                              const Divider(thickness: 0.1),
+                              const Row(children: [
                                 Text("MEMBERSHIP: ",
                                     style:
                                         TextStyle(color: AppColors.silverGold)),
@@ -275,8 +277,8 @@ class _UsersPageState extends State<UsersPage> {
                                   "Bronze",
                                 ),
                               ]),
-                              Divider(thickness: 0.1),
-                              Row(children: [
+                              const Divider(thickness: 0.1),
+                              const Row(children: [
                                 Text("STATUS: ",
                                     style:
                                         TextStyle(color: AppColors.silverGold)),
@@ -291,7 +293,7 @@ class _UsersPageState extends State<UsersPage> {
                         Row(children: [
                           CardWidget(
                               widthRatio: 0.12,
-                              padding: EdgeInsets.all(15),
+                              padding: const EdgeInsets.all(15),
                               child: Column(children: [
                                 Text("Selection",
                                     style: TextTheme.of(context).headlineSmall),
@@ -299,16 +301,16 @@ class _UsersPageState extends State<UsersPage> {
                                     style: ElevatedButton.styleFrom(
                                         backgroundColor: AppColors.gold),
                                     onPressed: () {},
-                                    child: Text("Selection is on",
+                                    child: const Text("Selection is on",
                                         style: TextStyle(color: Colors.white))),
                               ])),
                           CardWidget(
                               widthRatio: 0.12,
-                              padding: EdgeInsets.all(15),
+                              padding: const EdgeInsets.all(15),
                               child: Column(children: [
                                 Text("Action",
                                     style: TextTheme.of(context).headlineSmall),
-                                SizedBox(height: 12),
+                                const SizedBox(height: 12),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
@@ -318,10 +320,10 @@ class _UsersPageState extends State<UsersPage> {
                                           onTap: () {},
                                           borderRadius:
                                               BorderRadius.circular(10),
-                                          child: Icon(Icons.cancel,
+                                          child: const Icon(Icons.cancel,
                                               size: 18,
                                               color: AppColors.textRed)),
-                                      Text(' Block',
+                                      const Text(' Block',
                                           style: TextStyle(fontSize: 10))
                                     ]),
                                     Row(children: [
@@ -329,10 +331,10 @@ class _UsersPageState extends State<UsersPage> {
                                           onTap: () {},
                                           borderRadius:
                                               BorderRadius.circular(10),
-                                          child: Icon(Icons.check_circle,
+                                          child: const Icon(Icons.check_circle,
                                               size: 18,
                                               color: AppColors.textGreen)),
-                                      Text(' Unblock',
+                                      const Text(' Unblock',
                                           style: TextStyle(fontSize: 10))
                                     ]),
                                   ],
@@ -340,14 +342,14 @@ class _UsersPageState extends State<UsersPage> {
                               ])),
                         ]),
                         CardWidget(
-                            padding: EdgeInsets.all(15),
+                            padding: const EdgeInsets.all(15),
                             widthRatio: 0.25,
                             child: Column(children: [
                               Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text("Filters",
+                                    const Text("Filters",
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 20)),
                                     CircleAvatar(
@@ -358,42 +360,42 @@ class _UsersPageState extends State<UsersPage> {
                                             backgroundImage: AssetImage(
                                                 AppImages.profile2))),
                                   ]),
-                              Row(children: [
+                              const Row(children: [
                                 Text("Name: ",
                                     style:
                                         TextStyle(color: AppColors.silverGold)),
                                 Text("Limo Oueslati"),
                               ]),
-                              SizedBox(height: 7),
-                              Row(children: [
+                              const SizedBox(height: 7),
+                              const Row(children: [
                                 Text("Username: ",
                                     style:
                                         TextStyle(color: AppColors.silverGold)),
                                 Text("Limo Oueslati"),
                               ]),
-                              SizedBox(height: 7),
-                              Row(children: [
+                              const SizedBox(height: 7),
+                              const Row(children: [
                                 Text("Number: ",
                                     style:
                                         TextStyle(color: AppColors.silverGold)),
                                 Text("Not given"),
                               ]),
-                              SizedBox(height: 7),
-                              Row(children: [
+                              const SizedBox(height: 7),
+                              const Row(children: [
                                 Text("Mail: ",
                                     style:
                                         TextStyle(color: AppColors.silverGold)),
                                 Text("limo.oueslati@gmail.com"),
                               ]),
-                              SizedBox(height: 7),
-                              Row(children: [
+                              const SizedBox(height: 7),
+                              const Row(children: [
                                 Text("Age: ",
                                     style:
                                         TextStyle(color: AppColors.silverGold)),
                                 Text("25"),
                               ]),
-                              SizedBox(height: 30),
-                              Row(
+                              const SizedBox(height: 30),
+                              const Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
@@ -407,8 +409,8 @@ class _UsersPageState extends State<UsersPage> {
                                         style: TextStyle(
                                             color: AppColors.silverGold)),
                                   ]),
-                              SizedBox(height: 10),
-                              Row(
+                              const SizedBox(height: 10),
+                              const Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
@@ -419,8 +421,8 @@ class _UsersPageState extends State<UsersPage> {
                                     Icon(Icons.cancel,
                                         color: AppColors.textRed, size: 20),
                                   ]),
-                              Divider(thickness: 0.1),
-                              Row(
+                              const Divider(thickness: 0.1),
+                              const Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
@@ -444,8 +446,8 @@ class _UsersPageState extends State<UsersPage> {
                                       Text("08/06/2023"),
                                     ])
                                   ]),
-                              Divider(thickness: 0.1),
-                              Row(
+                              const Divider(thickness: 0.1),
+                              const Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
@@ -467,8 +469,8 @@ class _UsersPageState extends State<UsersPage> {
                                       Text("Verified"),
                                     ])
                                   ]),
-                              Divider(thickness: 0.1),
-                              Row(children: [
+                              const Divider(thickness: 0.1),
+                              const Row(children: [
                                 Text("Average session time: ",
                                     style: TextStyle(
                                       fontSize: 12,
@@ -477,8 +479,8 @@ class _UsersPageState extends State<UsersPage> {
                                 SizedBox(width: 5),
                                 Text("10 minutes")
                               ]),
-                              Divider(thickness: 0.1),
-                              Row(
+                              const Divider(thickness: 0.1),
+                              const Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
@@ -500,21 +502,21 @@ class _UsersPageState extends State<UsersPage> {
                                       Text("123"),
                                     ])
                                   ]),
-                              Divider(thickness: 0.1),
+                              const Divider(thickness: 0.1),
                               Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text("User Transactions: ",
+                                    const Text("User Transactions: ",
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: AppColors.silverGold,
                                         )),
-                                    SizedBox(width: 5),
+                                    const SizedBox(width: 5),
                                     OutlinedButton(
                                         onPressed: () {},
                                         style: OutlinedButton.styleFrom(
-                                          side: BorderSide(
+                                          side: const BorderSide(
                                               width: 1, color: AppColors.gold),
                                         ),
                                         child: Text("Download CSV",
@@ -523,7 +525,7 @@ class _UsersPageState extends State<UsersPage> {
                                                 .copyWith(
                                                     color: AppColors.gold))),
                                   ]),
-                              Divider(thickness: 0.1),
+                              const Divider(thickness: 0.1),
                               Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [

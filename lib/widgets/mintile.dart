@@ -24,7 +24,7 @@ class MiniTileCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(5),
+      padding: const EdgeInsets.all(5),
       child: Container(
           width: widthRatio != null
               ? MediaQuery.of(context).size.width * widthRatio!
@@ -38,17 +38,17 @@ class MiniTileCardWidget extends StatelessWidget {
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Padding(
                     padding: EdgeInsets.only(right: leading == null ? 0 : 11),
-                    child: leading ?? SizedBox.shrink()),
+                    child: leading ?? const SizedBox.shrink()),
                 Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      title ?? SizedBox.shrink(),
-                      subtitle ?? SizedBox.shrink()
+                      title ?? const SizedBox.shrink(),
+                      subtitle ?? const SizedBox.shrink()
                     ]),
                 Padding(
                     padding: EdgeInsets.only(left: trailing == null ? 0 : 11),
-                    child: trailing ?? SizedBox.shrink()),
+                    child: trailing ?? const SizedBox.shrink()),
               ]))),
     );
   }

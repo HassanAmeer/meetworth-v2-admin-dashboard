@@ -1,4 +1,4 @@
-import 'package:admin_panel_design/const/appColors.dart';
+import 'package:admin_panel/const/appColors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +24,8 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
         body: Padding(
             padding: const EdgeInsets.all(14),
             child: SingleChildScrollView(
-              physics: ClampingScrollPhysics(parent: BouncingScrollPhysics()),
+              physics:
+                  const ClampingScrollPhysics(parent: BouncingScrollPhysics()),
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,7 +35,7 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                     // SizedBox(height: 5),
                     // Text("Dashobard", style: TextTheme.of(context).headlineLarge),
 
-                    DashboardHeader(),
+                    const DashboardHeader(),
                     SizedBox(
                         height: 70,
                         child: ListView(
@@ -58,7 +59,7 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                   trailing: Text("1500",
                                       style: TextTheme.of(context)
                                           .headlineSmall!)),
-                              CardWidget(
+                              const CardWidget(
                                   widthRatio: 0.05,
                                   child: Icon(Icons.refresh, size: 20))
                             ])),
@@ -74,11 +75,11 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text("Users verification",
+                                      const Text("Users verification",
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 20)),
-                                      SizedBox(width: 15),
+                                      const SizedBox(width: 15),
                                       Container(
                                           width: 200,
                                           height: 40,
@@ -92,12 +93,13 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                               decoration: InputDecoration(
                                                 border: InputBorder.none,
                                                 contentPadding:
-                                                    EdgeInsets.symmetric(
+                                                    const EdgeInsets.symmetric(
                                                         horizontal: 12,
                                                         vertical: 10),
                                                 filled: true,
                                                 fillColor: Colors.black,
-                                                prefixIcon: Icon(Icons.search,
+                                                prefixIcon: const Icon(
+                                                    Icons.search,
                                                     color: Colors.white,
                                                     size: 17),
                                                 hintText: "Search by Username",
@@ -131,10 +133,10 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                       columnSpacing: 0,
                                       // dataRowHeight: 40,
                                       dividerThickness: 0.1,
-                                      border: TableBorder(
+                                      border: const TableBorder(
                                           horizontalInside: BorderSide.none,
                                           verticalInside: BorderSide.none),
-                                      columns: [
+                                      columns: const [
                                         DataColumn(
                                             label: Text('PICTURE',
                                                 style:
@@ -160,7 +162,7 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                                     backgroundImage: AssetImage(
                                                         AppImages.profile2))),
                                           ),
-                                          DataCell(SizedBox(
+                                          const DataCell(SizedBox(
                                               width: 70,
                                               child: Text(
                                                   textAlign: TextAlign.center,
@@ -173,7 +175,7 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                           DataCell(OutlinedButton(
                                               onPressed: () {},
                                               style: OutlinedButton.styleFrom(
-                                                  side: BorderSide(
+                                                  side: const BorderSide(
                                                       width: 1,
                                                       color: AppColors.gold)),
                                               child: Text("Select",
@@ -201,13 +203,14 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                             leading: Image.asset(
                                                 AppImages.twitter,
                                                 width: 30),
-                                            title: Text("Twitter Username",
+                                            title: const Text(
+                                                "Twitter Username",
                                                 style: TextStyle(
                                                     color: AppColors
                                                         .textSilverDark)),
                                             trailing: Row(children: [
-                                              Icon(size: 20, Icons.copy),
-                                              SizedBox(width: 7),
+                                              const Icon(size: 20, Icons.copy),
+                                              const SizedBox(width: 7),
                                               Image.asset(
                                                   width: 20, AppImages.shareIos)
                                             ])))),
@@ -222,13 +225,14 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                             leading: Image.asset(
                                                 AppImages.insta,
                                                 width: 30),
-                                            title: Text("Instagram Username",
+                                            title: const Text(
+                                                "Instagram Username",
                                                 style: TextStyle(
                                                     color: AppColors
                                                         .textSilverDark)),
                                             trailing: Row(children: [
-                                              Icon(size: 20, Icons.copy),
-                                              SizedBox(width: 7),
+                                              const Icon(size: 20, Icons.copy),
+                                              const SizedBox(width: 7),
                                               Image.asset(
                                                   width: 20, AppImages.shareIos)
                                             ])))),
@@ -244,17 +248,17 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                             leading: Image.asset(
                                                 AppImages.global,
                                                 width: 30),
-                                            title: Text("Website URL",
+                                            title: const Text("Website URL",
                                                 style: TextStyle(
                                                     color: AppColors
                                                         .textSilverDark)),
                                             trailing: Row(children: [
-                                              Icon(size: 20, Icons.copy),
-                                              SizedBox(width: 7),
+                                              const Icon(size: 20, Icons.copy),
+                                              const SizedBox(width: 7),
                                               Image.asset(
                                                   width: 20, AppImages.shareIos)
                                             ])))),
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                                 Padding(
                                   padding: const EdgeInsets.all(8),
                                   child: Container(
@@ -269,7 +273,7 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                               .withOpacity(0.5),
                                           spreadRadius: 2,
                                           blurRadius: 5,
-                                          offset: Offset(0,
+                                          offset: const Offset(0,
                                               3), // changes position of shadow
                                         ),
                                       ],
@@ -334,29 +338,32 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                                     CrossAxisAlignment.center,
                                                 children: [
                                                   Container(
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius.only(
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                            borderRadius: BorderRadius.only(
                                                                 topLeft: Radius
                                                                     .circular(
                                                                         20),
                                                                 bottomLeft: Radius
                                                                     .circular(
                                                                         20)),
-                                                        border: Border(
-                                                          top: BorderSide(
-                                                              width: 1,
-                                                              color: AppColors
-                                                                  .gold),
-                                                          left: BorderSide(
-                                                              width: 1,
-                                                              color: AppColors
-                                                                  .gold),
-                                                          bottom: BorderSide(
-                                                              width: 1,
-                                                              color: AppColors
-                                                                  .gold),
-                                                        )),
+                                                            border: Border(
+                                                              top: BorderSide(
+                                                                  width: 1,
+                                                                  color:
+                                                                      AppColors
+                                                                          .gold),
+                                                              left: BorderSide(
+                                                                  width: 1,
+                                                                  color:
+                                                                      AppColors
+                                                                          .gold),
+                                                              bottom: BorderSide(
+                                                                  width: 1,
+                                                                  color:
+                                                                      AppColors
+                                                                          .gold),
+                                                            )),
                                                     child: Padding(
                                                       padding:
                                                           const EdgeInsets.all(
@@ -365,35 +372,38 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                                         Image.asset(
                                                             width: 12,
                                                             AppImages.location),
-                                                        Text(" Estonia")
+                                                        const Text(" Estonia")
                                                       ]),
                                                     ),
                                                   ),
-                                                  SizedBox(height: 10),
+                                                  const SizedBox(height: 10),
                                                   Container(
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius.only(
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                            borderRadius: BorderRadius.only(
                                                                 topLeft: Radius
                                                                     .circular(
                                                                         20),
                                                                 bottomLeft: Radius
                                                                     .circular(
                                                                         20)),
-                                                        border: Border(
-                                                          top: BorderSide(
-                                                              width: 1,
-                                                              color: AppColors
-                                                                  .gold),
-                                                          left: BorderSide(
-                                                              width: 1,
-                                                              color: AppColors
-                                                                  .gold),
-                                                          bottom: BorderSide(
-                                                              width: 1,
-                                                              color: AppColors
-                                                                  .gold),
-                                                        )),
+                                                            border: Border(
+                                                              top: BorderSide(
+                                                                  width: 1,
+                                                                  color:
+                                                                      AppColors
+                                                                          .gold),
+                                                              left: BorderSide(
+                                                                  width: 1,
+                                                                  color:
+                                                                      AppColors
+                                                                          .gold),
+                                                              bottom: BorderSide(
+                                                                  width: 1,
+                                                                  color:
+                                                                      AppColors
+                                                                          .gold),
+                                                            )),
                                                     child: Padding(
                                                       padding:
                                                           const EdgeInsets.all(
@@ -402,7 +412,7 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                                         Image.asset(
                                                             width: 12,
                                                             AppImages.send),
-                                                        Text(" 3,2 KM")
+                                                        const Text(" 3,2 KM")
                                                       ]),
                                                     ),
                                                   ),
@@ -415,18 +425,18 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.start,
                                               children: [
-                                                Text("John Doe, 27 "),
+                                                const Text("John Doe, 27 "),
                                                 Image.asset(
                                                     width: 20,
                                                     AppImages.checkGold)
                                               ]),
-                                          SizedBox(height: 5),
-                                          Row(children: [
+                                          const SizedBox(height: 5),
+                                          const Row(children: [
                                             Text("Consulting Business ",
                                                 style: TextStyle(
                                                     color: AppColors.gold))
                                           ]),
-                                          SizedBox(height: 5),
+                                          const SizedBox(height: 5),
                                           Row(children: [
                                             Image.asset(AppImages.lang,
                                                 width: 15),
@@ -435,7 +445,7 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                                 style: TextTheme.of(context)
                                                     .labelSmall!)
                                           ]),
-                                          SizedBox(height: 5),
+                                          const SizedBox(height: 5),
                                           Text(
                                               """Guiding businesses' success through strategic.| Problem Solver | Empowering Growth 🌱 Let's solve challenges together! 💼 """,
                                               style: TextTheme.of(context)
@@ -443,7 +453,7 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                                   .copyWith(
                                                       color: AppColors
                                                           .textSilverDark)),
-                                          SizedBox(height: 5),
+                                          const SizedBox(height: 5),
                                           Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.spaceEvenly,
@@ -472,9 +482,9 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                                               child: Image.asset(
                                                                   AppImages
                                                                       .profile2)))))),
-                                          SizedBox(height: 5),
-                                          Row(children: [Text("Goals")]),
-                                          SizedBox(height: 5),
+                                          const SizedBox(height: 5),
+                                          const Row(children: [Text("Goals")]),
+                                          const SizedBox(height: 5),
                                           Row(children: [
                                             Container(
                                                 decoration: BoxDecoration(
@@ -492,7 +502,7 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                                         style: TextTheme.of(
                                                                 context)
                                                             .labelSmall))),
-                                            SizedBox(width: 8),
+                                            const SizedBox(width: 8),
                                             Container(
                                                 decoration: BoxDecoration(
                                                     borderRadius:
@@ -510,9 +520,10 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                                                 context)
                                                             .labelSmall))),
                                           ]),
-                                          SizedBox(height: 10),
-                                          Row(children: [Text("Interest")]),
-                                          SizedBox(height: 5),
+                                          const SizedBox(height: 10),
+                                          const Row(
+                                              children: [Text("Interest")]),
+                                          const SizedBox(height: 5),
                                           Wrap(
                                               direction: Axis.horizontal,
                                               alignment: WrapAlignment.start,
@@ -557,7 +568,7 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                                             style: TextTheme.of(
                                                                     context)
                                                                 .labelSmall))),
-                                                SizedBox(width: 18),
+                                                const SizedBox(width: 18),
                                                 Container(
                                                     decoration: BoxDecoration(
                                                         borderRadius:
@@ -586,7 +597,7 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                 ),
                                 //////
 
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                                 Padding(
                                   padding: const EdgeInsets.all(10),
                                   child: Row(children: [
@@ -594,26 +605,26 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                       opacity: 0.3,
                                       child: OutlinedButton.icon(
                                           style: OutlinedButton.styleFrom(
-                                              side: BorderSide(
+                                              side: const BorderSide(
                                                   width: 1,
                                                   color: AppColors.textGreen)),
-                                          icon: Icon(Icons.check_circle,
+                                          icon: const Icon(Icons.check_circle,
                                               color: AppColors.textGreen),
                                           onPressed: () {},
-                                          label: Text("Valid",
+                                          label: const Text("Valid",
                                               style: TextStyle(
                                                   color: AppColors.textGreen))),
                                     ),
-                                    SizedBox(width: 10),
+                                    const SizedBox(width: 10),
                                     OutlinedButton.icon(
                                         style: OutlinedButton.styleFrom(
-                                            side: BorderSide(
+                                            side: const BorderSide(
                                                 width: 1,
                                                 color: AppColors.textRed)),
-                                        icon: Icon(Icons.cancel,
+                                        icon: const Icon(Icons.cancel,
                                             color: AppColors.textRed),
                                         onPressed: () {},
-                                        label: Text("Invalid",
+                                        label: const Text("Invalid",
                                             style: TextStyle(
                                                 color: AppColors.textRed)))
                                   ]),
@@ -638,9 +649,9 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(height: 5),
-                                    Text("Idendity Card"),
-                                    SizedBox(height: 5),
+                                    const SizedBox(height: 5),
+                                    const Text("Idendity Card"),
+                                    const SizedBox(height: 5),
                                     TextFormField(
                                       minLines: 3,
                                       maxLines: 5,
@@ -660,31 +671,32 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                           opacity: 1,
                                           child: OutlinedButton.icon(
                                               style: OutlinedButton.styleFrom(
-                                                  side: BorderSide(
+                                                  side: const BorderSide(
                                                       width: 1,
                                                       color:
                                                           AppColors.textGreen)),
-                                              icon: Icon(Icons.check_circle,
+                                              icon: const Icon(
+                                                  Icons.check_circle,
                                                   color: AppColors.textGreen),
                                               onPressed: () {},
-                                              label: Text("Valid",
+                                              label: const Text("Valid",
                                                   style: TextStyle(
                                                       color: AppColors
                                                           .textGreen))),
                                         ),
-                                        SizedBox(width: 10),
+                                        const SizedBox(width: 10),
                                         Opacity(
                                           opacity: 0.3,
                                           child: OutlinedButton.icon(
                                               style: OutlinedButton.styleFrom(
-                                                  side: BorderSide(
+                                                  side: const BorderSide(
                                                       width: 1,
                                                       color:
                                                           AppColors.textRed)),
-                                              icon: Icon(Icons.cancel,
+                                              icon: const Icon(Icons.cancel,
                                                   color: AppColors.textRed),
                                               onPressed: () {},
-                                              label: Text("Invalid",
+                                              label: const Text("Invalid",
                                                   style: TextStyle(
                                                       color:
                                                           AppColors.textRed))),
@@ -711,9 +723,9 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(height: 5),
-                                    Text("Business Registration Proof"),
-                                    SizedBox(height: 5),
+                                    const SizedBox(height: 5),
+                                    const Text("Business Registration Proof"),
+                                    const SizedBox(height: 5),
                                     TextFormField(
                                       minLines: 3,
                                       maxLines: 5,
@@ -733,31 +745,32 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                           opacity: 1,
                                           child: OutlinedButton.icon(
                                               style: OutlinedButton.styleFrom(
-                                                  side: BorderSide(
+                                                  side: const BorderSide(
                                                       width: 1,
                                                       color:
                                                           AppColors.textGreen)),
-                                              icon: Icon(Icons.check_circle,
+                                              icon: const Icon(
+                                                  Icons.check_circle,
                                                   color: AppColors.textGreen),
                                               onPressed: () {},
-                                              label: Text("Valid",
+                                              label: const Text("Valid",
                                                   style: TextStyle(
                                                       color: AppColors
                                                           .textGreen))),
                                         ),
-                                        SizedBox(width: 10),
+                                        const SizedBox(width: 10),
                                         Opacity(
                                           opacity: 0.3,
                                           child: OutlinedButton.icon(
                                               style: OutlinedButton.styleFrom(
-                                                  side: BorderSide(
+                                                  side: const BorderSide(
                                                       width: 1,
                                                       color:
                                                           AppColors.textRed)),
-                                              icon: Icon(Icons.cancel,
+                                              icon: const Icon(Icons.cancel,
                                                   color: AppColors.textRed),
                                               onPressed: () {},
-                                              label: Text("Invalid",
+                                              label: const Text("Invalid",
                                                   style: TextStyle(
                                                       color:
                                                           AppColors.textRed))),
@@ -780,7 +793,7 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                             ),
                             CardWidget(
                                 widthRatio: 0.2,
-                                padding: EdgeInsets.all(20),
+                                padding: const EdgeInsets.all(20),
                                 child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
@@ -800,9 +813,8 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                                         AppColors.gold,
                                                         AppColors.primaryMid
                                                       ])),
-                                              child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
+                                              child: const Padding(
+                                                  padding: EdgeInsets.symmetric(
                                                       horizontal: 20,
                                                       vertical: 7),
                                                   child: Text("Done")))),
@@ -819,9 +831,8 @@ class _VerificatiosPageState extends State<VerificatiosPage> {
                                                     Colors.black,
                                                     Colors.grey.shade800,
                                                   ])),
-                                              child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
+                                              child: const Padding(
+                                                  padding: EdgeInsets.symmetric(
                                                       horizontal: 20,
                                                       vertical: 7),
                                                   child: Text("Back")))),
