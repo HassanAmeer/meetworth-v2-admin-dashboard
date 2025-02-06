@@ -5,7 +5,7 @@ import '../const/appcolors.dart';
 class DotLoader extends StatefulWidget {
   const DotLoader({
     super.key,
-    this.color = AppColors.primary,
+    this.color = AppColors.textGold,
     this.size = 27.0,
     this.itemBuilder,
     this.duration = const Duration(milliseconds: 1100),

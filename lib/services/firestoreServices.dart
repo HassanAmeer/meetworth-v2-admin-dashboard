@@ -520,40 +520,64 @@ class FStore {
         .delete();
   }
 
-  deleteBCategory(String id) {
-    _instance
-        .collection('adminSettings')
-        .doc('types')
-        .collection('businessCategories')
-        .doc(id)
-        .delete();
+  Future<bool> deleteBCategory(String id) async {
+    try {
+      await _instance
+          .collection('adminSettings')
+          .doc('types')
+          .collection('businessCategories')
+          .doc(id)
+          .delete();
+      return true;
+    } catch (e) {
+      debugPrint("Error deleting business category: $e");
+      return false;
+    }
   }
 
-  deleteInterest(String id) {
-    _instance
-        .collection('adminSettings')
-        .doc('types')
-        .collection('intrests')
-        .doc(id)
-        .delete();
+  Future<bool> deleteInterest(String id) async {
+    try {
+      _instance
+          .collection('adminSettings')
+          .doc('types')
+          .collection('intrests')
+          .doc(id)
+          .delete();
+      return true;
+    } catch (e) {
+      debugPrint("Error deleting business category: $e");
+      return false;
+    }
   }
 
-  deleteLanguage(String id) {
-    _instance
-        .collection('adminSettings')
-        .doc('types')
-        .collection('languages')
-        .doc(id)
-        .delete();
+  Future<bool> deleteLanguage(String id) async {
+    try {
+      _instance
+          .collection('adminSettings')
+          .doc('types')
+          .collection('languages')
+          .doc(id)
+          .delete();
+      return true;
+    } catch (e) {
+      debugPrint("Error deleting business category: $e");
+      return false;
+    }
   }
 
-  deleteGoals(String id) {
-    _instance
-        .collection('adminSettings')
-        .doc('types')
-        .collection('goals')
-        .doc(id)
-        .delete();
+  Future<bool> deleteGoals(String id) async {
+    try {
+      _instance
+          .collection('adminSettings')
+          .doc('types')
+          .collection('goals')
+          .doc(id)
+          .delete();
+      return true;
+    } catch (e) {
+      debugPrint("Error deleting business category: $e");
+      return false;
+    }
   }
 
   Query allUsersSearch(String key) {

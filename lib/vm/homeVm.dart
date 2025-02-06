@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../models/businessCategoryModel.dart';
+import '../models/categories.dart';
 import '../models/chatModel.dart';
 import '../models/postsModel.dart';
 
@@ -59,10 +61,10 @@ class HomeVm with ChangeNotifier {
 
   Future getUsersF(context,
       {bool showLoading = false,
-      String laodingFor = "",
+      String loadingFor = "",
       bool onlyUsers = false}) async {
     if (showLoading) {
-      setLoadingF(true, laodingFor);
+      setLoadingF(true, loadingFor);
     }
     try {
       if (onlyUsers) {
@@ -197,9 +199,9 @@ class HomeVm with ChangeNotifier {
   DateTime bestSellingDay = DateTime.now();
 
   Future getTransactionsF(context,
-      {bool showLoading = false, String laodingFor = ""}) async {
+      {bool showLoading = false, String loadingFor = ""}) async {
     if (showLoading) {
-      setLoadingF(true, laodingFor);
+      setLoadingF(true, loadingFor);
     }
     try {
       trList = await FStore().getTransactions();
@@ -309,10 +311,10 @@ class HomeVm with ChangeNotifier {
   List<ChatModel> allChatsList = [];
   List<int> last5MonthsChatsList = [];
   getAllChatsF(context,
-      {bool showLoading = false, String laodingFor = ""}) async {
+      {bool showLoading = false, String loadingFor = ""}) async {
     try {
       if (showLoading) {
-        setLoadingF(true, laodingFor);
+        setLoadingF(true, loadingFor);
       }
       allChatsList = await FStore().getAllChatsF();
       // debugPrint("getAllChatsF: ${allChatsList.length}");
@@ -356,10 +358,10 @@ class HomeVm with ChangeNotifier {
   int totalCommentsPer = 0;
   int totalSharePer = 0;
   getAllPostsCommentsLikesShareF(context,
-      {bool showLoading = false, String laodingFor = ""}) async {
+      {bool showLoading = false, String loadingFor = ""}) async {
     try {
       if (showLoading) {
-        setLoadingF(true, laodingFor);
+        setLoadingF(true, loadingFor);
       }
       allPostsCommentsLikesShare = await FStore().getAllPostsF();
       // debugPrint(
@@ -406,10 +408,10 @@ class HomeVm with ChangeNotifier {
   List<int> last5MonthsFriendsListPending = [];
   int totalConnections = 0;
   getAllFriendsF(context,
-      {bool showLoading = false, String laodingFor = ""}) async {
+      {bool showLoading = false, String loadingFor = ""}) async {
     try {
       if (showLoading) {
-        setLoadingF(true, laodingFor);
+        setLoadingF(true, loadingFor);
       }
       allFriendsList = await FStore().getAllFriendsF();
       // debugPrint("allFriendsList: ${allFriendsList.length}");
@@ -462,10 +464,10 @@ class HomeVm with ChangeNotifier {
   int totalErrors = 0;
   int totalCrashesPerc = 0;
   getAppInfoListF(context,
-      {bool showLoading = false, String laodingFor = ""}) async {
+      {bool showLoading = false, String loadingFor = ""}) async {
     try {
       if (showLoading) {
-        setLoadingF(true, laodingFor);
+        setLoadingF(true, loadingFor);
       }
       appInfoList = await FStore().getAppInfoListF();
       // debugPrint("getAllChatsF: ${allChatsList.length}");
@@ -509,10 +511,10 @@ class HomeVm with ChangeNotifier {
   int feedBackListNagetive = 0;
 
   getFeedBacksF(context,
-      {bool showLoading = false, String laodingFor = ""}) async {
+      {bool showLoading = false, String loadingFor = ""}) async {
     try {
       if (showLoading) {
-        setLoadingF(true, laodingFor);
+        setLoadingF(true, loadingFor);
       }
       feedBackList = await FStore().getFeedbacksF();
       // debugPrint("getAllChatsF: ${allChatsList.length}");
@@ -554,10 +556,10 @@ class HomeVm with ChangeNotifier {
   List<int> appLoadingTimesList = [];
   String appLoadingTime = '2';
   getLoadingTimeOfAppF(
-      {bool showLoading = false, String laodingFor = ""}) async {
+      {bool showLoading = false, String loadingFor = ""}) async {
     try {
       if (showLoading) {
-        setLoadingF(true, laodingFor);
+        setLoadingF(true, loadingFor);
       }
       appLoadingTimesList = await FStore().getLoadTimeF();
       appLoadingTime = (appLoadingTimesList.reduce(
@@ -579,13 +581,13 @@ class HomeVm with ChangeNotifier {
 
   int userFilterIndexFrom = 0;
   List<UserModel> geted13usersList = [];
-  Future get13UsersF({bool showLoading = false, String laodingFor = ""}) async {
+  Future get13UsersF({bool showLoading = false, String loadingFor = ""}) async {
     try {
       if (showLoading) {
-        setLoadingF(true, laodingFor);
+        setLoadingF(true, loadingFor);
       }
       if (!isUsersFiltered) {
-        await Future.delayed(Duration(milliseconds: 500));
+        await Future.delayed(const Duration(milliseconds: 500));
         List<UserModel> tempUsersList = [];
 
         for (var i = userFilterIndexFrom; i < allUsersList.length; i++) {
@@ -645,10 +647,10 @@ class HomeVm with ChangeNotifier {
   }
 
   // List<UserModel> filteredUsers = [];
-  filterUsersF({bool showLoading = false, String laodingFor = ""}) {
+  filterUsersF({bool showLoading = false, String loadingFor = ""}) {
     try {
       if (showLoading) {
-        setLoadingF(true, laodingFor);
+        setLoadingF(true, loadingFor);
       }
       geted13usersList = allUsersList
           .where((element) =>
@@ -668,11 +670,11 @@ class HomeVm with ChangeNotifier {
   }
 
   searchUsersF(
-      {bool showLoading = false, String laodingFor = "", String? query}) {
+      {bool showLoading = false, String loadingFor = "", String? query}) {
     try {
       if (query != null || query!.trim() != "") {
         if (showLoading) {
-          setLoadingF(true, laodingFor);
+          setLoadingF(true, loadingFor);
         }
         geted13usersList = allUsersList
             .where((element) =>
@@ -692,14 +694,359 @@ class HomeVm with ChangeNotifier {
     }
   }
 
+////////////////// for business category page and interest , languages, goals.
+
+  /////////////
+  List<BusinessCategoryModel> businessCategoryList = [];
+  Future getBusinessCategoryListF(
+      {bool showLoading = false, String loadingFor = ""}) async {
+    try {
+      if (showLoading) {
+        setLoadingF(true, loadingFor);
+      }
+
+      QuerySnapshot listIs = await FStore().getBusinessCategories().get();
+      if (listIs.docs.isNotEmpty) {
+        businessCategoryList.clear();
+        for (var doc in listIs.docs) {
+          businessCategoryList.add(BusinessCategoryModel.fromMap(
+              doc.data() as Map<String, dynamic>));
+        }
+      }
+
+      notifyListeners();
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint("💥 try catch getBusinessCategoryListF error: $e , st:$st");
+    } finally {
+      setLoadingF(false);
+    }
+  }
+
+  Future addBusinessCategoryListF(
+      {bool showLoading = false,
+      String loadingFor = "",
+      required String name}) async {
+    try {
+      if (showLoading) {
+        setLoadingF(true, loadingFor);
+      }
+      String id = FirebaseFirestore.instance
+          .collection('adminSettings')
+          .doc('types')
+          .collection('businessCategories')
+          .doc()
+          .id;
+      BusinessCategoryModel model = BusinessCategoryModel(
+          id: id, name: name, creationDate: DateTime.now());
+      await FirebaseFirestore.instance
+          .collection('adminSettings')
+          .doc('types')
+          .collection('businessCategories')
+          .doc(model.id)
+          .set(model.toMap());
+
+      debugPrint("model.toMap() : ${model.toMap()}");
+      businessCategoryList.add(model);
+      getBusinessCategoryListF();
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint("💥 try catch addBusinessCategoryListF error: $e , st:$st");
+    } finally {
+      setLoadingF(false);
+    }
+  }
+
+  //////////////
+  Future delBusinessCategoryListF(
+      {bool showLoading = false,
+      String loadingFor = "",
+      required String docId}) async {
+    try {
+      if (showLoading) {
+        setLoadingF(true, loadingFor);
+      }
+
+      bool check = await FStore().deleteBCategory(docId);
+      if (check) {
+        businessCategoryList.removeWhere((e) => e.id == docId);
+      }
+
+      notifyListeners();
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint("💥 try catch delBusinessCategoryListF error: $e , st:$st");
+    } finally {
+      setLoadingF(false);
+    }
+  }
+
+  /////////////
+  // this is same with  BusinessCategoryModel
+  List<BusinessCategoryModel> interestList = [];
+  Future getinterestListF(
+      {bool showLoading = false, String loadingFor = ""}) async {
+    try {
+      if (showLoading) {
+        setLoadingF(true, loadingFor);
+      }
+
+      QuerySnapshot listIs = await FStore().getInterests().get();
+      if (listIs.docs.isNotEmpty) {
+        interestList.clear();
+        for (var doc in listIs.docs) {
+          interestList.add(BusinessCategoryModel.fromMap(
+              doc.data() as Map<String, dynamic>));
+        }
+      }
+
+      notifyListeners();
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint("💥 try catch getinterestListF error: $e , st:$st");
+    } finally {
+      setLoadingF(false);
+    }
+  }
+
+  Future addInterestListF(
+      {bool showLoading = false,
+      String loadingFor = "",
+      required String name}) async {
+    try {
+      if (showLoading) {
+        setLoadingF(true, loadingFor);
+      }
+      String id = FirebaseFirestore.instance
+          .collection('adminSettings')
+          .doc('types')
+          .collection('intrests')
+          .doc()
+          .id;
+      BusinessCategoryModel model = BusinessCategoryModel(
+          id: id, name: name, creationDate: DateTime.now());
+      await FirebaseFirestore.instance
+          .collection('adminSettings')
+          .doc('types')
+          .collection('intrests')
+          .doc(model.id)
+          .set(model.toMap());
+
+      debugPrint("model.toMap() : ${model.toMap()}");
+      interestList.add(model);
+      getinterestListF();
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint("💥 try catch addInterestListF error: $e , st:$st");
+    } finally {
+      setLoadingF(false);
+    }
+  }
+
+  Future delInterestListF(
+      {bool showLoading = false,
+      String loadingFor = "",
+      required String docId}) async {
+    try {
+      if (showLoading) {
+        setLoadingF(true, loadingFor);
+      }
+
+      bool check = await FStore().deleteInterest(docId);
+      if (check) {
+        interestList.removeWhere((e) => e.id == docId);
+      }
+
+      notifyListeners();
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint("💥 try catch delInterestListF error: $e , st:$st");
+    } finally {
+      setLoadingF(false);
+    }
+  }
+
+  /////////////
+  // this is same with  BusinessCategoryModel
+  List<BusinessCategoryModel> languageList = [];
+  Future getLanguageListF(
+      {bool showLoading = false, String loadingFor = ""}) async {
+    try {
+      if (showLoading) {
+        setLoadingF(true, loadingFor);
+      }
+
+      QuerySnapshot listIs = await FStore().getLanguages().get();
+      if (listIs.docs.isNotEmpty) {
+        languageList.clear();
+        for (var doc in listIs.docs) {
+          languageList.add(BusinessCategoryModel.fromMap(
+              doc.data() as Map<String, dynamic>));
+        }
+      }
+
+      notifyListeners();
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint("💥 try catch getLanguageListF error: $e , st:$st");
+    } finally {
+      setLoadingF(false);
+    }
+  }
+
+  Future addLanguageListF(
+      {bool showLoading = false,
+      String loadingFor = "",
+      required String name}) async {
+    try {
+      if (showLoading) {
+        setLoadingF(true, loadingFor);
+      }
+      String id = FirebaseFirestore.instance
+          .collection('adminSettings')
+          .doc('types')
+          .collection('languages')
+          .doc()
+          .id;
+      BusinessCategoryModel model = BusinessCategoryModel(
+          id: id, name: name, creationDate: DateTime.now());
+      await FirebaseFirestore.instance
+          .collection('adminSettings')
+          .doc('types')
+          .collection('languages')
+          .doc(model.id)
+          .set(model.toMap());
+
+      debugPrint("model.toMap() : ${model.toMap()}");
+      languageList.add(model);
+      getLanguageListF();
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint("💥 try catch addLanguageListF error: $e , st:$st");
+    } finally {
+      setLoadingF(false);
+    }
+  }
+
+  Future delLanguageListF(
+      {bool showLoading = false,
+      String loadingFor = "",
+      required String docId}) async {
+    try {
+      if (showLoading) {
+        setLoadingF(true, loadingFor);
+      }
+
+      bool check = await FStore().deleteLanguage(docId);
+      if (check) {
+        languageList.removeWhere((e) => e.id == docId);
+      }
+
+      notifyListeners();
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint("💥 try catch delLanguageListF error: $e , st:$st");
+    } finally {
+      setLoadingF(false);
+    }
+  }
+
+  /////////////
+  // this is same with  BusinessCategoryModel
+  List<BusinessCategoryModel> goalsList = [];
+  Future getGoalsListF(
+      {bool showLoading = false, String loadingFor = ""}) async {
+    try {
+      if (showLoading) {
+        setLoadingF(true, loadingFor);
+      }
+
+      QuerySnapshot listIs = await FStore().getGoals().get();
+      if (listIs.docs.isNotEmpty) {
+        goalsList.clear();
+        for (var doc in listIs.docs) {
+          goalsList.add(BusinessCategoryModel.fromMap(
+              doc.data() as Map<String, dynamic>));
+        }
+      }
+
+      notifyListeners();
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint("💥 try catch getGoalsListF error: $e , st:$st");
+    } finally {
+      setLoadingF(false);
+    }
+  }
+
+  Future addGoalsListF(
+      {bool showLoading = false,
+      String loadingFor = "",
+      required String name}) async {
+    try {
+      if (showLoading) {
+        setLoadingF(true, loadingFor);
+      }
+      String id = FirebaseFirestore.instance
+          .collection('adminSettings')
+          .doc('types')
+          .collection('goals')
+          .doc()
+          .id;
+      BusinessCategoryModel model = BusinessCategoryModel(
+          id: id, name: name, creationDate: DateTime.now());
+      await FirebaseFirestore.instance
+          .collection('adminSettings')
+          .doc('types')
+          .collection('goals')
+          .doc(model.id)
+          .set(model.toMap());
+
+      debugPrint("model.toMap() : ${model.toMap()}");
+      goalsList.add(model);
+      setLoadingF(false);
+      // getGoalsListF();
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint("💥 try catch addGoalsListF error: $e , st:$st");
+    } finally {
+      setLoadingF(false);
+    }
+  }
+
+  Future delGoalsListF(
+      {bool showLoading = false,
+      String loadingFor = "",
+      required String docId}) async {
+    try {
+      if (showLoading) {
+        setLoadingF(true, loadingFor);
+      }
+
+      bool check = await FStore().deleteGoals(docId);
+      if (check) {
+        goalsList.removeWhere((e) => e.id == docId);
+      }
+
+      notifyListeners();
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint("💥 try catch delGoalsListF error: $e , st:$st");
+    } finally {
+      setLoadingF(false);
+    }
+  }
+
+/////////
+
 /////////////////////// for verfication  /////////////////////////////////
 
   // int userFilterIndexFrom = 0;
   // List<UserModel> geted13usersList = [];
-  // Future getverifications({bool showLoading = false, String laodingFor = ""}) async {
+  // Future getverifications({bool showLoading = false, String loadingFor = ""}) async {
   //   try {
   //     if (showLoading) {
-  //       setLoadingF(true, laodingFor);
+  //       setLoadingF(true, loadingFor);
   //     }
   //     if (!isUsersFiltered) {
   //       await Future.delayed(Duration(milliseconds: 500));

@@ -182,11 +182,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                                     InkWell(
                                         onTap: () {
                                           p.getLoadingTimeOfAppF(
-                                              laodingFor: "refresh");
+                                              loadingFor: "refresh");
                                           // p.getAllPostsCommentsLikesShareF(
                                           //     context,
                                           //     showLoading: true,
-                                          //     laodingFor: "refresh");
+                                          //     loadingFor: "refresh");
                                         },
                                         borderRadius: BorderRadius.circular(15),
                                         child: CardWidget(
