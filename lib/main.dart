@@ -189,10 +189,15 @@ class _SplashPageState extends ConsumerState<SplashPage> {
 
 
 
+// ******** remainings in db side
+//  accountCreationLocation
+//
+
 // ******** remainings in app side
 // totalShare in posts 
 // appInfo
 // loadtime
+
 
 /////////////////////////////////////////////////////////////////
 //

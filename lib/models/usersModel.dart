@@ -44,6 +44,7 @@ class UserModel {
   List<String>? friends = [];
   String dob, deadlinemembership;
   String monthlyAppUsageInSeconds;
+  String accountCreationLocation;
 
   UserModel(
       {this.firstname,
@@ -81,6 +82,7 @@ class UserModel {
       this.enable,
       this.friends,
       this.country,
+      this.accountCreationLocation = "",
       this.monthlyAppUsageInSeconds = "0"});
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
@@ -89,7 +91,9 @@ class UserModel {
             map['firstname'].toString().replaceAll('\n', '').toTitleCase(),
         lastname: map['lastname'].toString().replaceAll('\n', '').toTitleCase(),
         email: map['email'].toString().toNullString(),
-        phone: map['phone'].toString().toNullString(),
+        phone: map['phone'].toString().toNullString().isEmpty
+            ? "Not Given"
+            : map['phone'].toString().toNullString(),
         bio: map['bio'].toString().toNullString(),
         referLinkUserCount: map['referLinkUserCount'] ?? 0,
         image: map['image'].toString().toNullString(),
@@ -134,6 +138,8 @@ class UserModel {
             ? DateTime.now()
             : map['creationDate']?.toDate() ?? DateTime.now(),
         planKey: map['planKey'].toString().toNullString(),
+        accountCreationLocation:
+            map['accountCreationLocation'].toString().toNullString(),
         monthlyAppUsageInSeconds:
             map['monthlyAppUsageInSeconds'].toString().toNullString());
   }

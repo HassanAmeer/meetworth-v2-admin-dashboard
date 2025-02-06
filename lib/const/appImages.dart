@@ -22,4 +22,6 @@ class AppImages {
   static String send = "assets/icons/send.png";
   //////// images
   static String profile2 = "assets/images/profile2.png";
+  static String profilegold = "assets/icons/profilegold.png";
+  static String profiledarkgold = "assets/icons/profiledarkgold.png";
 }

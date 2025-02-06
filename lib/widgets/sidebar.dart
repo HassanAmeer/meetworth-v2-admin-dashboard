@@ -5,6 +5,7 @@ import 'package:cupertino_sidebar/cupertino_sidebar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../screens/notifications.dart';
 import '../screens/users.dart';
 import '../screens/homePage.dart';
 
@@ -18,9 +19,10 @@ class SidebarWidget extends StatefulWidget {
 class _SidebarWidgetState extends State<SidebarWidget> {
   // A list of pages to be displayed as the destination content.
   final _pages = [
-    const HomePage(),
-    const UsersPage(),
+    NotificationsPage(),
     const VerificatiosPage(),
+    // const HomePage(),
+    const UsersPage(),
   ];
 
   // The index of the currently selected page.
@@ -90,6 +92,94 @@ class _SidebarWidgetState extends State<SidebarWidget> {
                         color: _selectedIndex == 2
                             ? AppColors.primaryMid
                             : Colors.white))),
+            SidebarDestination(
+                // isSelected: _selectedIndex == 2 ? true : false,
+                icon: Icon(Icons.notifications_active,
+                    color: _selectedIndex == 2
+                        ? AppColors.primaryMid
+                        : Colors.white),
+                label: Text('Notifications',
+                    style: TextStyle(
+                        color: _selectedIndex == 2
+                            ? AppColors.primaryMid
+                            : Colors.white))),
+            SidebarDestination(
+                // isSelected: _selectedIndex == 2 ? true : false,
+                icon: Icon(Icons.category_outlined,
+                    color: _selectedIndex == 2
+                        ? AppColors.primaryMid
+                        : Colors.white),
+                label: Text('Business Categories',
+                    style: TextStyle(
+                        color: _selectedIndex == 2
+                            ? AppColors.primaryMid
+                            : Colors.white))),
+            SidebarDestination(
+                // isSelected: _selectedIndex == 2 ? true : false,
+                icon: Icon(Icons.interests,
+                    color: _selectedIndex == 2
+                        ? AppColors.primaryMid
+                        : Colors.white),
+                label: Text('Interests',
+                    style: TextStyle(
+                        color: _selectedIndex == 2
+                            ? AppColors.primaryMid
+                            : Colors.white))),
+            SidebarDestination(
+                // isSelected: _selectedIndex == 2 ? true : false,
+                icon: Icon(Icons.translate,
+                    color: _selectedIndex == 2
+                        ? AppColors.primaryMid
+                        : Colors.white),
+                label: Text('Language',
+                    style: TextStyle(
+                        color: _selectedIndex == 2
+                            ? AppColors.primaryMid
+                            : Colors.white))),
+            SidebarDestination(
+                // isSelected: _selectedIndex == 2 ? true : false,
+                icon: Icon(Icons.batch_prediction_outlined,
+                    color: _selectedIndex == 2
+                        ? AppColors.primaryMid
+                        : Colors.white),
+                label: Text('Goals',
+                    style: TextStyle(
+                        color: _selectedIndex == 2
+                            ? AppColors.primaryMid
+                            : Colors.white))),
+            SidebarDestination(
+                // isSelected: _selectedIndex == 2 ? true : false,
+                icon: Icon(Icons.format_quote,
+                    color: _selectedIndex == 2
+                        ? AppColors.primaryMid
+                        : Colors.white),
+                label: Text('FAQs',
+                    style: TextStyle(
+                        color: _selectedIndex == 2
+                            ? AppColors.primaryMid
+                            : Colors.white))),
+            SidebarDestination(
+                // isSelected: _selectedIndex == 2 ? true : false,
+                icon: Icon(Icons.person_4,
+                    color: _selectedIndex == 2
+                        ? AppColors.primaryMid
+                        : Colors.white),
+                label: Text('Profile',
+                    style: TextStyle(
+                        color: _selectedIndex == 2
+                            ? AppColors.primaryMid
+                            : Colors.white))),
+            SidebarDestination(
+                // isSelected: _selectedIndex == 2 ? true : false,
+                icon: Icon(Icons.logout,
+                    color: _selectedIndex == 2
+                        ? AppColors.primaryMid
+                        : Colors.orange),
+                label: Text('Logout',
+                    style: TextStyle(
+                        color: _selectedIndex == 2
+                            ? AppColors.primaryMid
+                            : Colors.orange))),
           ]),
       SizedBox(
           width: MediaQuery.of(context).size.width * 0.82,

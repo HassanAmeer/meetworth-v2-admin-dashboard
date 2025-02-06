@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 /// A class that tracks the time spent on different screens.
 class ScreenTimeTracker {
@@ -48,9 +47,10 @@ class ScreenTimeTracker {
     _log("Started tracking: $screenName");
 
     // Start a timer to track the screen time for the given screen.
-    _screenTimers[screenName] = Timer.periodic(Duration(seconds: 1), (timer) {
+    _screenTimers[screenName] =
+        Timer.periodic(const Duration(seconds: 1), (timer) {
       _screenTimeMap[screenName] =
-          _screenTimeMap[screenName]! + Duration(seconds: 1);
+          _screenTimeMap[screenName]! + const Duration(seconds: 1);
       _log("Time spent on $screenName: ${_screenTimeMap[screenName]}");
     });
   }
@@ -89,8 +89,8 @@ class ScreenTimeWidget extends StatefulWidget {
   const ScreenTimeWidget({
     required this.screenName,
     required this.child,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _ScreenTimeWidgetState createState() => _ScreenTimeWidgetState();

@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:admin_panel/models/appinfoModel.dart';
 import 'package:admin_panel/models/feedbackModel.dart';
 import 'package:admin_panel/models/friendsModel.dart';
@@ -9,9 +6,7 @@ import 'package:admin_panel/models/transactionsModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:intl/intl.dart';
 import '../models/categories.dart';
 import '../models/chatModel.dart';
 import '../models/usersModel.dart';
@@ -21,7 +16,6 @@ import '/models/faqModel.dart';
 import '/models/gameModel.dart';
 import '/models/notificationModel.dart';
 import '/models/paymentModel.dart';
-import '/models/transaction.dart';
 import '/models/typeModel.dart';
 
 List<String> generateArray(String name) {
@@ -297,8 +291,10 @@ class FStore {
   Future<List<UserModel>> getAllUsers() async {
     List<UserModel> users = [];
     try {
-      QuerySnapshot<Map<String, dynamic>> dsnap =
-          await _instance.collection('userProfile').get();
+      QuerySnapshot<Map<String, dynamic>> dsnap = await _instance
+          .collection('userProfile')
+          .orderBy('creationDate', descending: true)
+          .get();
 
       // debugPrint("👉 getAllUsers start");
       // log("${dsnap.docs.map((e) => {'id': e.id, 'data': e.data()}).toList()}");
