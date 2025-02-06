@@ -1,23 +1,24 @@
 import 'package:admin_panel/const/appColors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../vm/homeVm.dart';
 import '../widgets/dotloader.dart';
 import '../widgets/minicard.dart';
 
-class CatgPage extends ConsumerStatefulWidget {
-  const CatgPage({super.key});
+class ProfilePage extends ConsumerStatefulWidget {
+  const ProfilePage({super.key});
 
   @override
-  ConsumerState<CatgPage> createState() => _CatgPageState();
+  ConsumerState<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _CatgPageState extends ConsumerState<CatgPage> {
-  TextEditingController nameController = TextEditingController();
+class _ProfilePageState extends ConsumerState<ProfilePage> {
+  TextEditingController emailController = TextEditingController();
   @override
   void initState() {
     super.initState();
-    syncFirstF();
+    // syncFirstF();
   }
 
   @override
@@ -28,11 +29,7 @@ class _CatgPageState extends ConsumerState<CatgPage> {
   syncFirstF() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var home = ref.read(homeVm);
-      if (home.businessCategoryList.isEmpty) {
-        home
-            .getBusinessCategoryListF(showLoading: true, loadingFor: "catg")
-            .then((v) {});
-      }
+      if (home.businessCategoryList.isEmpty) {}
     });
   }
 
@@ -51,7 +48,7 @@ class _CatgPageState extends ConsumerState<CatgPage> {
 
           const Row(mainAxisAlignment: MainAxisAlignment.start, children: [
             // SizedBox(height: h * 0.2),
-            Text('Pages / Category',
+            Text('Pages / Profile',
                 style: TextStyle(color: Colors.white54, fontSize: 14))
           ]),
 
@@ -70,7 +67,7 @@ class _CatgPageState extends ConsumerState<CatgPage> {
                           Padding(
                               padding: const EdgeInsets.all(10),
                               child: Row(children: [
-                                Text("Add Business Category",
+                                Text("Change Password",
                                     style: TextTheme.of(context).labelLarge)
                               ])),
                           Container(
@@ -80,7 +77,7 @@ class _CatgPageState extends ConsumerState<CatgPage> {
                                   borderRadius: BorderRadius.circular(20)),
                               padding: const EdgeInsets.all(4),
                               child: TextField(
-                                  controller: nameController,
+                                  controller: emailController,
                                   cursorHeight: 12,
                                   cursorColor: Colors.grey,
                                   decoration: InputDecoration(
@@ -91,7 +88,7 @@ class _CatgPageState extends ConsumerState<CatgPage> {
                                     fillColor: Colors.black,
                                     prefixIcon: const Icon(Icons.title,
                                         color: Colors.white, size: 17),
-                                    hintText: "Title",
+                                    hintText: "Enter Email",
                                     disabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(20),
                                         borderSide: BorderSide.none),
@@ -108,22 +105,27 @@ class _CatgPageState extends ConsumerState<CatgPage> {
                               width: w * 0.3,
                               child: OutlinedButton(
                                   onPressed: () {
+                                    if (emailController.text !=
+                                        "team@meetworth.com") {
+                                      EasyLoading.showError("Invalid Email");
+                                      return;
+                                    }
                                     p
-                                        .addBusinessCategoryListF(
+                                        .forgetPassword(
                                             showLoading: true,
-                                            loadingFor: 'addCatgBtn',
-                                            name: nameController.text)
+                                            loadingFor: 'resetBtn',
+                                            email: emailController.text)
                                         .then((v) {
-                                      nameController.clear();
+                                      emailController.clear();
                                     });
                                   },
                                   style: OutlinedButton.styleFrom(
                                       side: const BorderSide(
                                           width: 1, color: AppColors.textGold)),
                                   child: p.isLoading &&
-                                          p.isLoadingFor == "addCatgBtn"
+                                          p.isLoadingFor == "resetBtn"
                                       ? const DotLoader()
-                                      : Text("Add Category",
+                                      : Text("Reset Password",
                                           style: TextTheme.of(context)
                                               .labelSmall!
                                               .copyWith(
@@ -131,49 +133,11 @@ class _CatgPageState extends ConsumerState<CatgPage> {
 
                           const SizedBox(height: 30),
                         ])),
-                CardWidget(
-                    widthRatio: 0.3,
-                    heightRatio: 0.4,
-                    child: p.isLoading && p.isLoadingFor == "catg"
-                        ? const Center(child: DotLoader())
-                        : ListView.separated(
-                            shrinkWrap: true,
-                            controller: ScrollController(),
-                            physics: const BouncingScrollPhysics(
-                                parent: ClampingScrollPhysics()),
-                            separatorBuilder: (context, index) => const Divider(
-                                height: 1,
-                                thickness: 1,
-                                color: AppColors.bgField),
-                            itemCount: p.businessCategoryList.length,
-                            itemBuilder: (context, index) {
-                              var data = p.businessCategoryList[index];
-                              return ListTile(
-                                  leading: CircleAvatar(
-                                      backgroundColor: AppColors.bgCard,
-                                      child: Text("${index + 1}",
-                                          style: TextTheme.of(context)
-                                              .titleMedium)),
-                                  title: Text(data.name,
-                                      style: TextTheme.of(context).titleMedium),
-                                  trailing: IconButton(
-                                      onPressed: () {
-                                        p.delBusinessCategoryListF(
-                                            docId: data.id,
-                                            showLoading: true,
-                                            loadingFor: "$index");
-                                      },
-                                      icon: p.isLoading &&
-                                              p.isLoadingFor == "$index"
-                                          ? const DotLoader(
-                                              color: AppColors.pieChartColor2)
-                                          : const Icon(Icons.close)));
-                            }))
               ]),
         ]),
       ));
     } catch (e, st) {
-      debugPrint("👉 CatgPage page error : $e, st: $st");
+      debugPrint("👉 ProfilePage page error : $e, st: $st");
       return const Center(child: DotLoader(color: AppColors.gold));
       // return Center(child: Text("👉 Reload this page : $e"));
     }

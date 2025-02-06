@@ -827,12 +827,14 @@ class FStore {
     return stats;
   }
 
-  addFaq(String title, String message) async {
+  Future addFaq(String question, String answer) async {
     String id = _instance.collection('faqs').doc().id;
     await _instance
         .collection('faqs')
         .doc(id)
-        .set({"title": title, "message": message, "id": id});
+        .set({"question": question, "answer": answer, "id": id}).then((v) {
+      // debugPrint("faq added");
+    });
   }
 
   addVideo(String title, String thumnail, String link) async {
@@ -850,8 +852,14 @@ class FStore {
         .set(({"status": status}), SetOptions(merge: true));
   }
 
-  deleteFaq(String id) {
-    _instance.collection('faqs').doc(id).delete();
+  Future<bool> deleteFaq(String id) async {
+    try {
+      _instance.collection('faqs').doc(id).delete();
+      return true;
+    } catch (e) {
+      debugPrint("   deleteFaq Error : $e");
+      return false;
+    }
   }
 
   enableFaq(String id, bool status) {

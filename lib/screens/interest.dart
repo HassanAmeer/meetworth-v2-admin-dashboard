@@ -174,9 +174,8 @@ class _InerestPageState extends ConsumerState<InerestPage> {
       ));
     } catch (e, st) {
       debugPrint("👉 Interests page error : $e, st: $st");
-      p.get13UsersF(loadingFor: 'users', showLoading: true);
       return const Center(child: DotLoader(color: AppColors.gold));
-      // return Center(child: Text("👉 Reload users Page : $e"));
+      // return Center(child: Text("👉 Reload This Page : $e"));
     }
   }
 }

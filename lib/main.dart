@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:admin_panel/screens/homePage.dart';
 import 'package:admin_panel/widgets/sidebar.dart';
 import 'package:firebase_core/firebase_core.dart';

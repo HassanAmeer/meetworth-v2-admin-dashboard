@@ -5,8 +5,10 @@ import 'package:admin_panel/models/feedbackModel.dart';
 import 'package:admin_panel/models/friendsModel.dart';
 import 'package:admin_panel/models/transactionsModel.dart';
 import 'package:admin_panel/models/usersModel.dart';
+import 'package:admin_panel/screens/auth/login.dart';
 import 'package:admin_panel/services/firestoreServices.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/businessCategoryModel.dart';
 import '../models/categories.dart';
 import '../models/chatModel.dart';
+import '../models/faqModel.dart';
 import '../models/postsModel.dart';
 
 final homeVm = ChangeNotifierProvider<HomeVm>((ref) => HomeVm());
@@ -1035,6 +1038,97 @@ class HomeVm with ChangeNotifier {
     } finally {
       setLoadingF(false);
     }
+  }
+
+  // this is same with  BusinessCategoryModel
+  List<FaqModel> faqList = [];
+  Future getFaqListF({bool showLoading = false, String loadingFor = ""}) async {
+    try {
+      if (showLoading) {
+        setLoadingF(true, loadingFor);
+      }
+
+      QuerySnapshot listIs = await FStore().getFaqs().get();
+      if (listIs.docs.isNotEmpty) {
+        faqList.clear();
+        for (var doc in listIs.docs) {
+          faqList.add(FaqModel.toModel(doc.data() as Map<String, dynamic>));
+        }
+      }
+
+      notifyListeners();
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint("💥 try catch getFaqListF error: $e , st:$st");
+    } finally {
+      setLoadingF(false);
+    }
+  }
+
+  Future addFaqListF(
+      {bool showLoading = false,
+      String loadingFor = "",
+      required String question,
+      required String answer}) async {
+    try {
+      if (showLoading) {
+        setLoadingF(true, loadingFor);
+      }
+
+      await FStore().addFaq(question, answer).then((v) {
+        // if (v != null) {}
+        getFaqListF();
+      });
+
+      setLoadingF(false);
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint("💥 try catch addFaqListF error: $e , st:$st");
+    } finally {
+      setLoadingF(false);
+    }
+  }
+
+  Future delFaqListF(
+      {bool showLoading = false,
+      String loadingFor = "",
+      required String docId}) async {
+    try {
+      if (showLoading) {
+        setLoadingF(true, loadingFor);
+      }
+
+      bool check = await FStore().deleteFaq(docId);
+      if (check) {
+        faqList.removeWhere((e) => e.id == docId);
+      }
+
+      notifyListeners();
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint("💥 try catch delFaqListF error: $e , st:$st");
+    } finally {
+      setLoadingF(false);
+    }
+  }
+
+///////////////
+  Future<String> forgetPassword(
+      {bool showLoading = false,
+      String loadingFor = "",
+      required String email}) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      return "";
+    } on FirebaseAuthException catch (error) {
+      return error.code;
+    }
+  }
+
+  Future<void> logOut(context) async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => const LoginPage()));
   }
 
 /////////

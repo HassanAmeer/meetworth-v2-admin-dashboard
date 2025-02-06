@@ -156,9 +156,8 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
       ));
     } catch (e, st) {
       debugPrint("👉 notifications page error : $e, st: $st");
-      p.get13UsersF(loadingFor: 'users', showLoading: true);
       return const Center(child: DotLoader(color: AppColors.gold));
-      // return Center(child: Text("👉 Reload users Page : $e"));
+      // return Center(child: Text("👉 Reload This Page : $e"));
     }
   }
 }
