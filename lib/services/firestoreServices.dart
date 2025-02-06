@@ -1,8 +1,8 @@
-import 'package:admin_panel/models/appinfoModel.dart';
-import 'package:admin_panel/models/feedbackModel.dart';
-import 'package:admin_panel/models/friendsModel.dart';
-import 'package:admin_panel/models/postsModel.dart';
-import 'package:admin_panel/models/transactionsModel.dart';
+import 'package:meetworth_admin/models/appinfoModel.dart';
+import 'package:meetworth_admin/models/feedbackModel.dart';
+import 'package:meetworth_admin/models/friendsModel.dart';
+import 'package:meetworth_admin/models/postsModel.dart';
+import 'package:meetworth_admin/models/transactionsModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
@@ -63,7 +63,7 @@ class FStore {
         .doc('types')
         .collection('businessTypes')
         .doc(model.id)
-        .set(model.toSaveJSON());
+        .set(model.toMap());
   }
 
   setGoals(TypeModel model) async {
@@ -79,7 +79,7 @@ class FStore {
         .doc('types')
         .collection('goals')
         .doc(model.id)
-        .set(model.toSaveJSON());
+        .set(model.toMap());
   }
 
   setFaq(FaqModel model) async {
@@ -101,7 +101,7 @@ class FStore {
         .doc('types')
         .collection('businessCategories')
         .doc(model.id)
-        .set(model.toSaveJSON());
+        .set(model.toMap());
   }
 
   setInterests(TypeModel model) async {
@@ -117,7 +117,7 @@ class FStore {
         .doc('types')
         .collection('intrests')
         .doc(model.id)
-        .set(model.toSaveJSON());
+        .set(model.toMap());
   }
 
   setLanguages(TypeModel model) async {
@@ -133,7 +133,7 @@ class FStore {
         .doc('types')
         .collection('languages')
         .doc(model.id)
-        .set(model.toSaveJSON());
+        .set(model.toMap());
   }
 
   Query getBuisnessType() {

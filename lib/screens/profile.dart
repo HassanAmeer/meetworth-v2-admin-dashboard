@@ -1,7 +1,9 @@
-import 'package:admin_panel/const/appColors.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:meetworth_admin/const/appColors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meetworth_admin/vm/authVm.dart';
 import '../vm/homeVm.dart';
 import '../widgets/dotloader.dart';
 import '../widgets/minicard.dart';
@@ -35,7 +37,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    var p = ref.watch(homeVm);
+    var p = ref.watch(authVm);
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
     try {
@@ -104,32 +106,41 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                           SizedBox(
                               width: w * 0.3,
                               child: OutlinedButton(
-                                  onPressed: () {
-                                    if (emailController.text !=
-                                        "team@meetworth.com") {
-                                      EasyLoading.showError("Invalid Email");
-                                      return;
-                                    }
-                                    p
-                                        .forgetPassword(
-                                            showLoading: true,
-                                            loadingFor: 'resetBtn',
-                                            email: emailController.text)
-                                        .then((v) {
-                                      emailController.clear();
-                                    });
-                                  },
-                                  style: OutlinedButton.styleFrom(
-                                      side: const BorderSide(
-                                          width: 1, color: AppColors.textGold)),
-                                  child: p.isLoading &&
-                                          p.isLoadingFor == "resetBtn"
-                                      ? const DotLoader()
-                                      : Text("Reset Password",
-                                          style: TextTheme.of(context)
-                                              .labelSmall!
-                                              .copyWith(
-                                                  color: AppColors.textGold)))),
+                                      onPressed: () {
+                                        if (emailController.text !=
+                                            "team@meetworth.com") {
+                                          EasyLoading.showError(
+                                              "Invalid Email");
+                                          return;
+                                        }
+                                        p
+                                            .forgotPasswordF(
+                                                showLoading: true,
+                                                loadingFor: 'resetBtn',
+                                                email: emailController.text)
+                                            .then((v) {
+                                          emailController.clear();
+                                        });
+                                      },
+                                      style: OutlinedButton.styleFrom(
+                                          side: const BorderSide(
+                                              width: 1,
+                                              color: AppColors.textGold)),
+                                      child: p.isLoading &&
+                                              p.isLoadingFor == "resetBtn"
+                                          ? const DotLoader()
+                                          : Text("Reset Password",
+                                              style: TextTheme.of(context)
+                                                  .labelSmall!
+                                                  .copyWith(
+                                                      color:
+                                                          AppColors.textGold)))
+                                  .animate(
+                                      onPlay: (controller) =>
+                                          controller.repeat())
+                                  .shimmer(
+                                      color: AppColors.primary,
+                                      duration: const Duration(seconds: 2))),
 
                           const SizedBox(height: 30),
                         ])),

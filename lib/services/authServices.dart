@@ -1,18 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class AuthServices {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<String> emailSignIn(String user, password) async {
+  Future<bool> emailSignIn(String user, password) async {
     try {
       UserCredential fbUser = await _auth.signInWithEmailAndPassword(
           email: user, password: password);
       if (fbUser.user != null) {
-        return "";
+        return true;
       }
-      return "error";
+      return false;
     } on FirebaseAuthException catch (error) {
-      return error.code;
+      EasyLoading.showError(error.code);
+      debugPrint("💥 emailSignIn error: $error");
+      return false;
     }
   }
 
@@ -25,7 +29,7 @@ class AuthServices {
     }
   }
 
-  Future<void> logOut() async {
+  Future<void> logOut(context) async {
     await _auth.signOut();
     // got to login screen
   }

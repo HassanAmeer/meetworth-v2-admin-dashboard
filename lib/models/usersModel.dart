@@ -1,4 +1,4 @@
-import 'package:admin_panel/helpers/nullables.dart';
+import 'package:meetworth_admin/helpers/nullables.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 extension StringCasingExtension on String {

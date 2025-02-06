@@ -1,4 +1,4 @@
-import 'package:admin_panel/const/appColors.dart';
+import 'package:meetworth_admin/const/appColors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../vm/homeVm.dart';
@@ -219,8 +219,7 @@ class _FaqPagesState extends ConsumerState<FaqPages> {
                                                                   .textGold),
                                                       children: [
                                                     TextSpan(
-                                                        text:
-                                                            "${data.question}",
+                                                        text: data.question,
                                                         style: TextTheme.of(
                                                                 context)
                                                             .titleSmall
@@ -239,7 +238,7 @@ class _FaqPagesState extends ConsumerState<FaqPages> {
                                                                   .textLight),
                                                       children: [
                                                     TextSpan(
-                                                        text: "${data.answer}",
+                                                        text: data.answer,
                                                         style: TextTheme.of(
                                                                 context)
                                                             .titleMedium

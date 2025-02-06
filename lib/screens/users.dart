@@ -1,6 +1,6 @@
-import 'package:admin_panel/const/appColors.dart';
-import 'package:admin_panel/const/appimages.dart';
-import 'package:admin_panel/widgets/dotloader.dart';
+import 'package:meetworth_admin/const/appColors.dart';
+import 'package:meetworth_admin/const/appimages.dart';
+import 'package:meetworth_admin/widgets/dotloader.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -37,8 +37,8 @@ class _UsersPageState extends ConsumerState<UsersPage> {
   syncFirstF() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var home = ref.read(homeVm);
-        home.selectUserIndexF(0);
-      
+      home.selectUserIndexF(0);
+
       if (home.allUsersList.isEmpty) {
         home
             .getUsersF(context,
@@ -66,8 +66,7 @@ class _UsersPageState extends ConsumerState<UsersPage> {
     });
   }
 
-
-TextEditingController queryController = TextEditingController();
+  TextEditingController queryController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     var p = ref.watch(homeVm);
@@ -137,12 +136,18 @@ TextEditingController queryController = TextEditingController();
                                               ),
                                               padding: const EdgeInsets.all(4),
                                               child: TextField(
-                                                controller:     queryController,
-                                                onEditingComplete: () async{
-                                                  WidgetsBinding.instance.addPostFrameCallback((_){
-                                                   p.searchUsersF(loadingFor: 'users', showLoading: true, query: queryController.text);
-                                                  });
-                                                },
+                                                  controller: queryController,
+                                                  onEditingComplete: () async {
+                                                    WidgetsBinding.instance
+                                                        .addPostFrameCallback(
+                                                            (_) {
+                                                      p.searchUsersF(
+                                                          loadingFor: 'users',
+                                                          showLoading: true,
+                                                          query: queryController
+                                                              .text);
+                                                    });
+                                                  },
                                                   cursorHeight: 12,
                                                   cursorColor: Colors.grey,
                                                   decoration: InputDecoration(
@@ -155,11 +160,18 @@ TextEditingController queryController = TextEditingController();
                                                     filled: true,
                                                     fillColor: Colors.black,
                                                     prefixIcon: IconButton(
-                                                      onPressed: () async{
-                                                        WidgetsBinding.instance.addPostFrameCallback((_) async{
-                                                           await p.searchUsersF(loadingFor: 'users', showLoading: true, query: queryController.text);
+                                                      onPressed: () async {
+                                                        WidgetsBinding.instance
+                                                            .addPostFrameCallback(
+                                                                (_) async {
+                                                          await p.searchUsersF(
+                                                              loadingFor:
+                                                                  'users',
+                                                              showLoading: true,
+                                                              query:
+                                                                  queryController
+                                                                      .text);
                                                         });
-                                                        
                                                       },
                                                       icon: const Icon(
                                                           Icons.search,
@@ -1103,8 +1115,10 @@ TextEditingController queryController = TextEditingController();
                                                     color:
                                                         AppColors.silverGold)),
                                             const SizedBox(width: 5),
-                                            Text(
-                                                "${p.geted13usersList[p.selectedUserIndex].deadlinemembership}"),
+                                            Text(p
+                                                .geted13usersList[
+                                                    p.selectedUserIndex]
+                                                .deadlinemembership),
                                           ])
                                         ]),
                                     const Divider(thickness: 0.1),
@@ -1157,22 +1171,24 @@ TextEditingController queryController = TextEditingController();
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Row(children: [
-                                            Text("Joine: ",
+                                            const Text("Joine: ",
                                                 style: TextStyle(
                                                   fontSize: 12,
                                                   color: AppColors.silverGold,
                                                 )),
-                                            SizedBox(width: 5),
-                                            Text(
-                                                "${p.geted13usersList[p.selectedUserIndex].accountCreationLocation}")
+                                            const SizedBox(width: 5),
+                                            Text(p
+                                                .geted13usersList[
+                                                    p.selectedUserIndex]
+                                                .accountCreationLocation)
                                           ]),
                                           Row(children: [
-                                            Text("Number of referrals: ",
+                                            const Text("Number of referrals: ",
                                                 style: TextStyle(
                                                     fontSize: 12,
                                                     color:
                                                         AppColors.silverGold)),
-                                            SizedBox(width: 5),
+                                            const SizedBox(width: 5),
                                             Text(
                                                 "${p.geted13usersList[p.selectedUserIndex].referLinkUserCount}"),
                                           ])
@@ -1212,35 +1228,37 @@ TextEditingController queryController = TextEditingController();
                                               onTap: () async {
                                                 try {
                                                   if (p
-                                                    .geted13usersList[
-                                                        p.selectedUserIndex]
-                                                    .linked!
-                                                    .where((element) => element
-                                                        .containsKey('Twitter'))
-                                                    .isEmpty) {
-                                                  EasyLoading.showError(
-                                                      "Twitter not found");
-                                                  return;
-                                                }
-                                                var username = p
-                                                        .geted13usersList[
-                                                            p.selectedUserIndex]
-                                                        .linked!
-                                                        .firstWhere((element) =>
-                                                            element.containsKey(
-                                                                'Twitter'))[
-                                                    'Twitter'];
-                                                if (!await launchUrl(Uri.parse(
-                                                    'https://x.com/' +
-                                                        username))) {
-                                                  await launchUrlString(
-                                                      mode: LaunchMode
-                                                          .externalApplication,
-                                                      'https://x.com/' +
-                                                          username);
-                                                } 
-                                                } catch (e,st) {
-                                                  debugPrint("💥 Twitter error: $e, st:$st"); 
+                                                      .geted13usersList[
+                                                          p.selectedUserIndex]
+                                                      .linked!
+                                                      .where((element) =>
+                                                          element.containsKey(
+                                                              'Twitter'))
+                                                      .isEmpty) {
+                                                    EasyLoading.showError(
+                                                        "Twitter not found");
+                                                    return;
+                                                  }
+                                                  var username = p
+                                                      .geted13usersList[
+                                                          p.selectedUserIndex]
+                                                      .linked!
+                                                      .firstWhere((element) =>
+                                                          element.containsKey(
+                                                              'Twitter'))['Twitter'];
+                                                  if (!await launchUrl(
+                                                      Uri.parse(
+                                                          'https://x.com/' +
+                                                              username))) {
+                                                    await launchUrlString(
+                                                        mode: LaunchMode
+                                                            .externalApplication,
+                                                        'https://x.com/' +
+                                                            username);
+                                                  }
+                                                } catch (e, st) {
+                                                  debugPrint(
+                                                      "💥 Twitter error: $e, st:$st");
                                                 }
                                               },
                                               child: Padding(
@@ -1253,35 +1271,38 @@ TextEditingController queryController = TextEditingController();
                                             borderRadius:
                                                 BorderRadius.circular(20),
                                             onTap: () async {
-                                             try{ if (p
-                                                  .geted13usersList[
-                                                      p.selectedUserIndex]
-                                                  .linked!
-                                                  .where((element) => element
-                                                      .containsKey('Instagram'))
-                                                  .isEmpty) {
-                                                EasyLoading.showError(
-                                                    "Instagram not found");
-                                                return;
-                                              }
-                                              var username = p
-                                                      .geted13usersList[
-                                                          p.selectedUserIndex]
-                                                      .linked!
-                                                      .firstWhere((element) =>
-                                                          element.containsKey(
-                                                              'Instagram'))[
-                                                  'Instagram'];
-                                              if (!await launchUrl(Uri.parse(
-                                                  'https://www.instagram.com/' +
-                                                      username))) {
-                                                await launchUrlString(
-                                                    'https://www.instagram.com/' +
-                                                        username);
-                                              }
-                                              } catch (e,st) {
-                                                  debugPrint("💥 Instagram error: $e, st:$st"); 
+                                              try {
+                                                if (p
+                                                    .geted13usersList[
+                                                        p.selectedUserIndex]
+                                                    .linked!
+                                                    .where((element) =>
+                                                        element.containsKey(
+                                                            'Instagram'))
+                                                    .isEmpty) {
+                                                  EasyLoading.showError(
+                                                      "Instagram not found");
+                                                  return;
                                                 }
+                                                var username = p
+                                                        .geted13usersList[
+                                                            p.selectedUserIndex]
+                                                        .linked!
+                                                        .firstWhere((element) =>
+                                                            element.containsKey(
+                                                                'Instagram'))[
+                                                    'Instagram'];
+                                                if (!await launchUrl(Uri.parse(
+                                                    'https://www.instagram.com/' +
+                                                        username))) {
+                                                  await launchUrlString(
+                                                      'https://www.instagram.com/' +
+                                                          username);
+                                                }
+                                              } catch (e, st) {
+                                                debugPrint(
+                                                    "💥 Instagram error: $e, st:$st");
+                                              }
                                             },
                                             child: Padding(
                                                 padding:
@@ -1292,38 +1313,35 @@ TextEditingController queryController = TextEditingController();
                                           ),
                                           InkWell(
                                             onTap: () async {
-                                              
-                                              
                                               try {
-
-                                              
-                                              if (p
-                                                  .geted13usersList[
-                                                      p.selectedUserIndex]
-                                                  .linked!
-                                                  .where((element) => element
-                                                      .containsKey('Website'))
-                                                  .isEmpty) {
-                                                EasyLoading.showError(
-                                                    "Website not found");
-                                                return;
-                                              }
-                                              var username = p
-                                                      .geted13usersList[
-                                                          p.selectedUserIndex]
-                                                      .linked!
-                                                      .firstWhere((element) =>
-                                                          element.containsKey(
-                                                              'Website'))[
-                                                  'Website'];
-                                              if (!await launchUrl(
-                                                  Uri.parse(username))) {
-                                                await launchUrlString(
-                                                    "https://" + username);
-                                              }
-                                              } catch (e,st) {
-                                                  debugPrint("💥 Website error: $e, st:$st"); 
+                                                if (p
+                                                    .geted13usersList[
+                                                        p.selectedUserIndex]
+                                                    .linked!
+                                                    .where((element) => element
+                                                        .containsKey('Website'))
+                                                    .isEmpty) {
+                                                  EasyLoading.showError(
+                                                      "Website not found");
+                                                  return;
                                                 }
+                                                var username = p
+                                                        .geted13usersList[
+                                                            p.selectedUserIndex]
+                                                        .linked!
+                                                        .firstWhere((element) =>
+                                                            element.containsKey(
+                                                                'Website'))[
+                                                    'Website'];
+                                                if (!await launchUrl(
+                                                    Uri.parse(username))) {
+                                                  await launchUrlString(
+                                                      "https://" + username);
+                                                }
+                                              } catch (e, st) {
+                                                debugPrint(
+                                                    "💥 Website error: $e, st:$st");
+                                              }
                                             },
                                             borderRadius:
                                                 BorderRadius.circular(20),

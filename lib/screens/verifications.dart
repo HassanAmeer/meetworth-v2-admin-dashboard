@@ -1,4 +1,4 @@
-import 'package:admin_panel/const/appColors.dart';
+import 'package:meetworth_admin/const/appColors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -261,8 +261,9 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                           textAlign:
                                                               TextAlign.center,
                                                           '${user.username}',
-                                                          style: TextStyle(
-                                                              fontSize: 10),
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontSize: 10),
                                                           overflow: TextOverflow
                                                               .visible,
                                                           maxLines: 3))),
@@ -332,7 +333,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                           .linked!
                                                           .firstWhere((element) =>
                                                               element.containsKey('Twitter'))['Twitter'],
-                                                  style: TextStyle(color: AppColors.textSilverDark)),
+                                                  style: const TextStyle(color: AppColors.textSilverDark)),
                                               trailing: Row(children: [
                                                 const Icon(
                                                     size: 20, Icons.copy),
@@ -352,22 +353,19 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                               leading: Image.asset(
                                                   AppImages.insta,
                                                   width: 30),
-                                              title:  Text(
-                                                 p.geted13usersList[p.selectedUserIndex].linked!
+                                              title: Text(
+                                                  p.geted13usersList[p.selectedUserIndex].linked!
                                                           .where((element) =>
                                                               element.containsKey(
                                                                   'Instagram'))
                                                           .isEmpty
                                                       ? "Empty"
                                                       : p
-                                                          .geted13usersList[p
-                                                              .selectedUserIndex]
+                                                          .geted13usersList[
+                                                              p.selectedUserIndex]
                                                           .linked!
-                                                          .firstWhere((element) =>
-                                                              element.containsKey('Instagram'))['Instagram'],
-                                                  style: TextStyle(
-                                                      color: AppColors
-                                                          .textSilverDark)),
+                                                          .firstWhere((element) => element.containsKey('Instagram'))['Instagram'],
+                                                  style: const TextStyle(color: AppColors.textSilverDark)),
                                               trailing: Row(children: [
                                                 const Icon(
                                                     size: 20, Icons.copy),
@@ -385,10 +383,10 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                             color: Colors.black,
                                           ),
                                           child: CupertinoListTile(
-                                              leading: Image.asset(
-                                                  AppImages.global,
+                                              leading: Image.asset(AppImages.global,
                                                   width: 30),
-                                              title:  Text(p.geted13usersList[p.selectedUserIndex].linked!
+                                              title: Text(
+                                                  p.geted13usersList[p.selectedUserIndex].linked!
                                                           .where((element) =>
                                                               element.containsKey(
                                                                   'Website'))
@@ -400,9 +398,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                           .linked!
                                                           .firstWhere((element) =>
                                                               element.containsKey('Website'))['Website'],
-                                                  style: TextStyle(
-                                                      color: AppColors
-                                                          .textSilverDark)),
+                                                  style: const TextStyle(color: AppColors.textSilverDark)),
                                               trailing: Row(children: [
                                                 const Icon(
                                                     size: 20, Icons.copy),
@@ -436,40 +432,42 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
                                             children: [
-                                              InkWell (
-                                                onTap: ()async{
-try {
-                                                  if (p
-                                                    .geted13usersList[
-                                                        p.selectedUserIndex]
-                                                    .linked!
-                                                    .where((element) => element
-                                                        .containsKey('Twitter'))
-                                                    .isEmpty) {
-                                                  EasyLoading.showError(
-                                                      "Twitter not found");
-                                                  return;
-                                                }
-                                                var username = p
+                                              InkWell(
+                                                onTap: () async {
+                                                  try {
+                                                    if (p
+                                                        .geted13usersList[
+                                                            p.selectedUserIndex]
+                                                        .linked!
+                                                        .where((element) =>
+                                                            element.containsKey(
+                                                                'Twitter'))
+                                                        .isEmpty) {
+                                                      EasyLoading.showError(
+                                                          "Twitter not found");
+                                                      return;
+                                                    }
+                                                    var username = p
                                                         .geted13usersList[
                                                             p.selectedUserIndex]
                                                         .linked!
                                                         .firstWhere((element) =>
                                                             element.containsKey(
-                                                                'Twitter'))[
-                                                    'Twitter'];
-                                                if (!await launchUrl(Uri.parse(
-                                                    'https://x.com/' +
-                                                        username))) {
-                                                  await launchUrlString(
-                                                      mode: LaunchMode
-                                                          .externalApplication,
-                                                      'https://x.com/' +
-                                                          username);
-                                                } 
-                                                } catch (e,st) {
-                                                  debugPrint("💥 Twitter error: $e, st:$st"); 
-                                                }
+                                                                'Twitter'))['Twitter'];
+                                                    if (!await launchUrl(
+                                                        Uri.parse(
+                                                            'https://x.com/' +
+                                                                username))) {
+                                                      await launchUrlString(
+                                                          mode: LaunchMode
+                                                              .externalApplication,
+                                                          'https://x.com/' +
+                                                              username);
+                                                    }
+                                                  } catch (e, st) {
+                                                    debugPrint(
+                                                        "💥 Twitter error: $e, st:$st");
+                                                  }
                                                 },
                                                 child: Padding(
                                                     padding:
@@ -480,36 +478,38 @@ try {
                                                         width: 35)),
                                               ),
                                               InkWell(
-                                                onTap: () async{
-                                                  try{ if (p
-                                                  .geted13usersList[
-                                                      p.selectedUserIndex]
-                                                  .linked!
-                                                  .where((element) => element
-                                                      .containsKey('Instagram'))
-                                                  .isEmpty) {
-                                                EasyLoading.showError(
-                                                    "Instagram not found");
-                                                return;
-                                              }
-                                              var username = p
-                                                      .geted13usersList[
-                                                          p.selectedUserIndex]
-                                                      .linked!
-                                                      .firstWhere((element) =>
-                                                          element.containsKey(
-                                                              'Instagram'))[
-                                                  'Instagram'];
-                                              if (!await launchUrl(Uri.parse(
-                                                  'https://www.instagram.com/' +
-                                                      username))) {
-                                                await launchUrlString(
-                                                    'https://www.instagram.com/' +
-                                                        username);
-                                              }
-                                              } catch (e,st) {
-                                                  debugPrint("💥 Instagram error: $e, st:$st"); 
-                                                }
+                                                onTap: () async {
+                                                  try {
+                                                    if (p
+                                                        .geted13usersList[
+                                                            p.selectedUserIndex]
+                                                        .linked!
+                                                        .where((element) =>
+                                                            element.containsKey(
+                                                                'Instagram'))
+                                                        .isEmpty) {
+                                                      EasyLoading.showError(
+                                                          "Instagram not found");
+                                                      return;
+                                                    }
+                                                    var username = p
+                                                        .geted13usersList[
+                                                            p.selectedUserIndex]
+                                                        .linked!
+                                                        .firstWhere((element) =>
+                                                            element.containsKey(
+                                                                'Instagram'))['Instagram'];
+                                                    if (!await launchUrl(Uri.parse(
+                                                        'https://www.instagram.com/' +
+                                                            username))) {
+                                                      await launchUrlString(
+                                                          'https://www.instagram.com/' +
+                                                              username);
+                                                    }
+                                                  } catch (e, st) {
+                                                    debugPrint(
+                                                        "💥 Instagram error: $e, st:$st");
+                                                  }
                                                 },
                                                 child: Padding(
                                                     padding:
@@ -520,36 +520,38 @@ try {
                                                         width: 35)),
                                               ),
                                               InkWell(
-                                                  onTap: () async {
-                                              try {
-                                              if (p
-                                                  .geted13usersList[
-                                                      p.selectedUserIndex]
-                                                  .linked!
-                                                  .where((element) => element
-                                                      .containsKey('Website'))
-                                                  .isEmpty) {
-                                                EasyLoading.showError(
-                                                    "Website not found");
-                                                return;
-                                              }
-                                              var username = p
-                                                      .geted13usersList[
-                                                          p.selectedUserIndex]
-                                                      .linked!
-                                                      .firstWhere((element) =>
-                                                          element.containsKey(
-                                                              'Website'))[
-                                                  'Website'];
-                                              if (!await launchUrl(
-                                                  Uri.parse(username))) {
-                                                await launchUrlString(
-                                                    "https://" + username);
-                                              }
-                                              } catch (e,st) {
-                                                  debugPrint("💥 Website error: $e, st:$st"); 
-                                                }
-                                            },
+                                                onTap: () async {
+                                                  try {
+                                                    if (p
+                                                        .geted13usersList[
+                                                            p.selectedUserIndex]
+                                                        .linked!
+                                                        .where((element) =>
+                                                            element.containsKey(
+                                                                'Website'))
+                                                        .isEmpty) {
+                                                      EasyLoading.showError(
+                                                          "Website not found");
+                                                      return;
+                                                    }
+                                                    var username = p
+                                                        .geted13usersList[
+                                                            p.selectedUserIndex]
+                                                        .linked!
+                                                        .firstWhere((element) =>
+                                                            element.containsKey(
+                                                                'Website'))['Website'];
+                                                    if (!await launchUrl(
+                                                        Uri.parse(username))) {
+                                                      await launchUrlString(
+                                                          "https://" +
+                                                              username);
+                                                    }
+                                                  } catch (e, st) {
+                                                    debugPrint(
+                                                        "💥 Website error: $e, st:$st");
+                                                  }
+                                                },
                                                 child: Padding(
                                                     padding:
                                                         const EdgeInsets.only(
@@ -627,7 +629,12 @@ try {
                                                               width: 12,
                                                               AppImages
                                                                   .location),
-                                                           Text(" ${p.geted13usersList[p.selectedUserIndex].country} ",style: TextTheme.of(context).labelLarge,)
+                                                          Text(
+                                                            " ${p.geted13usersList[p.selectedUserIndex].country} ",
+                                                            style: TextTheme.of(
+                                                                    context)
+                                                                .labelLarge,
+                                                          )
                                                         ]),
                                                       ),
                                                     ),
@@ -664,7 +671,8 @@ try {
                                                           Image.asset(
                                                               width: 12,
                                                               AppImages.send),
-                                                           Text("${p.geted13usersList[p.selectedUserIndex].point!.latitude}")
+                                                          Text(
+                                                              "${p.geted13usersList[p.selectedUserIndex].point!.latitude}")
                                                           // const Text(" 3,2 KM")
                                                         ]),
                                                       ),

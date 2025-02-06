@@ -1,42 +1,36 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../models/authModel.dart';
-import '../sotrage/userstorage.dart';
+import 'package:meetworth_admin/widgets/sidebar.dart';
+
+import '../screens/auth/login.dart';
 
 final authVm = ChangeNotifierProvider<AuthVm>((ref) => AuthVm());
 
 class AuthVm with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  String isLoadingFor = '';
   bool _isLoading = false;
   bool get isLoading => _isLoading;
-  set isLoadingF(bool value) {
-    _isLoading = value;
+  void setLoadingF([bool v = true, String? name]) {
+    _isLoading = v;
+    if (v) {
+      isLoadingFor = name ?? '';
+    } else {
+      isLoadingFor = '';
+    }
     notifyListeners();
   }
 
-  AuthModel? _user;
-  AuthModel get userProfile => _user!;
-  Future<AuthModel?> getUserData() async {
-    final prefs = await SharedPreferences.getInstance();
-    final uid = prefs.getString(UserStorage.uidKey).toString();
-    final email = prefs.getString(UserStorage.emailKey).toString();
-    _user = AuthModel.fromJson({
-      "uid": uid,
-      "email": email,
-    });
-    notifyListeners();
-    return _user;
-  }
-
-  Future loginF(context, {String email = "", String password = ""}) async {
-    isLoadingF = true;
+  Future loginF(context,
+      {bool showLoading = false,
+      String loadingFor = "",
+      String email = "",
+      String password = ""}) async {
+    setLoadingF(true, loadingFor);
 
     try {
       var connectivityResult = await (Connectivity().checkConnectivity());
@@ -57,22 +51,16 @@ class AuthVm with ChangeNotifier {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
 
-      // debugPrint("👉 userCredential: $userCredential");
-
-      DocumentSnapshot userDoc = await _firestore
-          .collection('users')
-          .doc(userCredential.user?.uid)
-          .get();
-      if (userDoc.exists) {
-        _user = AuthModel.fromJson(userDoc.data() as Map<String, dynamic>);
+      if (userCredential.user == null) {
+        EasyLoading.showInfo("Login failed. Please try again.");
+        return;
+      } else {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const SidebarWidget()));
       }
 
-      await UserStorage.setUserF(
-        uid: userCredential.user!.uid.toString(),
-        email: _user!.email.toString(),
-      );
       notifyListeners();
-      EasyLoading.showInfo("Login Successfully");
+      EasyLoading.showSuccess("Login Successfully");
       // var v = await Config().getConfig();
     } on FirebaseAuthException catch (e) {
       debugPrint("FirebaseAuthException: $e");
@@ -110,7 +98,40 @@ class AuthVm with ChangeNotifier {
       EasyLoading.showError("$e");
       debugPrint("💥 error: $e , st:$st");
     } finally {
-      isLoadingF = false;
+      setLoadingF(false);
     }
+  }
+
+  /////////
+  Future<String> forgotPasswordF(
+      {bool showLoading = false,
+      String loadingFor = "",
+      required String email}) async {
+    try {
+      if (showLoading) {
+        setLoadingF(true, loadingFor);
+      }
+
+      if (email.isEmpty) {
+        EasyLoading.showInfo("Email is required");
+        return "";
+      }
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: email)
+          .then((v) {
+        EasyLoading.showSuccess("Email Sent For Reset Password.");
+      });
+
+      setLoadingF(false);
+      return "";
+    } on FirebaseAuthException catch (error) {
+      return error.code;
+    }
+  }
+
+  Future<void> logOut(context) async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => const LoginPage()));
   }
 }

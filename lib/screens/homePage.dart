@@ -1,5 +1,5 @@
-import 'package:admin_panel/const/appColors.dart';
-import 'package:admin_panel/vm/homeVm.dart';
+import 'package:meetworth_admin/const/appColors.dart';
+import 'package:meetworth_admin/vm/homeVm.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -1351,9 +1351,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                     onPlay: (controller) => controller.repeat(
                         count: 2,
                         period: Duration(
-                            seconds: p.isLoading && p.isLoadingFor == ""
-                                ? 2
-                                : 100)))
+                            seconds:
+                                p.isLoading && p.isLoadingFor == "" ? 2 : 100)))
                 .shimmer(
                     color: Colors.white24,
                     duration: const Duration(milliseconds: 300)),

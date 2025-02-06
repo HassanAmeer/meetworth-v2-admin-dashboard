@@ -1,4 +1,4 @@
-import 'package:admin_panel/const/appColors.dart';
+import 'package:meetworth_admin/const/appColors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../vm/homeVm.dart';

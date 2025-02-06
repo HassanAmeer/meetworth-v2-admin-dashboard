@@ -1,6 +1,9 @@
 import 'dart:async';
-import 'package:admin_panel/screens/homePage.dart';
-import 'package:admin_panel/widgets/sidebar.dart';
+import 'dart:developer';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:meetworth_admin/screens/auth/login.dart';
+import 'package:meetworth_admin/screens/homePage.dart';
+import 'package:meetworth_admin/widgets/sidebar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,10 +16,13 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
+  FlutterError.onError = (FlutterErrorDetails details) {
+    log("💥 FlutterError.onError: ${details.exception}");
+    log("💥 FlutterError.stack: ${details.stack}");
+    FlutterError.presentError(details);
+  };
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -99,22 +105,37 @@ class _SplashPageState extends ConsumerState<SplashPage> {
 
   onlineSpan() async {
     try {
-      Timer(const Duration(seconds: 3), () async {
-        Navigator.of(context).pushReplacement(PageRouteBuilder(
-            transitionDuration: const Duration(seconds: 3),
-            pageBuilder: (context, animation, secondaryAnimation) =>
-                const HomePage(),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) =>
-                    FadeTransition(opacity: animation, child: child)));
-      });
+      User? fbUser = FirebaseAuth.instance.currentUser;
+      if (fbUser != null) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Timer(const Duration(seconds: 3), () async {
+            Navigator.of(context).pushReplacement(PageRouteBuilder(
+                transitionDuration: const Duration(seconds: 3),
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    const SidebarWidget(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) =>
+                        FadeTransition(opacity: animation, child: child)));
+          });
+        });
+      } else {
+        Timer(const Duration(seconds: 3), () async {
+          Navigator.of(context).pushReplacement(PageRouteBuilder(
+              transitionDuration: const Duration(seconds: 3),
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const LoginPage(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) =>
+                      FadeTransition(opacity: animation, child: child)));
+        });
+      }
     } catch (e) {
-      debugPrint("💥 UsergetData on splash Error:$e");
+      debugPrint("💥 splash Error:$e");
       Timer(const Duration(seconds: 3), () async {
         Navigator.of(context).pushReplacement(PageRouteBuilder(
             transitionDuration: const Duration(seconds: 3),
             pageBuilder: (context, animation, secondaryAnimation) =>
-                const HomePage(),
+                const LoginPage(),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) =>
                     FadeTransition(opacity: animation, child: child)));
@@ -124,67 +145,69 @@ class _SplashPageState extends ConsumerState<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
+    var w = MediaQuery.of(context).size.width;
+    var h = MediaQuery.of(context).size.height;
     return DecoratedBox(
         decoration: BoxDecoration(color: AppColors.primary[50]),
         child: Scaffold(
-            backgroundColor: AppColors.primary[50],
+            backgroundColor: AppColors.bgCard,
             extendBody: true,
             extendBodyBehindAppBar: true,
-            body: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Center(
-                      child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.8 / 1,
-                          child: Image.asset(
-                            AppImages.logodark,
-                            // color: AppColor.primary.withOpacity(0.1),
-                          )).animate().scale()),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                  Text('Meetworth V2',
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineLarge!
-                              .copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.primary[400],
-                                  shadows: [
-                                BoxShadow(
-                                    color: AppColors.primary[200]!,
-                                    offset: const Offset(1, 1),
-                                    blurRadius: 2)
-                              ]))
-                      .animate(
-                          delay: 500.ms,
-                          onPlay: (controller) => controller.repeat())
-                      .shakeX()
-                      .shimmer(
-                          duration: const Duration(seconds: 2),
-                          delay: const Duration(milliseconds: 1000))
-                      .shimmer(
-                          duration: const Duration(seconds: 2),
-                          curve: Curves.easeInOut),
-                  SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      child: const LinearProgressIndicator(minHeight: 1)
-                          .animate(
-                              delay: 500.ms,
-                              onPlay: (controller) => controller.repeat())
-                          .shakeX()
-                          .shimmer(
-                              duration: const Duration(seconds: 2),
-                              delay: const Duration(milliseconds: 1000))
-                          .shimmer(
-                              duration: const Duration(seconds: 2),
-                              curve: Curves.easeInOut)),
-                ])));
+            body: LayoutBuilder(builder: (context, constraints) {
+              var isPhone = constraints.maxWidth <= 424;
+              var isTablet =
+                  // var desktop = constraints.maxWidth >= 1024;
+                  (constraints.maxWidth >= 424 && constraints.maxWidth <= 1024);
+              return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Center(
+                        child: SizedBox(
+                                width: isPhone
+                                    ? w * 0.7
+                                    : isTablet
+                                        ? w * 0.4
+                                        : w * 0.2,
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: Image.asset(
+                                      AppImages.logodark,
+                                      // color: AppColor.primary.withOpacity(0.1),
+                                    )))
+                            .animate(
+                                onPlay: (controller) => controller.repeat())
+                            .shakeX()
+                            .shimmer(
+                                duration: const Duration(milliseconds: 1700),
+                                delay: const Duration(milliseconds: 1000))),
+                    SizedBox(height: h * 0.1),
+                    Text('Meetworth',
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineLarge!
+                                .copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.primary[400],
+                                    shadows: [
+                                  BoxShadow(
+                                      color: AppColors.primary[900]!,
+                                      offset: const Offset(1, 1),
+                                      blurRadius: 1)
+                                ]))
+                        .animate(onPlay: (controller) => controller.repeat())
+                        .shimmer(
+                            duration: const Duration(seconds: 2),
+                            delay: const Duration(milliseconds: 1500))
+                  ]);
+            })));
   }
 }
 
 
-
+// team@meetworth.com
+// team2024meetworth!
 
 
 

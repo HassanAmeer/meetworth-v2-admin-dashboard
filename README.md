@@ -1,4 +1,4 @@
-# admin_panel
+# meetworth_admin
 
 A new Flutter project.
 

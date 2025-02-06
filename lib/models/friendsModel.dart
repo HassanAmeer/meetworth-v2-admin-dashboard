@@ -1,4 +1,4 @@
-import 'package:admin_panel/helpers/nullables.dart';
+import 'package:meetworth_admin/helpers/nullables.dart';
 
 class FriendsModel {
   String businessCategory;

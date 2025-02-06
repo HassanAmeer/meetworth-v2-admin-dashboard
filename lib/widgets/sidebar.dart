@@ -1,13 +1,12 @@
-import 'package:admin_panel/const/appColors.dart';
-import 'package:admin_panel/const/appImages.dart';
-import 'package:admin_panel/screens/catg.dart';
-import 'package:admin_panel/screens/profile.dart';
-import 'package:admin_panel/screens/verifications.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meetworth_admin/const/appColors.dart';
+import 'package:meetworth_admin/const/appImages.dart';
+import 'package:meetworth_admin/screens/catg.dart';
+import 'package:meetworth_admin/screens/profile.dart';
+import 'package:meetworth_admin/screens/verifications.dart';
 import 'package:cupertino_sidebar/cupertino_sidebar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../screens/auth/login.dart';
 import '../screens/faq.dart';
 import '../screens/goals.dart';
 import '../screens/interest.dart';
@@ -15,19 +14,18 @@ import '../screens/lang.dart';
 import '../screens/notifications.dart';
 import '../screens/users.dart';
 import '../screens/homePage.dart';
+import '../vm/authVm.dart';
 
-class SidebarWidget extends StatefulWidget {
+class SidebarWidget extends ConsumerStatefulWidget {
   const SidebarWidget({super.key});
 
   @override
-  State<SidebarWidget> createState() => _SidebarWidgetState();
+  ConsumerState<SidebarWidget> createState() => _SidebarWidgetState();
 }
 
-class _SidebarWidgetState extends State<SidebarWidget> {
+class _SidebarWidgetState extends ConsumerState<SidebarWidget> {
   // A list of pages to be displayed as the destination content.
   final _pages = [
-    const LoginPage(),
-    const FaqPages(),
     const HomePage(),
     const UsersPage(),
     const VerificatiosPage(),
@@ -36,6 +34,7 @@ class _SidebarWidgetState extends State<SidebarWidget> {
     const InerestPage(),
     const LanguagePage(),
     const GoalsPage(),
+    const FaqPages(),
     const ProfilePage(),
   ];
 
@@ -109,89 +108,92 @@ class _SidebarWidgetState extends State<SidebarWidget> {
             SidebarDestination(
                 // isSelected: _selectedIndex == 2 ? true : false,
                 icon: Icon(Icons.notifications_active,
-                    color: _selectedIndex == 2
+                    color: _selectedIndex == 3
                         ? AppColors.primaryMid
                         : Colors.white),
                 label: Text('Notifications',
                     style: TextStyle(
-                        color: _selectedIndex == 2
+                        color: _selectedIndex == 3
                             ? AppColors.primaryMid
                             : Colors.white))),
             SidebarDestination(
                 // isSelected: _selectedIndex == 2 ? true : false,
                 icon: Icon(Icons.category_outlined,
-                    color: _selectedIndex == 2
+                    color: _selectedIndex == 4
                         ? AppColors.primaryMid
                         : Colors.white),
                 label: Text('Business Categories',
                     style: TextStyle(
-                        color: _selectedIndex == 2
+                        color: _selectedIndex == 4
                             ? AppColors.primaryMid
                             : Colors.white))),
             SidebarDestination(
                 // isSelected: _selectedIndex == 2 ? true : false,
                 icon: Icon(Icons.interests,
-                    color: _selectedIndex == 2
+                    color: _selectedIndex == 5
                         ? AppColors.primaryMid
                         : Colors.white),
                 label: Text('Interests',
                     style: TextStyle(
-                        color: _selectedIndex == 2
+                        color: _selectedIndex == 5
                             ? AppColors.primaryMid
                             : Colors.white))),
             SidebarDestination(
                 // isSelected: _selectedIndex == 2 ? true : false,
                 icon: Icon(Icons.translate,
-                    color: _selectedIndex == 2
+                    color: _selectedIndex == 6
                         ? AppColors.primaryMid
                         : Colors.white),
                 label: Text('Language',
                     style: TextStyle(
-                        color: _selectedIndex == 2
+                        color: _selectedIndex == 6
                             ? AppColors.primaryMid
                             : Colors.white))),
             SidebarDestination(
                 // isSelected: _selectedIndex == 2 ? true : false,
                 icon: Icon(Icons.batch_prediction_outlined,
-                    color: _selectedIndex == 2
+                    color: _selectedIndex == 7
                         ? AppColors.primaryMid
                         : Colors.white),
                 label: Text('Goals',
                     style: TextStyle(
-                        color: _selectedIndex == 2
+                        color: _selectedIndex == 7
                             ? AppColors.primaryMid
                             : Colors.white))),
             SidebarDestination(
                 // isSelected: _selectedIndex == 2 ? true : false,
                 icon: Icon(Icons.format_quote,
-                    color: _selectedIndex == 2
+                    color: _selectedIndex == 8
                         ? AppColors.primaryMid
                         : Colors.white),
                 label: Text('FAQs',
                     style: TextStyle(
-                        color: _selectedIndex == 2
+                        color: _selectedIndex == 8
                             ? AppColors.primaryMid
                             : Colors.white))),
             SidebarDestination(
                 // isSelected: _selectedIndex == 2 ? true : false,
                 icon: Icon(Icons.person_4,
-                    color: _selectedIndex == 2
+                    color: _selectedIndex == 9
                         ? AppColors.primaryMid
                         : Colors.white),
                 label: Text('Profile',
                     style: TextStyle(
-                        color: _selectedIndex == 2
+                        color: _selectedIndex == 9
                             ? AppColors.primaryMid
                             : Colors.white))),
             SidebarDestination(
+                onTap: () {
+                  ref.read(authVm).logOut(context);
+                },
                 // isSelected: _selectedIndex == 2 ? true : false,
                 icon: Icon(Icons.logout,
-                    color: _selectedIndex == 2
+                    color: _selectedIndex == 10
                         ? AppColors.primaryMid
                         : Colors.orange),
                 label: Text('Logout',
                     style: TextStyle(
-                        color: _selectedIndex == 2
+                        color: _selectedIndex == 10
                             ? AppColors.primaryMid
                             : Colors.orange))),
           ]),

@@ -1,12 +1,13 @@
 import 'dart:math';
 
-import 'package:admin_panel/models/appinfoModel.dart';
-import 'package:admin_panel/models/feedbackModel.dart';
-import 'package:admin_panel/models/friendsModel.dart';
-import 'package:admin_panel/models/transactionsModel.dart';
-import 'package:admin_panel/models/usersModel.dart';
-import 'package:admin_panel/screens/auth/login.dart';
-import 'package:admin_panel/services/firestoreServices.dart';
+import 'package:meetworth_admin/models/appinfoModel.dart';
+import 'package:meetworth_admin/models/feedbackModel.dart';
+import 'package:meetworth_admin/models/friendsModel.dart';
+import 'package:meetworth_admin/models/transactionsModel.dart';
+import 'package:meetworth_admin/models/typeModel.dart';
+import 'package:meetworth_admin/models/usersModel.dart';
+import 'package:meetworth_admin/screens/auth/login.dart';
+import 'package:meetworth_admin/services/firestoreServices.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -700,7 +701,7 @@ class HomeVm with ChangeNotifier {
 ////////////////// for business category page and interest , languages, goals.
 
   /////////////
-  List<BusinessCategoryModel> businessCategoryList = [];
+  List<TypeModel> businessCategoryList = [];
   Future getBusinessCategoryListF(
       {bool showLoading = false, String loadingFor = ""}) async {
     try {
@@ -712,8 +713,8 @@ class HomeVm with ChangeNotifier {
       if (listIs.docs.isNotEmpty) {
         businessCategoryList.clear();
         for (var doc in listIs.docs) {
-          businessCategoryList.add(BusinessCategoryModel.fromMap(
-              doc.data() as Map<String, dynamic>));
+          businessCategoryList
+              .add(TypeModel.fromMap(doc.data() as Map<String, dynamic>));
         }
       }
 
@@ -740,8 +741,8 @@ class HomeVm with ChangeNotifier {
           .collection('businessCategories')
           .doc()
           .id;
-      BusinessCategoryModel model = BusinessCategoryModel(
-          id: id, name: name, creationDate: DateTime.now());
+      TypeModel model =
+          TypeModel(id: id, name: name, creationDate: DateTime.now());
       await FirebaseFirestore.instance
           .collection('adminSettings')
           .doc('types')
@@ -785,8 +786,8 @@ class HomeVm with ChangeNotifier {
   }
 
   /////////////
-  // this is same with  BusinessCategoryModel
-  List<BusinessCategoryModel> interestList = [];
+  // this is same with  TypeModel
+  List<TypeModel> interestList = [];
   Future getinterestListF(
       {bool showLoading = false, String loadingFor = ""}) async {
     try {
@@ -798,8 +799,8 @@ class HomeVm with ChangeNotifier {
       if (listIs.docs.isNotEmpty) {
         interestList.clear();
         for (var doc in listIs.docs) {
-          interestList.add(BusinessCategoryModel.fromMap(
-              doc.data() as Map<String, dynamic>));
+          interestList
+              .add(TypeModel.fromMap(doc.data() as Map<String, dynamic>));
         }
       }
 
@@ -826,8 +827,8 @@ class HomeVm with ChangeNotifier {
           .collection('intrests')
           .doc()
           .id;
-      BusinessCategoryModel model = BusinessCategoryModel(
-          id: id, name: name, creationDate: DateTime.now());
+      TypeModel model =
+          TypeModel(id: id, name: name, creationDate: DateTime.now());
       await FirebaseFirestore.instance
           .collection('adminSettings')
           .doc('types')
@@ -870,8 +871,8 @@ class HomeVm with ChangeNotifier {
   }
 
   /////////////
-  // this is same with  BusinessCategoryModel
-  List<BusinessCategoryModel> languageList = [];
+  // this is same with  TypeModel
+  List<TypeModel> languageList = [];
   Future getLanguageListF(
       {bool showLoading = false, String loadingFor = ""}) async {
     try {
@@ -883,8 +884,8 @@ class HomeVm with ChangeNotifier {
       if (listIs.docs.isNotEmpty) {
         languageList.clear();
         for (var doc in listIs.docs) {
-          languageList.add(BusinessCategoryModel.fromMap(
-              doc.data() as Map<String, dynamic>));
+          languageList
+              .add(TypeModel.fromMap(doc.data() as Map<String, dynamic>));
         }
       }
 
@@ -911,8 +912,8 @@ class HomeVm with ChangeNotifier {
           .collection('languages')
           .doc()
           .id;
-      BusinessCategoryModel model = BusinessCategoryModel(
-          id: id, name: name, creationDate: DateTime.now());
+      TypeModel model =
+          TypeModel(id: id, name: name, creationDate: DateTime.now());
       await FirebaseFirestore.instance
           .collection('adminSettings')
           .doc('types')
@@ -955,8 +956,8 @@ class HomeVm with ChangeNotifier {
   }
 
   /////////////
-  // this is same with  BusinessCategoryModel
-  List<BusinessCategoryModel> goalsList = [];
+  // this is same with  TypeModel
+  List<TypeModel> goalsList = [];
   Future getGoalsListF(
       {bool showLoading = false, String loadingFor = ""}) async {
     try {
@@ -968,8 +969,7 @@ class HomeVm with ChangeNotifier {
       if (listIs.docs.isNotEmpty) {
         goalsList.clear();
         for (var doc in listIs.docs) {
-          goalsList.add(BusinessCategoryModel.fromMap(
-              doc.data() as Map<String, dynamic>));
+          goalsList.add(TypeModel.fromMap(doc.data() as Map<String, dynamic>));
         }
       }
 
@@ -996,8 +996,8 @@ class HomeVm with ChangeNotifier {
           .collection('goals')
           .doc()
           .id;
-      BusinessCategoryModel model = BusinessCategoryModel(
-          id: id, name: name, creationDate: DateTime.now());
+      TypeModel model =
+          TypeModel(id: id, name: name, creationDate: DateTime.now());
       await FirebaseFirestore.instance
           .collection('adminSettings')
           .doc('types')
@@ -1040,7 +1040,7 @@ class HomeVm with ChangeNotifier {
     }
   }
 
-  // this is same with  BusinessCategoryModel
+  // this is same with  TypeModel
   List<FaqModel> faqList = [];
   Future getFaqListF({bool showLoading = false, String loadingFor = ""}) async {
     try {
@@ -1113,23 +1113,6 @@ class HomeVm with ChangeNotifier {
   }
 
 ///////////////
-  Future<String> forgetPassword(
-      {bool showLoading = false,
-      String loadingFor = "",
-      required String email}) async {
-    try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-      return "";
-    } on FirebaseAuthException catch (error) {
-      return error.code;
-    }
-  }
-
-  Future<void> logOut(context) async {
-    await FirebaseAuth.instance.signOut();
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const LoginPage()));
-  }
 
 /////////
 

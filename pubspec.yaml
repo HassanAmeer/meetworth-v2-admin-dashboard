@@ -1,4 +1,4 @@
-name: admin_panel
+name: meetworth_admin
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -85,9 +85,6 @@ dependencies:
 
 
 
-
-
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -114,8 +111,6 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/
-
-
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
