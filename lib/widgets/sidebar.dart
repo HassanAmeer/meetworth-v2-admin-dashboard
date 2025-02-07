@@ -42,166 +42,195 @@ class _SidebarWidgetState extends ConsumerState<SidebarWidget> {
   int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-        child: Row(children: [
-      CupertinoSidebar(
-          maxWidth: MediaQuery.of(context).size.width * 0.18,
-          backgroundColor: AppColors.bgCard,
-          // selectedIndex: _selectedIndex,
-          onDestinationSelected: (value) {
-            setState(() {
-              _selectedIndex = value;
-            });
-          },
-          ////////////////////////////
-          navigationBar: SidebarNavigationBar(
-            title: Center(
-              child: Transform.translate(
-                offset: const Offset(0, -20),
-                child: Image.asset(
-                    width: MediaQuery.of(context).size.width * 0.14,
-                    AppImages.logoText),
-              ),
-            ),
-          ),
-          children: [
-            SidebarDestination(
-                // isSelected: _selectedIndex == 0 ? true : false,
-                icon: Icon(CupertinoIcons.home,
-                    color: _selectedIndex == 0
-                        ? AppColors.primaryMid
-                        : _selectedIndex == 0
-                            ? AppColors.primaryMid
-                            : Colors.white),
-                label: Text(
-                  'Home',
-                  style: TextStyle(
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+      var w = MediaQuery.of(context).size.width;
+      var h = MediaQuery.of(context).size.height;
+      var isPhone = constraints.maxWidth <= 431;
+      var isTablet =
+          (constraints.maxWidth >= 431 && constraints.maxWidth <= 1024);
+      return CupertinoPageScaffold(
+          child: Row(children: [
+        CupertinoSidebar(
+            padding: isPhone
+                ? const EdgeInsets.all(0)
+                : EdgeInsets.symmetric(horizontal: w * 0.02),
+            maxWidth: isPhone ? w * 0.13 : w * 0.18,
+            backgroundColor: AppColors.bgCard,
+            // selectedIndex: _selectedIndex,
+            onDestinationSelected: (value) {
+              setState(() {
+                _selectedIndex = value;
+              });
+            },
+            ////////////////////////////
+            navigationBar: SidebarNavigationBar(
+                title: Center(
+                    child: Transform.translate(
+                        offset: isPhone
+                            ? const Offset(-5, -17)
+                            : const Offset(0, -20),
+                        child: Image.asset(
+                            width: MediaQuery.of(context).size.width * 0.14,
+                            isPhone ? AppImages.logo : AppImages.logoText)))),
+            children: [
+              SidebarDestination(
+                  // isSelected: _selectedIndex == 0 ? true : false,
+                  icon: Icon(CupertinoIcons.home,
                       color: _selectedIndex == 0
                           ? AppColors.primaryMid
-                          : Colors.white),
-                )),
-            SidebarDestination(
-                // isSelected: _selectedIndex == 1 ? true : false,
-                icon: Icon(
-                  CupertinoIcons.person,
-                  color:
-                      _selectedIndex == 1 ? AppColors.primaryMid : Colors.white,
-                ),
-                label: Text(
-                  'Users',
-                  style: TextStyle(
+                          : _selectedIndex == 0
+                              ? AppColors.primaryMid
+                              : Colors.white),
+                  label: isPhone
+                      ? const SizedBox.shrink()
+                      : Text(
+                          'Home',
+                          style: TextStyle(
+                              color: _selectedIndex == 0
+                                  ? AppColors.primaryMid
+                                  : Colors.white),
+                        )),
+              SidebarDestination(
+                  // isSelected: _selectedIndex == 1 ? true : false,
+                  icon: Icon(CupertinoIcons.person,
                       color: _selectedIndex == 1
                           ? AppColors.primaryMid
                           : Colors.white),
-                )),
-            SidebarDestination(
-                // isSelected: _selectedIndex == 2 ? true : false,
-                icon: Icon(Icons.verified,
-                    color: _selectedIndex == 2
-                        ? AppColors.primaryMid
-                        : Colors.white),
-                label: Text('Verifications',
-                    style: TextStyle(
-                        color: _selectedIndex == 2
-                            ? AppColors.primaryMid
-                            : Colors.white))),
-            SidebarDestination(
-                // isSelected: _selectedIndex == 2 ? true : false,
-                icon: Icon(Icons.notifications_active,
-                    color: _selectedIndex == 3
-                        ? AppColors.primaryMid
-                        : Colors.white),
-                label: Text('Notifications',
-                    style: TextStyle(
-                        color: _selectedIndex == 3
-                            ? AppColors.primaryMid
-                            : Colors.white))),
-            SidebarDestination(
-                // isSelected: _selectedIndex == 2 ? true : false,
-                icon: Icon(Icons.category_outlined,
-                    color: _selectedIndex == 4
-                        ? AppColors.primaryMid
-                        : Colors.white),
-                label: Text('Business Categories',
-                    style: TextStyle(
-                        color: _selectedIndex == 4
-                            ? AppColors.primaryMid
-                            : Colors.white))),
-            SidebarDestination(
-                // isSelected: _selectedIndex == 2 ? true : false,
-                icon: Icon(Icons.interests,
-                    color: _selectedIndex == 5
-                        ? AppColors.primaryMid
-                        : Colors.white),
-                label: Text('Interests',
-                    style: TextStyle(
-                        color: _selectedIndex == 5
-                            ? AppColors.primaryMid
-                            : Colors.white))),
-            SidebarDestination(
-                // isSelected: _selectedIndex == 2 ? true : false,
-                icon: Icon(Icons.translate,
-                    color: _selectedIndex == 6
-                        ? AppColors.primaryMid
-                        : Colors.white),
-                label: Text('Language',
-                    style: TextStyle(
-                        color: _selectedIndex == 6
-                            ? AppColors.primaryMid
-                            : Colors.white))),
-            SidebarDestination(
-                // isSelected: _selectedIndex == 2 ? true : false,
-                icon: Icon(Icons.batch_prediction_outlined,
-                    color: _selectedIndex == 7
-                        ? AppColors.primaryMid
-                        : Colors.white),
-                label: Text('Goals',
-                    style: TextStyle(
-                        color: _selectedIndex == 7
-                            ? AppColors.primaryMid
-                            : Colors.white))),
-            SidebarDestination(
-                // isSelected: _selectedIndex == 2 ? true : false,
-                icon: Icon(Icons.format_quote,
-                    color: _selectedIndex == 8
-                        ? AppColors.primaryMid
-                        : Colors.white),
-                label: Text('FAQs',
-                    style: TextStyle(
-                        color: _selectedIndex == 8
-                            ? AppColors.primaryMid
-                            : Colors.white))),
-            SidebarDestination(
-                // isSelected: _selectedIndex == 2 ? true : false,
-                icon: Icon(Icons.person_4,
-                    color: _selectedIndex == 9
-                        ? AppColors.primaryMid
-                        : Colors.white),
-                label: Text('Profile',
-                    style: TextStyle(
-                        color: _selectedIndex == 9
-                            ? AppColors.primaryMid
-                            : Colors.white))),
-            SidebarDestination(
-                onTap: () {
-                  ref.read(authVm).logOut(context);
-                },
-                // isSelected: _selectedIndex == 2 ? true : false,
-                icon: Icon(Icons.logout,
-                    color: _selectedIndex == 10
-                        ? AppColors.primaryMid
-                        : Colors.orange),
-                label: Text('Logout',
-                    style: TextStyle(
-                        color: _selectedIndex == 10
-                            ? AppColors.primaryMid
-                            : Colors.orange))),
-          ]),
-      SizedBox(
-          width: MediaQuery.of(context).size.width * 0.82,
-          child: CupertinoTabTransitionBuilder(
-              duration: const Duration(milliseconds: 700),
-              child: _pages.elementAt(_selectedIndex)))
-    ]));
+                  label: isPhone
+                      ? const SizedBox.shrink()
+                      : Text('Users',
+                          style: TextStyle(
+                              color: _selectedIndex == 1
+                                  ? AppColors.primaryMid
+                                  : Colors.white))),
+              SidebarDestination(
+                  // isSelected: _selectedIndex == 2 ? true : false,
+                  icon: Icon(Icons.verified,
+                      color: _selectedIndex == 2
+                          ? AppColors.primaryMid
+                          : Colors.white),
+                  label: isPhone
+                      ? const SizedBox.shrink()
+                      : Text('Verifications',
+                          style: TextStyle(
+                              color: _selectedIndex == 2
+                                  ? AppColors.primaryMid
+                                  : Colors.white))),
+              SidebarDestination(
+                  // isSelected: _selectedIndex == 2 ? true : false,
+                  icon: Icon(Icons.notifications_active,
+                      color: _selectedIndex == 3
+                          ? AppColors.primaryMid
+                          : Colors.white),
+                  label: isPhone
+                      ? const SizedBox.shrink()
+                      : Text('Notifications',
+                          style: TextStyle(
+                              color: _selectedIndex == 3
+                                  ? AppColors.primaryMid
+                                  : Colors.white))),
+              SidebarDestination(
+                  // isSelected: _selectedIndex == 2 ? true : false,
+                  icon: Icon(Icons.category_outlined,
+                      color: _selectedIndex == 4
+                          ? AppColors.primaryMid
+                          : Colors.white),
+                  label: isPhone
+                      ? const SizedBox.shrink()
+                      : Text('Business Categories',
+                          style: TextStyle(
+                              color: _selectedIndex == 4
+                                  ? AppColors.primaryMid
+                                  : Colors.white))),
+              SidebarDestination(
+                  // isSelected: _selectedIndex == 2 ? true : false,
+                  icon: Icon(Icons.interests,
+                      color: _selectedIndex == 5
+                          ? AppColors.primaryMid
+                          : Colors.white),
+                  label: isPhone
+                      ? const SizedBox.shrink()
+                      : Text('Interests',
+                          style: TextStyle(
+                              color: _selectedIndex == 5
+                                  ? AppColors.primaryMid
+                                  : Colors.white))),
+              SidebarDestination(
+                  // isSelected: _selectedIndex == 2 ? true : false,
+                  icon: Icon(Icons.translate,
+                      color: _selectedIndex == 6
+                          ? AppColors.primaryMid
+                          : Colors.white),
+                  label: isPhone
+                      ? const SizedBox.shrink()
+                      : Text('Language',
+                          style: TextStyle(
+                              color: _selectedIndex == 6
+                                  ? AppColors.primaryMid
+                                  : Colors.white))),
+              SidebarDestination(
+                  // isSelected: _selectedIndex == 2 ? true : false,
+                  icon: Icon(Icons.batch_prediction_outlined,
+                      color: _selectedIndex == 7
+                          ? AppColors.primaryMid
+                          : Colors.white),
+                  label: isPhone
+                      ? const SizedBox.shrink()
+                      : Text('Goals',
+                          style: TextStyle(
+                              color: _selectedIndex == 7
+                                  ? AppColors.primaryMid
+                                  : Colors.white))),
+              SidebarDestination(
+                  // isSelected: _selectedIndex == 2 ? true : false,
+                  icon: Icon(Icons.format_quote,
+                      color: _selectedIndex == 8
+                          ? AppColors.primaryMid
+                          : Colors.white),
+                  label: isPhone
+                      ? const SizedBox.shrink()
+                      : Text('FAQs',
+                          style: TextStyle(
+                              color: _selectedIndex == 8
+                                  ? AppColors.primaryMid
+                                  : Colors.white))),
+              SidebarDestination(
+                  // isSelected: _selectedIndex == 2 ? true : false,
+                  icon: Icon(Icons.person_4,
+                      color: _selectedIndex == 9
+                          ? AppColors.primaryMid
+                          : Colors.white),
+                  label: isPhone
+                      ? const SizedBox.shrink()
+                      : Text('Profile',
+                          style: TextStyle(
+                              color: _selectedIndex == 9
+                                  ? AppColors.primaryMid
+                                  : Colors.white))),
+              SidebarDestination(
+                  onTap: () {
+                    ref.read(authVm).logOut(context);
+                  },
+                  // isSelected: _selectedIndex == 2 ? true : false,
+                  icon: Icon(Icons.logout,
+                      color: _selectedIndex == 10
+                          ? AppColors.primaryMid
+                          : Colors.orange),
+                  label: isPhone
+                      ? const SizedBox.shrink()
+                      : Text('Logout',
+                          style: TextStyle(
+                              color: _selectedIndex == 10
+                                  ? AppColors.primaryMid
+                                  : Colors.orange))),
+            ]),
+        SizedBox(
+            width: MediaQuery.of(context).size.width * 0.82,
+            child: CupertinoTabTransitionBuilder(
+                duration: const Duration(milliseconds: 700),
+                child: _pages.elementAt(_selectedIndex)))
+      ]));
+    });
   }
 }

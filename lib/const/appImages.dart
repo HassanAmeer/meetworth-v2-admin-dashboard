@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 class AppImages {
+  static String logo = "assets/icons/logo.jpg";
   static String logoText = "assets/icons/logoText.png";
   static String logodark = "assets/icons/logodark.png";
   static String logowhite = "assets/icons/logowhite.png";
