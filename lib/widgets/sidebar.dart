@@ -26,8 +26,8 @@ class SidebarWidget extends ConsumerStatefulWidget {
 class _SidebarWidgetState extends ConsumerState<SidebarWidget> {
   // A list of pages to be displayed as the destination content.
   final _pages = [
-    const HomePage(),
     const UsersPage(),
+    const HomePage(),
     const VerificatiosPage(),
     const NotificationsPage(),
     const CatgPage(),

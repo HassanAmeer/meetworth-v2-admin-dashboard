@@ -14,7 +14,6 @@ import 'package:skeletonizer/skeletonizer.dart';
 import '../widgets/headers.dart';
 import '../widgets/minicard.dart';
 import '../widgets/mintile.dart';
-import '../widgets/screenTimeWidget.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -989,7 +988,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                                                 .textGreen)),
                                               ]),
                                           CardWidget(
-                                              heightRatio:  isPhone? 0.4:0.1,
+                                              heightRatio: isPhone ? 0.4 : 0.1,
                                               child: MsgChartWidget(
                                                   dataList:
                                                       p.last5MonthsChatsList))
@@ -1126,11 +1125,15 @@ class _HomePageState extends ConsumerState<HomePage> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                isPhone? Text("Connection",
-                                                    style: TextTheme.of(context)
-                                                        .labelMedium!)  : Text("Connection Made",
-                                                    style: TextTheme.of(context)
-                                                        .labelMedium!),
+                                                isPhone
+                                                    ? Text("Connection",
+                                                        style: TextTheme.of(
+                                                                context)
+                                                            .labelMedium!)
+                                                    : Text("Connection Made",
+                                                        style: TextTheme.of(
+                                                                context)
+                                                            .labelMedium!),
                                                 Row(children: [
                                                   Text("Total",
                                                       style: TextTheme.of(
@@ -1166,7 +1169,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                               ]),
                                           CardWidget(
                                               // heightRatio: 0.15,
-                                              widthRatio:  isPhone? 0.55: 0.23,
+                                              widthRatio: isPhone ? 0.55 : 0.23,
                                               child: LineChartWidget(
                                                 dataListGold: p
                                                     .last5MonthsFriendsListAccepted,
@@ -1176,7 +1179,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                         ])),
                                 CardWidget(
                                     widthRatio: isPhone ? 1 : 0.18,
-                                    heightRatio:  isPhone? 0.65: 0.18,
+                                    heightRatio: isPhone ? 0.65 : 0.18,
                                     child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
@@ -1244,7 +1247,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                                 ]),
                                               ]),
                                           CardWidget(
-                                              heightRatio: isPhone? 0.4: 0.1,
+                                              heightRatio: isPhone ? 0.4 : 0.1,
                                               child: BarChartWidget(
                                                 dataList:
                                                     p.allUsersMembershipList,
@@ -1252,7 +1255,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                         ])),
                                 CardWidget(
                                     widthRatio: isPhone ? 1 : 0.18,
-                                    heightRatio:  isPhone? 0.65: 0.18,
+                                    heightRatio: isPhone ? 0.65 : 0.18,
                                     child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
@@ -1321,7 +1324,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                                 ]),
                                               ]),
                                           CardWidget(
-                                              heightRatio: isPhone? 0.4: 0.1,
+                                              heightRatio: isPhone ? 0.4 : 0.1,
                                               child: BarChartWidget(
                                                 dataList: p.appInfoChartList,
                                               ))
@@ -1329,7 +1332,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
                                 CardWidget(
                                     widthRatio: isPhone ? 1 : 0.15,
-                                    heightRatio: isPhone? 0.6 : 0.18,
+                                    heightRatio: isPhone ? 0.6 : 0.18,
                                     child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
@@ -1395,7 +1398,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                         ])),
                                 CardWidget(
                                     widthRatio: isPhone ? 1 : 0.22,
-                                    heightRatio: isPhone? 0.65: 0.18,
+                                    heightRatio: isPhone ? 0.65 : 0.18,
                                     child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
@@ -1460,7 +1463,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                                 ]),
                                               ]),
                                           CardWidget(
-                                              heightRatio: isPhone? 0.4: 0.1,
+                                              heightRatio: isPhone ? 0.4 : 0.1,
                                               child: BarChartWidget(
                                                   dataList:
                                                       p.feedBackListChart))

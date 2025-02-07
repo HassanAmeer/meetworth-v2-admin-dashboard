@@ -18,11 +18,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  FlutterError.onError = (FlutterErrorDetails details) {
-    log("💥 FlutterError.onError: ${details.exception}");
-    log("💥 FlutterError.stack: ${details.stack}");
-    FlutterError.presentError(details);
-  };
+  // FlutterError.onError = (FlutterErrorDetails details) {
+  //   log("💥 FlutterError.onError: ${details.exception}");
+  //   log("💥 FlutterError.stack: ${details.stack}");
+  //   FlutterError.presentError(details);
+  // };
+
   runApp(const ProviderScope(child: MyApp()));
 }
 
