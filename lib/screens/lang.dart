@@ -1,6 +1,7 @@
 import 'package:meetworth_admin/const/appColors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meetworth_admin/vm/typesVm.dart';
 import '../vm/homeVm.dart';
 import '../widgets/dotloader.dart';
 import '../widgets/minicard.dart';
@@ -27,7 +28,7 @@ class _LanguagePageState extends ConsumerState<LanguagePage> {
 
   syncFirstF() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      var home = ref.read(homeVm);
+      var home = ref.read(typesVm);
       if (home.languageList.isEmpty) {
         home
             .getLanguageListF(showLoading: true, loadingFor: "lang")
@@ -38,7 +39,7 @@ class _LanguagePageState extends ConsumerState<LanguagePage> {
 
   @override
   Widget build(BuildContext context) {
-    var p = ref.watch(homeVm);
+    var p = ref.watch(typesVm);
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
     try {
@@ -198,7 +199,7 @@ class _LanguagePageState extends ConsumerState<LanguagePage> {
       }));
     } catch (e, st) {
       debugPrint("👉 language page error : $e, st: $st");
-      p.get13UsersF(loadingFor: 'users', showLoading: true);
+      // p.get13UsersF(loadingFor: 'users', showLoading: true);
       return const Center(child: DotLoader(color: AppColors.gold));
       // return Center(child: Text("👉 Reload This Page : $e"));
     }

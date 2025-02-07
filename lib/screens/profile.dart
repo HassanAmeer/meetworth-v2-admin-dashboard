@@ -31,7 +31,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   syncFirstF() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var home = ref.read(homeVm);
-      if (home.businessCategoryList.isEmpty) {}
     });
   }
 

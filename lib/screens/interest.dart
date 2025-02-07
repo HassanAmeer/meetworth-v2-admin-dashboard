@@ -2,6 +2,7 @@ import 'package:meetworth_admin/const/appColors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../vm/homeVm.dart';
+import '../vm/typesVm.dart';
 import '../widgets/dotloader.dart';
 import '../widgets/minicard.dart';
 
@@ -27,7 +28,7 @@ class _InerestPageState extends ConsumerState<InerestPage> {
 
   syncFirstF() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      var home = ref.read(homeVm);
+      var home = ref.read(typesVm);
       if (home.interestList.isEmpty) {
         home
             .getinterestListF(showLoading: true, loadingFor: "inter")
@@ -38,7 +39,7 @@ class _InerestPageState extends ConsumerState<InerestPage> {
 
   @override
   Widget build(BuildContext context) {
-    var p = ref.watch(homeVm);
+    var p = ref.watch(typesVm);
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
     try {

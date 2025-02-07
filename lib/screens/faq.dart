@@ -1,6 +1,7 @@
 import 'package:meetworth_admin/const/appColors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meetworth_admin/vm/typesVm.dart';
 import '../vm/homeVm.dart';
 import '../widgets/dotloader.dart';
 import '../widgets/minicard.dart';
@@ -26,7 +27,7 @@ class _FaqPagesState extends ConsumerState<FaqPages> {
 
   syncFirstF() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      var home = ref.read(homeVm);
+      var home = ref.read(typesVm);
       if (home.faqList.isEmpty) {
         home.getFaqListF(showLoading: true, loadingFor: "faq").then((v) {});
       }
@@ -37,7 +38,7 @@ class _FaqPagesState extends ConsumerState<FaqPages> {
   TextEditingController answerController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    var p = ref.watch(homeVm);
+    var p = ref.watch(typesVm);
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
     try {

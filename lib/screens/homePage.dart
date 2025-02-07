@@ -9,6 +9,7 @@ import 'package:countries_world_map/data/maps/world_map.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../widgets/headers.dart';
@@ -55,11 +56,9 @@ class _HomePageState extends ConsumerState<HomePage> {
     return Scaffold(
         // appBar: AppBar(backgroundColor: Colors.transparent),
 
-        body: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-      var isPhone = constraints.maxWidth <= 424;
-      var isTablet =
-          (constraints.maxWidth >= 424 && constraints.maxWidth <= 1024);
+        body: ResponsiveSizer(builder: (context, orientation, screenType) {
+      var isPhone = Device.screenType == ScreenType.mobile;
+
       return Padding(
           padding: EdgeInsets.all(isPhone ? 2 : 14),
           child: SingleChildScrollView(
@@ -316,86 +315,108 @@ class _HomePageState extends ConsumerState<HomePage> {
                                     widthRatio: isPhone ? 1 : 0.21,
                                     heightRatio: isPhone ? 0.4 : 0.15,
                                     padding: isPhone
-                                        ? const EdgeInsets.all(10)
-                                        : const EdgeInsets.all(0),
-                                    child: Row(children: [
-                                      Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text("Memeberships Chart ",
-                                                style: TextTheme.of(context)
-                                                    .labelSmall!
-                                                    .copyWith()),
-                                            Row(children: [
-                                              Text("Free: ",
-                                                  style: TextTheme.of(context)
-                                                      .labelSmall!
-                                                      .copyWith(
-                                                          color: AppColors
-                                                              .silverGold)),
-                                              Text(
-                                                  " ${(p.allUsersList.where((e) => e.membership == "Free").length / p.allUsersList.length * 100).toStringAsFixed(1)} %",
-                                                  style: TextTheme.of(context)
-                                                      .labelSmall!),
-                                            ]),
-                                            Row(children: [
-                                              Text("Bronze: ",
-                                                  style: TextTheme.of(context)
-                                                      .labelSmall!
-                                                      .copyWith(
-                                                          color: AppColors
-                                                              .pieChartColor2)),
-                                              Text(
-                                                  " ${(p.allUsersList.where((e) => e.membership == "Bronze").length / p.allUsersList.length * 100).toStringAsFixed(1)} %",
-                                                  style: TextTheme.of(context)
-                                                      .labelSmall!),
-                                            ]),
-                                            Row(children: [
-                                              Text("Silver: ",
-                                                  style: TextTheme.of(context)
-                                                      .labelSmall!
-                                                      .copyWith(
-                                                          color: AppColors
-                                                              .textSilver)),
-                                              Text(
-                                                  " ${(p.allUsersList.where((e) => e.membership == "Silver").length / p.allUsersList.length * 100).toStringAsFixed(1)} %",
-                                                  style: TextTheme.of(context)
-                                                      .labelSmall!),
-                                            ]),
-                                            Row(children: [
-                                              Text("Gold: ",
-                                                  style: TextTheme.of(context)
-                                                      .labelSmall!
-                                                      .copyWith(
-                                                          color:
-                                                              AppColors.gold)),
-                                              Text(
-                                                  " ${(p.allUsersList.where((e) => e.membership == "Gold").length / p.allUsersList.length * 100).toStringAsFixed(1)} %",
-                                                  style: TextTheme.of(context)
-                                                      .labelSmall!),
-                                            ]),
-                                            Row(children: [
-                                              Text("Paid Memebership: ",
-                                                  style: TextTheme.of(context)
-                                                      .labelSmall!
-                                                      .copyWith(
-                                                          color: AppColors
-                                                              .textSilver)),
-                                              Text(
-                                                  " ${(p.allUsersList.where((e) => e.membership == "Gold" || e.membership == "Silver" || e.membership == "Bronze").length / p.allUsersList.length * 100).toStringAsFixed(1)} %",
-                                                  style: TextTheme.of(context)
-                                                      .labelSmall!),
-                                            ]),
-                                          ]),
-                                      Expanded(
-                                          // heightRatio: 0.1,
-                                          // widthRatio: 0.2,
-                                          child: PieChartWidget(
-                                              dataList: p.allUsersList))
-                                    ])),
+                                        ? const EdgeInsets.symmetric(horizontal: 30)
+                                        : const EdgeInsets.all(10),
+                                    child: Row(
+                                        // mainAxisAlignment:
+                                        //  isPhone?    MainAxisAlignment.start :   MainAxisAlignment.start,
+                                        children: [
+                                          Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text("Memeberships Chart ",
+                                                    style: TextTheme.of(context)
+                                                        .labelSmall!
+                                                        .copyWith()),
+                                                Row(children: [
+                                                  Text("Free: ",
+                                                      style: TextTheme.of(
+                                                              context)
+                                                          .labelSmall!
+                                                          .copyWith(
+                                                              color: AppColors
+                                                                  .silverGold)),
+                                                  Text(
+                                                      " ${(p.allUsersList.where((e) => e.membership == "Free").length / p.allUsersList.length * 100).toStringAsFixed(1)} %",
+                                                      style:
+                                                          TextTheme.of(context)
+                                                              .labelSmall!),
+                                                ]),
+                                                Row(children: [
+                                                  Text("Bronze: ",
+                                                      style: TextTheme.of(
+                                                              context)
+                                                          .labelSmall!
+                                                          .copyWith(
+                                                              color: AppColors
+                                                                  .pieChartColor2)),
+                                                  Text(
+                                                      " ${(p.allUsersList.where((e) => e.membership == "Bronze").length / p.allUsersList.length * 100).toStringAsFixed(1)} %",
+                                                      style:
+                                                          TextTheme.of(context)
+                                                              .labelSmall!),
+                                                ]),
+                                                Row(children: [
+                                                  Text("Silver: ",
+                                                      style: TextTheme.of(
+                                                              context)
+                                                          .labelSmall!
+                                                          .copyWith(
+                                                              color: AppColors
+                                                                  .textSilver)),
+                                                  Text(
+                                                      " ${(p.allUsersList.where((e) => e.membership == "Silver").length / p.allUsersList.length * 100).toStringAsFixed(1)} %",
+                                                      style:
+                                                          TextTheme.of(context)
+                                                              .labelSmall!),
+                                                ]),
+                                                Row(children: [
+                                                  Text("Gold: ",
+                                                      style: TextTheme.of(
+                                                              context)
+                                                          .labelSmall!
+                                                          .copyWith(
+                                                              color: AppColors
+                                                                  .gold)),
+                                                  Text(
+                                                      " ${(p.allUsersList.where((e) => e.membership == "Gold").length / p.allUsersList.length * 100).toStringAsFixed(1)} %",
+                                                      style:
+                                                          TextTheme.of(context)
+                                                              .labelSmall!),
+                                                ]),
+                                                Row(children: [
+                                                  Text("Paid Memebership: ",
+                                                      style: TextTheme.of(
+                                                              context)
+                                                          .labelSmall!
+                                                          .copyWith(
+                                                              color: AppColors
+                                                                  .textSilver)),
+                                                  Text(
+                                                      " ${(p.allUsersList.where((e) => e.membership == "Gold" || e.membership == "Silver" || e.membership == "Bronze").length / p.allUsersList.length * 100).toStringAsFixed(1)} %",
+                                                      style:
+                                                          TextTheme.of(context)
+                                                              .labelSmall!),
+                                                ]),
+                                              ]),
+                                          SizedBox(
+                                              width: isPhone ? 0.8 : 0.15,
+
+                                              // heightRatio: 0.1,
+                                              // widthRatio: 0.2,
+                                              child: Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: isPhone
+                                                        ? w * 0.06
+                                                        : w * 0.04),
+                                                child: PieChartWidget(
+                                                  scale: isPhone? 1.2: 1.7,
+                                                    dataList: p.allUsersList),
+                                              ))
+                                        ])),
                                 CardWidget(
                                     widthRatio: isPhone ? 1 : 0.34,
                                     heightRatio: isPhone ? 0.9 : 0.18,
@@ -405,8 +426,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                                             : Axis.horizontal,
                                         children: [
                                           SizedBox(
-                                            width: isPhone ? w * 1 : w * 0.26,
-                                            height: isPhone ? h * 0.2 : null,
+                                            width: isPhone ? w * 1 : w * 0.25,
+                                            height:
+                                                isPhone ? h * 0.2 : h * 0.18,
                                             child: SimpleMap(
                                                 instructions:
                                                     SMapWorld.instructions,
@@ -816,9 +838,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                                                     (id, name, tapDetails) {}),
                                           ),
                                           SizedBox(
-                                            height:
-                                                isPhone ? h * 0.2 : h * 0.18,
-                                            // width: w* 0.5,
+                                            width: isPhone ? w * 1 : w * 0.07,
+                                            height: isPhone ? h * 0.2 : null,
                                             //        height:h* 0.18,
                                             child: ListView(
                                                 shrinkWrap: true,
@@ -860,6 +881,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                                     .toList()),
                                           ),
                                         ])),
+
                                 CardWidget(
                                     widthRatio: isPhone ? 1 : 0.18,
                                     heightRatio: isPhone ? 0.6 : 0.18,
@@ -1756,14 +1778,15 @@ class BarChartWidget extends StatelessWidget {
 }
 
 class PieChartWidget extends StatelessWidget {
+  final double scale;
   // final int total;
   final List dataList;
-  const PieChartWidget({super.key, required this.dataList});
+  const PieChartWidget({super.key, required this.dataList, this.scale = 1.7});
 
   @override
   Widget build(BuildContext context) {
     return Transform.scale(
-      scale: 1.7,
+      scale: scale,
       child: PieChart(
         PieChartData(
           centerSpaceRadius: 0,

@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,7 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:meetworth_admin/vm/authVm.dart';
 import 'package:meetworth_admin/widgets/dotloader.dart';
 import 'package:meetworth_admin/widgets/minicard.dart';
-import 'package:meetworth_admin/widgets/sidebar.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
