@@ -600,15 +600,42 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                                       : AppColors
                                                                           .pieChartColor2)),
                                                     ),
-                                                    DataCell(onTap: () {
-                                                      p.selectUserIndexF(index,
-                                                          showLoading: true,
-                                                          loadingFor:
-                                                              "selectinguser");
-                                                    },
+                                                    DataCell(
                                                         Row(children: [
                                                           InkWell(
-                                                              onTap: () {},
+                                                              // onTap: () {
+                                                              //   if (p
+                                                              //       .geted13usersList[
+                                                              //           index]
+                                                              //       .enable!) {
+                                                              //     p.activeOrBanUserF(
+                                                              //       showLoading:
+                                                              //           true,
+                                                              //       loadingFor:
+                                                              //           "$index",
+                                                              //           docId:  p
+                                                              //       .geted13usersList[
+                                                              //           index]
+                                                              //       .uid, 
+                                                              //       status: false);
+                                                              //   }else{
+                                                              //      if (p
+                                                              //       .geted13usersList[
+                                                              //           index]
+                                                              //       .enable!) {
+                                                              //     p.activeOrBanUserF(
+                                                              //       showLoading:
+                                                              //           true,
+                                                              //       loadingFor:
+                                                              //           "$index",
+                                                              //           docId:  p
+                                                              //       .geted13usersList[
+                                                              //           index]
+                                                              //       .uid, 
+                                                              //       status: true);
+                                                              //   }
+                                                              //   }
+                                                              // },
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
@@ -637,15 +664,25 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                                           .grey
                                                                           .shade500))
                                                         ])),
-                                                    DataCell(onTap: () {
-                                                      p.selectUserIndexF(index,
-                                                          showLoading: true,
-                                                          loadingFor:
-                                                              "selectinguser");
-                                                    },
-                                                        Row(children: [
+                                                    DataCell( Row(children: [
                                                           InkWell(
-                                                              onTap: () {},
+                                                              onTap: () {
+                                                                 if (p
+                                                                    .geted13usersList[
+                                                                        index]
+                                                                    .enable!) {
+                                                                  p.activeOrBanUserF(
+                                                                    showLoading:
+                                                                        true,
+                                                                    loadingFor:
+                                                                        "$index",
+                                                                        docId:  p
+                                                                    .geted13usersList[
+                                                                        index]
+                                                                    .uid, 
+                                                                    status: false);
+                                                                }
+                                                              },
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
@@ -658,7 +695,12 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                           const SizedBox(
                                                               width: 7),
                                                           InkWell(
-                                                              onTap: () {},
+                                                              onTap: () {
+                                                                p.selectUserIndexF(index,
+                                                          showLoading: true,
+                                                          loadingFor:
+                                                              "selectinguser");
+                                                              },
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(

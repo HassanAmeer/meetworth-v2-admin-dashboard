@@ -1006,7 +1006,8 @@ class HomeVm with ChangeNotifier {
 
       setLoadingF(false);
     } catch (e, st) {
-      EasyLoading.showError("$e");
+      EasyLoading.showError("Empty");
+      // EasyLoading.showError("$e");
       debugPrint("💥 try catch downloadTransactionsF error: $e , st:$st");
     } finally {
       setLoadingF(false);

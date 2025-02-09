@@ -61,5 +61,13 @@ class DefaultFirebaseOptions {
     databaseURL: 'https://meetworth-cc6a1-default-rtdb.firebaseio.com',
     storageBucket: 'meetworth-cc6a1.appspot.com',
     measurementId: 'G-60LPC7B3XZ',
+    // apiKey: "AIzaSyDorj-iKed1K-GVYoENEIfdrAc3cNRDcbg",
+    // appId: "1:691004386199:web:81ce6a7e1d0ac2004172d2",
+    // messagingSenderId: "691004386199",
+    // projectId: "meetworth-cc6a1",
+    // authDomain: "meetworth-cc6a1.firebaseapp.com",
+    // databaseURL: "https://meetworth-cc6a1-default-rtdb.firebaseio.com",
+    // storageBucket: "meetworth-cc6a1.appspot.com",
+    // measurementId: "G-NL4P8E7LZC"
   );
 }

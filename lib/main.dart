@@ -233,7 +233,6 @@ class _SplashPageState extends ConsumerState<SplashPage> {
 /// 
 
 // ******** remainings in db side
-//  accountCreationLocation
 //  iCardDesc
 //  bCardDesc
 //  isValidICard
