@@ -205,14 +205,41 @@ class _SplashPageState extends ConsumerState<SplashPage> {
 }
 
 
+// fcm
+// cfWahs5CTDOitC7oy14sbH:APA91bGvWxf6Agfl7Iw7rI7YXmJ4RyhNAIl5ymYWxZnJp8yoXz06rPx0aDqe9zIOfvUDnGuXo72Z-3Brh-Bvw-UejwdnXjkAwl6C5DmZ8gUS_l0IzFPurNM
+
+
 // team@meetworth.com
 // team2024meetworth!
 
+// clienstjobs@gmail.com
+// A87WbTFgL3MVO3GFN5r0cxnpHmI3
 
+////// remaining to understand flow
+/// file1:  documents (Passport, ID, Driving license) Identity Card
+/// file2: Business registration proof , Identity Card Image, 
+/// 
+///  varifiedStatus == 0, not apply for verifications
+///  varifiedStatus == 1, apply for verifications
+///  varifiedStatus == 3, verified 
+///  varifiedStatus == 4, rejected 
+/// 
+///  first priority is if admin active membership thene iits prefered every where not membership even buy or not
+///   if (currentUser.adminActiveMemebership != null &&
+///              currentUser.adminActiveMemebership != "") {
+///              currentUser.membership = currentUser.adminActiveMemebership;
+/// 
+///  
+/// 
 
 // ******** remainings in db side
 //  accountCreationLocation
-//
+//  iCardDesc
+//  bCardDesc
+//  isValidICard
+//  isValidBCard 
+//  
+
 
 // ******** remainings in app side
 // totalShare in posts 

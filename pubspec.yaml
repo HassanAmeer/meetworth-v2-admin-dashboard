@@ -55,7 +55,7 @@ dependencies:
   elegant_notification: ^2.4.1 
   random_color: 
   custom_date_range_picker: ^1.1.0 
-  to_csv: ^5.0.4 
+  # to_csv: ^5.0.4 
   dio: ^5.7.0
 
   firebase_analytics: ^11.4.1
@@ -74,6 +74,15 @@ dependencies:
   # for design only end
 
   skeletonizer: ^1.4.3
+  json2csv_dart: ^1.0.1
+  geolocator: ^10.1.0
+  geocoding: ^3.0.0
+  clipboard: ^0.1.3
+  http: ^1.3.0
+  googleapis_auth: ^1.6.0
+
+
+
 
 
 
@@ -111,6 +120,8 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/
+
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

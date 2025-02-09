@@ -1,4 +1,8 @@
+import 'dart:convert';
 import 'dart:math';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:http/http.dart' as http;
 import 'package:meetworth_admin/models/appinfoModel.dart';
 import 'package:meetworth_admin/models/feedbackModel.dart';
 import 'package:meetworth_admin/models/friendsModel.dart';
@@ -10,9 +14,12 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'dart:html' as html;
 import '../models/chatModel.dart';
 import '../models/postsModel.dart';
+import 'dart:math' as match;
+
+import 'fcmKeys.dart';
 
 final homeVm = ChangeNotifierProvider<HomeVm>((ref) => HomeVm());
 
@@ -70,7 +77,7 @@ class HomeVm with ChangeNotifier {
         setLoadingF(false);
       } else {
         allUsersList = await FStore().getAllUsers();
-        // debugPrint("allUsersList length: ${allUsersList.length}");
+        debugPrint("allUsersList length: ${allUsersList.length}");
 
         //
         //////get last six months
@@ -514,7 +521,7 @@ class HomeVm with ChangeNotifier {
         setLoadingF(true, loadingFor);
       }
       feedBackList = await FStore().getFeedbacksF();
-      // debugPrint("getAllChatsF: ${allChatsList.length}");
+      // debugPrint("👉 feedBackList: ${feedBackList.length}");
 
       List<int> getLastSixMonths() {
         DateTime now = DateTime.now();
@@ -538,10 +545,13 @@ class HomeVm with ChangeNotifier {
           .values
           .toList();
 
+      // debugPrint("👉 feedBackListChart: ${feedBackListChart.length}");
       feedBackListPositive =
           feedBackList.where((e) => e.isPositive == true).toList().length;
       feedBackListNagetive =
           feedBackList.where((e) => e.isPositive == false).toList().length;
+      debugPrint("👉 feedBackListPositive: $feedBackListPositive");
+      // debugPrint("👉 feedBackListNagetive: ${feedBackListNagetive}");
     } catch (e, st) {
       EasyLoading.showError("$e");
       debugPrint("💥 try catch error: $e , st:$st");
@@ -611,9 +621,27 @@ class HomeVm with ChangeNotifier {
 
   int selectedUserIndex = 0; // from  users tables
 
-  selectUserIndexF(v) {
-    selectedUserIndex = v;
-    notifyListeners();
+  selectUserIndexF(v, {bool showLoading = false, String loadingFor = ""}) {
+    try {
+      if (showLoading) {
+        setLoadingF(true, loadingFor);
+      }
+      selectedUserIndex = v;
+      calculateUserSessionDurationF();
+      // if (geted13usersList[v].point!.latitude.toString().isNotEmpty) {
+      //   await getLocationName(geted13usersList[v].point!.latitude,
+      //       geted13usersList[v].point!.longitude);
+      // } else {
+      //   userJoinedLocation = geted13usersList[v].country!;
+      // }
+      // notifyListeners();
+      notifyListeners();
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint("💥 try catch selectUserIndexF error: $e , st:$st");
+    } finally {
+      setLoadingF(false);
+    }
   }
 
   String filteredGender = "Male";
@@ -643,11 +671,27 @@ class HomeVm with ChangeNotifier {
     notifyListeners();
   }
 
+  String sessionDurationOfUser = "0";
+  calculateUserSessionDurationF() {
+    if (geted13usersList.isNotEmpty) {
+      if (geted13usersList[selectedUserIndex]
+          .monthlyAppUsageInSeconds
+          .toString()
+          .isNotEmpty) {
+        var sd = int.parse(geted13usersList[selectedUserIndex]
+            .monthlyAppUsageInSeconds
+            .toString());
+        sessionDurationOfUser = ((sd / 30) / 60).toStringAsFixed(2);
+      }
+    }
+  }
+
   // List<UserModel> filteredUsers = [];
-  filterUsersF({bool showLoading = false, String loadingFor = ""}) {
+  filterUsersF({bool showLoading = false, String loadingFor = ""}) async {
     try {
       if (showLoading) {
         setLoadingF(true, loadingFor);
+        await Future.delayed(const Duration(milliseconds: 800));
       }
       geted13usersList = allUsersList
           .where((element) =>
@@ -656,8 +700,9 @@ class HomeVm with ChangeNotifier {
               element.membership == filteredMembership &&
               element.enable == filteredStatus)
           .toList();
+      selectedUserIndex = 0;
       isUsersFiltered = true;
-      notifyListeners();
+      setLoadingF(false);
     } catch (e, st) {
       EasyLoading.showError("$e");
       debugPrint("💥 try catch filterUsersF error: $e , st:$st");
@@ -667,21 +712,32 @@ class HomeVm with ChangeNotifier {
   }
 
   searchUsersF(
-      {bool showLoading = false, String loadingFor = "", String? query}) {
+      {bool showLoading = false, String loadingFor = "", String? query}) async {
     try {
       if (query != null || query!.trim() != "") {
         if (showLoading) {
           setLoadingF(true, loadingFor);
+          await Future.delayed(const Duration(milliseconds: 800));
         }
         geted13usersList = allUsersList
             .where((element) =>
-                element.username!.toLowerCase().contains(query.toLowerCase()) ||
-                element.email!.toLowerCase() == query.toLowerCase() ||
-                element.gender == filteredGender ||
-                element.membership == query ||
-                (element.enable! ? 'active' : 'block') == query)
+                    element.username!
+                        .toLowerCase()
+                        .contains(query.toLowerCase()) ||
+                    element.firstname!.toLowerCase() == query.toLowerCase() ||
+                    element.email!.toLowerCase() == query.toLowerCase()
+                // element.gender == filteredGender ||
+                // element.membership == query ||
+                // (element.enable! ? 'active' : 'block') == query
+                )
             .toList();
         notifyListeners();
+        selectedUserIndex = 0;
+        isUsersFiltered = true;
+      } else {
+        await Future.delayed(const Duration(milliseconds: 800));
+        isUsersFiltered = false;
+        get13UsersF();
       }
     } catch (e, st) {
       EasyLoading.showError("$e");
@@ -691,6 +747,272 @@ class HomeVm with ChangeNotifier {
     }
   }
 
+  activeOrBanUserF(
+      {bool showLoading = false,
+      String loadingFor = "",
+      String? docId,
+      bool? status}) async {
+    try {
+      if (showLoading) {
+        setLoadingF(true, loadingFor);
+      }
+      await FStore().changeStatusUserF(docId: docId, status: status);
+      geted13usersList.firstWhere((e) => e.uid == docId).enable = status!;
+      EasyLoading.showSuccess("Status Changed");
+      setLoadingF(false);
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint("💥 try catch activeOrBanUserF error: $e , st:$st");
+    } finally {
+      setLoadingF(false);
+    }
+  }
+
+  bool isValidICard = false;
+  bool isValidBCard = false;
+  setVerifBoolF({
+    bool showLoading = false,
+    String loadingFor = "",
+    String? docId,
+    required int verifiedStatus,
+    bool? isValidICard,
+    bool? isValidBCard,
+  }) async {
+    try {
+      if (showLoading) {
+        setLoadingF(true, loadingFor);
+      }
+
+      if (isValidBCard != null) {
+        var check = geted13usersList.firstWhere((e) => e.uid == docId);
+        check.isValidBCard = isValidBCard;
+        check.varifiedStatus = verifiedStatus;
+        await _instance.collection('userProfile').doc(docId).set({
+          "varifiedStatus": verifiedStatus,
+          "isValidBCard": isValidBCard,
+        }, SetOptions(merge: true));
+      } else if (isValidICard != null) {
+        var check = geted13usersList.firstWhere((e) => e.uid == docId);
+        check.varifiedStatus = verifiedStatus;
+        check.isValidICard = isValidICard;
+        await _instance.collection('userProfile').doc(docId).set({
+          "isValidICard": isValidICard,
+          "varifiedStatus": verifiedStatus,
+        }, SetOptions(merge: true));
+      }
+
+      EasyLoading.showSuccess("Saved");
+      notifyListeners();
+      setLoadingF(false);
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint("💥 try catch setVerifBoolF error: $e , st:$st");
+    } finally {
+      setLoadingF(false);
+    }
+  }
+
+  sendNotificationsF(
+      {bool showLoading = false,
+      String loadingFor = "",
+      String fcm = "",
+      String title = "",
+      String body = "",
+      Map json = const {}}) async {
+    try {
+      if (showLoading) {
+        setLoadingF(true, loadingFor);
+      }
+
+      String serverKeyIs = await getTokenKey();
+      // print('👉 Server Key: $serverKeyIs');
+      const String projectId = 'meetworth-cc6a1';
+      var response;
+      for (var user in allUsersList) {
+        response = await http.post(
+            Uri.parse(
+                'https://fcm.googleapis.com/v1/projects/$projectId/messages:send'),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $serverKeyIs',
+            },
+            body: jsonEncode({
+              'message': {
+                'token': user.fcm!,
+                'notification': {'title': title, 'body': body},
+                "data": json,
+                "android": {"priority": "high"},
+                "apns": {
+                  "payload": {
+                    "aps": {"sound": "default"}
+                  }
+                }
+              }
+            }));
+      }
+
+      print('👉🔔 Response Status: ${response.statusCode}');
+      print('🔔 Response Body: ${response.body}');
+
+      if (response.statusCode == 404) {
+        // EasyLoading.showError("Error When Sent!");
+        print(
+            '❌ 404 Requested entity not found. Check recipient token and project ID.');
+      } else {
+        EasyLoading.showSuccess("Sent!");
+      }
+
+      setLoadingF(false);
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint("💥 try catch sendNotificationsF error: $e , st:$st");
+    } finally {}
+  }
+
+  verifyUsersF(
+      {bool showLoading = false,
+      String loadingFor = "",
+      String? docId,
+      String? iCardDesc,
+      String? bCardDesc}) async {
+    try {
+      if (showLoading) {
+        setLoadingF(true, loadingFor);
+      }
+
+      await _instance.collection('userProfile').doc(docId).set({
+        // "isValidICard": isValidICard!,
+        // "isValidBCard": isValidBCard!,
+        "iCardDesc": iCardDesc!,
+        "bCardDesc": bCardDesc!,
+      }, SetOptions(merge: true));
+
+      var check = geted13usersList.firstWhere((e) => e.uid == docId);
+
+      // check.isValidICard = isValidICard;
+      // check.isValidBCard = isValidBCard;
+      check.iCardDesc = iCardDesc;
+      check.bCardDesc = bCardDesc;
+
+      EasyLoading.showSuccess("Saved");
+      setLoadingF(false);
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint("💥 try catch verifyUsersF error: $e , st:$st");
+    } finally {
+      setLoadingF(false);
+    }
+  }
+
+  ////////
+  String calculateDistanceInMiles(lat1, lon1, lat2, lon2) {
+    try {
+      double p = 0.017453292519943295;
+      var a = 0.5 -
+          match.cos((lat2 - lat1) * p) / 2 +
+          match.cos(lat1 * p) *
+              match.cos(lat2 * p) *
+              (1 - match.cos((lon2 - lon1) * p)) /
+              2;
+      return '${(7917.5 * match.asin(match.sqrt(a))).toStringAsFixed(0)} Miles';
+    } catch (e) {
+      return "10+" ' Miles';
+    }
+  }
+
+  String calculateDistance(lat1, lon1, lat2, lon2) {
+    try {
+      double p = 0.017453292519943295;
+      var a = 0.5 -
+          match.cos((lat2 - lat1) * p) / 2 +
+          match.cos(lat1 * p) *
+              match.cos(lat2 * p) *
+              (1 - match.cos((lon2 - lon1) * p)) /
+              2;
+      return '${(12742 * match.asin(match.sqrt(a))).toStringAsFixed(0)} km';
+    } catch (e) {
+      return "10+" ' km';
+    }
+  }
+
+  double currentLat = 0.0;
+  double currentLon = 0.0;
+
+  getCurrentLocationF() async {
+    Position currentLocation = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    currentLat = currentLocation.latitude;
+    currentLon = currentLocation.longitude;
+  }
+
+  String userJoinedLocation = "";
+  Future getLocationName(double lat, double lon) async {
+    List<Placemark> placemarks = await placemarkFromCoordinates(lat, lon);
+    userJoinedLocation =
+        "${placemarks.first.locality}, ${placemarks.first.country}";
+    return userJoinedLocation;
+  }
+
+////////////
+  downloadTransactionsF(
+      {bool showLoading = false,
+      String loadingFor = "",
+      required String uid}) async {
+    try {
+      if (showLoading) {
+        setLoadingF(true, loadingFor);
+      }
+      var data = await FStore().getTransactionOutsideF(uid);
+      // var data = await FStore().getTransaction(uid);
+      if (data.isNotEmpty) {
+        // var csvIs = CSVConvertor()
+        //     .convert(data.map((transaction) => transaction.toMap()).toList());
+        var csvIs = data.map((transaction) => transaction.toMap()).toList();
+        downloadCsv(csvIs, "transactions.csv");
+
+        EasyLoading.showSuccess("Downloaded");
+      } else {
+        EasyLoading.showInfo("Not Found");
+      }
+      setLoadingF(false);
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint("💥 try catch downloadTransactionsF error: $e , st:$st");
+    } finally {
+      setLoadingF(false);
+    }
+  }
+
+/////////
+  void downloadCsv(List<Map<String, dynamic>> data, String fileName) {
+    // Convert data to CSV string
+    String csvString = _convertToCsv(data);
+
+    // Create a Blob from the CSV string
+    final blob = html.Blob([csvString], 'text/csv');
+
+    // Create a download link
+    final url = html.Url.createObjectUrlFromBlob(blob);
+    final anchor = html.AnchorElement(href: url)
+      ..setAttribute('download', fileName)
+      ..click();
+
+    // Clean up the URL object
+    html.Url.revokeObjectUrl(url);
+  }
+
+  String _convertToCsv(List<Map<String, dynamic>> data) {
+    if (data.isEmpty) return '';
+
+    // Extract headers (keys from the first map)
+    final headers = data.first.keys.join(',');
+
+    // Convert each map to a CSV row
+    final rows = data.map((map) => map.values.join(',')).toList();
+
+    // Combine headers and rows into a single CSV string
+    return '$headers\n${rows.join('\n')}';
+  }
 /////////
 
 /////////////////////// for verfication  /////////////////////////////////
@@ -771,6 +1093,33 @@ class HomeVm with ChangeNotifier {
   // Future addExtraKeyInExistingAllRecordsF(context) async {
   //   setLoadingF(true, 'refresh');
   //   try {
+  //     await _instance.collection('userProfile').get().then((querySnapshot) {
+  //       querySnapshot.docs.forEach((document) {
+  //         if (document.data()['varifiedStatus'] == 3) {
+  //           document.reference.update({
+  //             'iCardDesc': '',
+  //             'bCardDesc': '',
+  //             'isValidICard': true,
+  //             'isValidBCard': true,
+  //           });
+  //         }
+  //       });
+  //     }).then((v) {
+  //       debugPrint("👉 done");
+  //       EasyLoading.showSuccess("Done");
+  //     });
+
+  //     // debugPrint("allUsersList length: ${allUsersList.length}");
+  //   } catch (e, st) {
+  //     EasyLoading.showError("$e");
+  //     debugPrint("💥 try catch error: $e , st:$st");
+  //   } finally {
+  //     setLoadingF(false);
+  //   }
+  // }
+  // Future addExtraKeyInExistingAllRecordsF(context) async {
+  //   setLoadingF(true, 'refresh');
+  //   try {
   //     await _instance.collection('userProfile2').get().then((querySnapshot) {
   //       querySnapshot.docs.forEach((document) {
   //         document.reference.update({
@@ -809,38 +1158,38 @@ class HomeVm with ChangeNotifier {
   //   }
   // }
 
-  Future setTransactionsF(context) async {
-    setLoadingF(true, 'refresh');
-    try {
-      List<Map<String, dynamic>> trList = List.generate(20, (index) {
-        return {
-          'price': index * 50,
-          'isPending': index.isEven,
-          'trId': "abc$index",
-          'planType': index.isEven ? 'gold' : 'silver',
-          'timestamp': DateTime.now()
-              .subtract(Duration(
-                  days: (index % 3 == 0 ? 30 : 60) + (index ~/ 3) * 30))
-              .millisecondsSinceEpoch,
-          'uid': 'A87WbTFgL3MVO3GFN5r0cxnpHmI3',
-        };
-      });
+  // Future setTransactionsF(context) async {
+  //   setLoadingF(true, 'refresh');
+  //   try {
+  //     List<Map<String, dynamic>> trList = List.generate(20, (index) {
+  //       return {
+  //         'price': index * 50,
+  //         'isPending': index.isEven,
+  //         'trId': "abc$index",
+  //         'planType': index.isEven ? 'gold' : 'silver',
+  //         'timestamp': DateTime.now()
+  //             .subtract(Duration(
+  //                 days: (index % 3 == 0 ? 30 : 60) + (index ~/ 3) * 30))
+  //             .millisecondsSinceEpoch,
+  //         'uid': 'A87WbTFgL3MVO3GFN5r0cxnpHmI3',
+  //       };
+  //     });
 
-      for (int i = 0; i < trList.length; i++) {
-        await _instance
-            .collection('transactions')
-            .doc((i + 1).toString())
-            .set(trList[i]);
-      }
+  //     for (int i = 0; i < trList.length; i++) {
+  //       await _instance
+  //           .collection('transactions')
+  //           .doc((i + 1).toString())
+  //           .set(trList[i]);
+  //     }
 
-      // debugPrint("allUsersList length: ${allUsersList.length}");
-    } catch (e, st) {
-      EasyLoading.showError("$e");
-      debugPrint("💥 try catch error: $e , st:$st");
-    } finally {
-      setLoadingF(false);
-    }
-  }
+  //     // debugPrint("allUsersList length: ${allUsersList.length}");
+  //   } catch (e, st) {
+  //     EasyLoading.showError("$e");
+  //     debugPrint("💥 try catch error: $e , st:$st");
+  //   } finally {
+  //     setLoadingF(false);
+  //   }
+  // }
 
   // Future setAppInfoF(context) async {
   //   setLoadingF(true, 'refresh');

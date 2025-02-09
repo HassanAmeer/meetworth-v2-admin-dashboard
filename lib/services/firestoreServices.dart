@@ -891,11 +891,11 @@ class FStore {
     });
   }
 
-  changeStatusUser(UserModel user) {
+  changeStatusUserF({docId, bool? status}) {
     _instance
         .collection('userProfile')
-        .doc(user.uid)
-        .set({"enable": !user.enable!}, SetOptions(merge: true));
+        .doc(docId)
+        .set({"enable": status!}, SetOptions(merge: true));
   }
 
   changeMemberShip(UserModel user, String status) {
@@ -1017,6 +1017,20 @@ class FStore {
     for (var item in data.docs) {
       if (item.exists) {
         list.add(PaymentModel.toModel(item.data()));
+      }
+    }
+    return list;
+  }
+
+  Future<List<TransactionsModel>> getTransactionOutsideF(userId) async {
+    List<TransactionsModel> list = [];
+    var data = await _instance
+        .collection('transactions')
+        .where('uid', isEqualTo: userId)
+        .get();
+    for (var item in data.docs) {
+      if (item.exists) {
+        list.add(TransactionsModel.fromMap(item.data()));
       }
     }
     return list;

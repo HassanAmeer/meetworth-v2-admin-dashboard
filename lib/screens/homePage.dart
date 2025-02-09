@@ -191,6 +191,31 @@ class _HomePageState extends ConsumerState<HomePage> {
                                               //     context,
                                               //     showLoading: true,
                                               //     loadingFor: "refresh");
+
+                                              ref.read(homeVm).getUsersF(
+                                                  context,
+                                              loadingFor: "refresh",
+                                                  showLoading: true);
+                                              ref
+                                                  .read(homeVm)
+                                                  .getTransactionsF(context);
+                                              ref
+                                                  .read(homeVm)
+                                                  .getAllChatsF(context);
+                                              ref
+                                                  .read(homeVm)
+                                                  .getAllPostsCommentsLikesShareF(
+                                                      context);
+                                              ref
+                                                  .read(homeVm)
+                                                  .getAllFriendsF(context);
+                                              ref
+                                                  .read(homeVm)
+                                                  .getAppInfoListF(context);
+                                              ref.read(homeVm).getFeedBacksF(
+                                                  context,
+                                                  loadingFor: "refresh",
+                                                  showLoading: true);
                                             },
                                             borderRadius:
                                                 BorderRadius.circular(15),
@@ -315,7 +340,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                                     widthRatio: isPhone ? 1 : 0.21,
                                     heightRatio: isPhone ? 0.4 : 0.15,
                                     padding: isPhone
-                                        ? const EdgeInsets.symmetric(horizontal: 30)
+                                        ? const EdgeInsets.symmetric(
+                                            horizontal: 30)
                                         : const EdgeInsets.all(10),
                                     child: Row(
                                         // mainAxisAlignment:
@@ -413,7 +439,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                                         ? w * 0.06
                                                         : w * 0.04),
                                                 child: PieChartWidget(
-                                                  scale: isPhone? 1.2: 1.7,
+                                                    scale: isPhone ? 1.2 : 1.7,
                                                     dataList: p.allUsersList),
                                               ))
                                         ])),
@@ -1530,7 +1556,7 @@ class MsgChartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("👉 dataList length: ${dataList.length}");
+    // debugPrint("👉 dataList length: ${dataList.length}");
     return BarChart(
       BarChartData(
         rotationQuarterTurns: 1,

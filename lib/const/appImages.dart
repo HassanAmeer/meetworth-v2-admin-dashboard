@@ -11,10 +11,12 @@ class AppImages {
   static String twitter = "assets/icons/twitter.png";
   static String insta = "assets/icons/insta.png";
 
+  static String bronze = "assets/icons/broonze.png";
+  static String silver = "assets/icons/silver.png";
+  static String goldcoin = "assets/icons/goldcoin.png";
   static String checkGold = "assets/icons/check_gold.png";
   static String cloth = "assets/icons/cloth.png";
   static String globalBlue = "assets/icons/global_blue.png";
-  static String goldcoin = "assets/icons/goldcoin.png";
   static String frame = "assets/icons/frame.png";
   static String hands = "assets/icons/hands.png";
   static String lang = "assets/icons/lang.png";

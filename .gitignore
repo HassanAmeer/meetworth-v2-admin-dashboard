@@ -32,6 +32,8 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+lib/vm/fcmKeys.dart
+/lib/vm/fcmKeys.dart
 
 # Symbolication related
 app.*.symbols

@@ -35,16 +35,19 @@ class _UsersPageState extends ConsumerState<UsersPage> {
     super.dispose();
   }
 
-  syncFirstF() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+  syncFirstF() async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var home = ref.read(homeVm);
-      home.selectUserIndexF(0);
+      await home.selectUserIndexF(0);
       if (home.allUsersList.isEmpty) {
         home
             .getUsersF(context,
                 showLoading: true, loadingFor: "users", onlyUsers: true)
             .then((v) {});
+      } else if (home.geted13usersList.isEmpty) {
+        home.get13UsersF(loadingFor: 'users', showLoading: true);
       }
+      
       // if (home.userFilterIndexFrom == 0) {
       //   home.get13UsersF(loadingFor: 'users', showLoading: true);
       // }
@@ -162,70 +165,77 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                     onEditingComplete:
                                                         () async {
                                                       p.searchUsersF(
-                                                          loadingFor: 'users',
+                                                          loadingFor: 'search',
                                                           showLoading: true,
                                                           query: queryController
                                                               .text);
                                                     },
                                                     cursorHeight: 12,
                                                     cursorColor: Colors.grey,
-                                                    // decoration:
-                                                    //     InputDecoration(
-                                                    //   border:
-                                                    //       InputBorder.none,
-                                                    //   contentPadding:
-                                                    //       const EdgeInsets
-                                                    //           .symmetric(
-                                                    //           horizontal: 12,
-                                                    //           vertical: 10),
-                                                    //   filled: true,
-                                                    //   fillColor: Colors.black,
-                                                    //   prefixIcon: IconButton(
-                                                    //     onPressed: () async {
-                                                    //       await p.searchUsersF(
-                                                    //           loadingFor:
-                                                    //               'users',
-                                                    //           showLoading:
-                                                    //               true,
-                                                    //           query:
-                                                    //               queryController
-                                                    //                   .text);
-                                                    //     },
-                                                    //     icon: const Icon(
-                                                    //         Icons.search,
-                                                    //         color:
-                                                    //             Colors.white,
-                                                    //         size: 17),
-                                                    //   ),
-                                                    //   hintText: "Search",
-                                                    //   disabledBorder:
-                                                    //       OutlineInputBorder(
-                                                    //           borderRadius:
-                                                    //               BorderRadius
-                                                    //                   .circular(
-                                                    //                       20),
-                                                    //           borderSide:
-                                                    //               BorderSide
-                                                    //                   .none),
-                                                    //   enabledBorder:
-                                                    //       OutlineInputBorder(
-                                                    //           borderRadius:
-                                                    //               BorderRadius
-                                                    //                   .circular(
-                                                    //                       20),
-                                                    //           borderSide:
-                                                    //               BorderSide
-                                                    //                   .none),
-                                                    //   focusedBorder:
-                                                    //       OutlineInputBorder(
-                                                    //           borderRadius:
-                                                    //               BorderRadius
-                                                    //                   .circular(
-                                                    //                       20),
-                                                    //           borderSide:
-                                                    //               BorderSide
-                                                    //                   .none),
-                                                    // ),
+                                                    decoration: InputDecoration(
+                                                      border: InputBorder.none,
+                                                      contentPadding:
+                                                          const EdgeInsets
+                                                              .symmetric(
+                                                              horizontal: 12,
+                                                              vertical: 10),
+                                                      filled: true,
+                                                      fillColor: Colors.black,
+                                                      prefixIcon: p.isLoading &&
+                                                              p.isLoadingFor ==
+                                                                  "search"
+                                                          ? const CircularProgressIndicator
+                                                              .adaptive(
+                                                              strokeWidth: 2,
+                                                              backgroundColor:
+                                                                  AppColors
+                                                                      .gold)
+                                                          : IconButton(
+                                                              onPressed:
+                                                                  () async {
+                                                                await p.searchUsersF(
+                                                                    loadingFor:
+                                                                        'search',
+                                                                    showLoading:
+                                                                        true,
+                                                                    query: queryController
+                                                                        .text);
+                                                              },
+                                                              icon: const Icon(
+                                                                  Icons.search,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  size: 17),
+                                                            ),
+                                                      hintText: "Search",
+                                                      disabledBorder:
+                                                          OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20),
+                                                              borderSide:
+                                                                  BorderSide
+                                                                      .none),
+                                                      enabledBorder:
+                                                          OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20),
+                                                              borderSide:
+                                                                  BorderSide
+                                                                      .none),
+                                                      focusedBorder:
+                                                          OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20),
+                                                              borderSide:
+                                                                  BorderSide
+                                                                      .none),
+                                                    ),
                                                   )),
                                             ])
                                       : Row(
@@ -275,7 +285,7 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                                   (_) {
                                                             p.searchUsersF(
                                                                 loadingFor:
-                                                                    'users',
+                                                                    'search',
                                                                 showLoading:
                                                                     true,
                                                                 query:
@@ -299,24 +309,34 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                           filled: true,
                                                           fillColor:
                                                               Colors.black,
-                                                          // prefixIcon:
-                                                          //     IconButton(
-                                                          //   onPressed:
-                                                          //       () async {
-                                                          //     // await p.searchUsersF(
-                                                          //     //     loadingFor:
-                                                          //     //         'users',
-                                                          //     //     showLoading:
-                                                          //     //         true,
-                                                          //     //     query: queryController
-                                                          //     //         .text);
-                                                          //   },
-                                                          //   icon: const Icon(
-                                                          //       Icons.search,
-                                                          //       color: Colors
-                                                          //           .white,
-                                                          //       size: 17),
-                                                          // ),
+                                                          prefixIcon: p.isLoading &&
+                                                                  p.isLoadingFor ==
+                                                                      "search"
+                                                              ? const CircularProgressIndicator
+                                                                  .adaptive(
+                                                                  strokeWidth:
+                                                                      2,
+                                                                  backgroundColor:
+                                                                      AppColors
+                                                                          .gold)
+                                                              : IconButton(
+                                                                  onPressed:
+                                                                      () async {
+                                                                    await p.searchUsersF(
+                                                                        loadingFor:
+                                                                            'search',
+                                                                        showLoading:
+                                                                            true,
+                                                                        query: queryController
+                                                                            .text);
+                                                                  },
+                                                                  icon: const Icon(
+                                                                      Icons
+                                                                          .search,
+                                                                      color: Colors
+                                                                          .white,
+                                                                      size: 17),
+                                                                ),
                                                           hintText: "Search",
                                                           disabledBorder:
                                                               OutlineInputBorder(
@@ -404,7 +424,10 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                       p.geted13usersList[index];
                                                   return DataRow(cells: [
                                                     DataCell(onTap: () {
-                                                      p.selectUserIndexF(index);
+                                                      p.selectUserIndexF(index,
+                                                          showLoading: true,
+                                                          loadingFor:
+                                                              "selectinguser");
                                                     },
                                                         Row(
                                                             mainAxisSize:
@@ -454,7 +477,10 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                                           3))
                                                             ])),
                                                     DataCell(onTap: () {
-                                                      p.selectUserIndexF(index);
+                                                      p.selectUserIndexF(index,
+                                                          showLoading: true,
+                                                          loadingFor:
+                                                              "selectinguser");
                                                     },
                                                         SizedBox(
                                                             width: 90,
@@ -471,7 +497,10 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                                           .fade)
                                                             ]))),
                                                     DataCell(onTap: () {
-                                                      p.selectUserIndexF(index);
+                                                      p.selectUserIndexF(index,
+                                                          showLoading: true,
+                                                          loadingFor:
+                                                              "selectinguser");
                                                     },
                                                         Row(children: [
                                                           Text(
@@ -489,7 +518,10 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                               size: 12),
                                                         ])),
                                                     DataCell(onTap: () {
-                                                      p.selectUserIndexF(index);
+                                                      p.selectUserIndexF(index,
+                                                          showLoading: true,
+                                                          loadingFor:
+                                                              "selectinguser");
                                                     },
                                                         SizedBox(
                                                             width: 80,
@@ -507,7 +539,10 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                                         .visible,
                                                                 maxLines: 3))),
                                                     DataCell(onTap: () {
-                                                      p.selectUserIndexF(index);
+                                                      p.selectUserIndexF(index,
+                                                          showLoading: true,
+                                                          loadingFor:
+                                                              "selectinguser");
                                                     },
                                                         SizedBox(
                                                             width: 80,
@@ -533,7 +568,10 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                     DataCell(
                                                       onTap: () {
                                                         p.selectUserIndexF(
-                                                            index);
+                                                            index,
+                                                            showLoading: true,
+                                                            loadingFor:
+                                                                "selectinguser");
                                                       },
                                                       Text('${user.membership}',
                                                           style: TextStyle(
@@ -550,7 +588,10 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                                           .pieChartColor2)),
                                                     ),
                                                     DataCell(onTap: () {
-                                                      p.selectUserIndexF(index);
+                                                      p.selectUserIndexF(index,
+                                                          showLoading: true,
+                                                          loadingFor:
+                                                              "selectinguser");
                                                     },
                                                         Row(children: [
                                                           InkWell(
@@ -559,12 +600,16 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                                   BorderRadius
                                                                       .circular(
                                                                           10),
-                                                              child: const Icon(
+                                                              child: Icon(
                                                                   Icons
                                                                       .check_circle,
                                                                   size: 18,
-                                                                  color: AppColors
-                                                                      .textGreen)),
+                                                                  color: user
+                                                                          .enable!
+                                                                      ? AppColors
+                                                                          .textGreen
+                                                                      : AppColors
+                                                                          .textRed)),
                                                           Text(
                                                               user.enable!
                                                                   ? 'Active'
@@ -580,7 +625,10 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                                           .shade500))
                                                         ])),
                                                     DataCell(onTap: () {
-                                                      p.selectUserIndexF(index);
+                                                      p.selectUserIndexF(index,
+                                                          showLoading: true,
+                                                          loadingFor:
+                                                              "selectinguser");
                                                     },
                                                         Row(children: [
                                                           InkWell(
@@ -786,8 +834,8 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                     ]),
                                     const SizedBox(height: 4),
                                     Wrap(
-                                        runSpacing: isPhone?  10:0,
-                                        spacing:isPhone?10:0,
+                                        runSpacing: isPhone ? 10 : 5,
+                                        spacing: isPhone ? 10 : 5,
                                         // mainAxisAlignment:
                                         // MainAxisAlignment.spaceBetween,
                                         children: [
@@ -916,29 +964,28 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                             .copyWith(
                                                                 color: AppColors
                                                                     .textSilver)))),
-                                            // const SizedBox(width: 10),
-                                            // Opacity(
-                                            //     opacity:
-                                            //     // !p.filteredStatus
-                                            //     //     ? 1.0
-                                            //     //     :
-                                            //         0.5,
-                                            //     child: OutlinedButton(
-                                            //         onPressed: () {
-                                            //           p.choosFilterOptionsF(
-                                            //               status: false);
-                                            //         },
-                                            //         style: OutlinedButton.styleFrom(
-                                            //             side: const BorderSide(
-                                            //                 width: 1,
-                                            //                 color: AppColors
-                                            //                     .textSilver)),
-                                            //         child: Text("Block",
-                                            //             style: Theme.of(context).textTheme
-                                            //                 .labelSmall!
-                                            //                 .copyWith(
-                                            //                     color: AppColors
-                                            //                         .textSilver))))
+                                            const SizedBox(width: 10),
+                                            Opacity(
+                                                opacity: !p.filteredStatus
+                                                    ? 1.0
+                                                    : 0.5,
+                                                child: OutlinedButton(
+                                                    onPressed: () {
+                                                      p.choosFilterOptionsF(
+                                                          status: false);
+                                                    },
+                                                    style: OutlinedButton.styleFrom(
+                                                        side: const BorderSide(
+                                                            width: 1,
+                                                            color: AppColors
+                                                                .textSilver)),
+                                                    child: Text("Block",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .labelSmall!
+                                                            .copyWith(
+                                                                color: AppColors
+                                                                    .textSilver))))
                                           ])
                                         ]),
                                     const SizedBox(height: 20),
@@ -946,17 +993,23 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                       width: w * 0.24,
                                       child: OutlinedButton(
                                           onPressed: () {
-                                            p.filterUsersF();
+                                            p.filterUsersF(
+                                                showLoading: true,
+                                                loadingFor: 'filtering');
                                           },
                                           style: OutlinedButton.styleFrom(
                                               side: const BorderSide(
                                                   width: 1,
                                                   color: AppColors.gold)),
-                                          child: Text("Filter",
-                                              style: TextTheme.of(context)
-                                                  .labelSmall!
-                                                  .copyWith(
-                                                      color: AppColors.gold))),
+                                          child: p.isLoading &&
+                                                  p.isLoadingFor == "filtering"
+                                              ? const DotLoader()
+                                              : Text("Filter",
+                                                  style: TextTheme.of(context)
+                                                      .labelSmall!
+                                                      .copyWith(
+                                                          color:
+                                                              AppColors.gold))),
                                     )
                                   ])),
                               p.isUsersFiltered
@@ -968,10 +1021,14 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              const Text("Filters",
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 20)),
+                                              p.isLoading &&
+                                                      p.isLoadingFor ==
+                                                          "selectinguser"
+                                                  ? const DotLoader()
+                                                  : const Text("Filters",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 20)),
                                               OutlinedButton(
                                                   onPressed: () {},
                                                   style:
@@ -1058,23 +1115,27 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    CardWidget(
-                                        widthRatio: isPhone ? 1 : 0.12,
-                                        padding: const EdgeInsets.all(15),
-                                        child: Column(children: [
-                                          Text("Selection",
-                                              style: TextTheme.of(context)
-                                                  .headlineSmall),
-                                          ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      AppColors.gold),
-                                              onPressed: () {},
-                                              child: const Text(
-                                                  "Selection is on",
-                                                  style: TextStyle(
-                                                      color: Colors.white))),
-                                        ])),
+                                    p.geted13usersList.isEmpty
+                                        ? const SizedBox.shrink()
+                                        : CardWidget(
+                                            widthRatio: isPhone ? 1 : 0.12,
+                                            padding: const EdgeInsets.all(15),
+                                            child: Column(children: [
+                                              Text("Selection",
+                                                  style: TextTheme.of(context)
+                                                      .headlineSmall),
+                                              ElevatedButton(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                          backgroundColor:
+                                                              AppColors.gold),
+                                                  onPressed: () {},
+                                                  child: const Text(
+                                                      "Selection is on",
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.white))),
+                                            ])),
                                     p.geted13usersList.isEmpty
                                         ? const SizedBox.shrink()
                                         : CardWidget(
@@ -1086,59 +1147,97 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                       .headlineSmall),
                                               const SizedBox(height: 12),
                                               Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                children: [
-                                                  Row(children: [
-                                                    Opacity(
-                                                      opacity: p
-                                                              .geted13usersList[
-                                                                  p.selectedUserIndex]
-                                                              .enable!
-                                                          ? 1
-                                                          : 0.5,
-                                                      child: InkWell(
-                                                          onTap: () {},
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                          child: const Icon(
-                                                              Icons.cancel,
-                                                              size: 18,
-                                                              color: AppColors
-                                                                  .textRed)),
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    InkWell(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      onTap: () {
+                                                        p.activeOrBanUserF(
+                                                            showLoading: true,
+                                                            loadingFor: 'block',
+                                                            docId: p
+                                                                .geted13usersList[
+                                                                    p.selectedUserIndex]
+                                                                .uid!,
+                                                            status: false);
+                                                      },
+                                                      child: Opacity(
+                                                        opacity: !p
+                                                                .geted13usersList[
+                                                                    p.selectedUserIndex]
+                                                                .enable!
+                                                            ? 1
+                                                            : 0.5,
+                                                        child: Row(children: [
+                                                          Opacity(
+                                                              opacity: p
+                                                                      .geted13usersList[p
+                                                                          .selectedUserIndex]
+                                                                      .enable!
+                                                                  ? 0.5
+                                                                  : 1,
+                                                              child: const Icon(
+                                                                  Icons.cancel,
+                                                                  size: 18,
+                                                                  color: AppColors
+                                                                      .textRed)),
+                                                          p.isLoading &&
+                                                                  p.isLoadingFor ==
+                                                                      "block"
+                                                              ? const DotLoader()
+                                                              : const Text(
+                                                                  ' Block',
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          10))
+                                                        ]),
+                                                      ),
                                                     ),
-                                                    const Text(' Block',
-                                                        style: TextStyle(
-                                                            fontSize: 10))
+                                                    InkWell(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        onTap: () {
+                                                          p.activeOrBanUserF(
+                                                              showLoading: true,
+                                                              loadingFor:
+                                                                  'active',
+                                                              docId: p
+                                                                  .geted13usersList[
+                                                                      p.selectedUserIndex]
+                                                                  .uid!,
+                                                              status: true);
+                                                        },
+                                                        child: Opacity(
+                                                          opacity: p
+                                                                  .geted13usersList[
+                                                                      p.selectedUserIndex]
+                                                                  .enable!
+                                                              ? 1
+                                                              : 0.5,
+                                                          child: Row(children: [
+                                                            const Icon(
+                                                                Icons
+                                                                    .check_circle,
+                                                                size: 18,
+                                                                color: AppColors
+                                                                    .textGreen),
+                                                            p.isLoading &&
+                                                                    p.isLoadingFor ==
+                                                                        "active"
+                                                                ? const DotLoader()
+                                                                : const Text(
+                                                                    ' Active',
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            10))
+                                                          ]),
+                                                        ))
                                                   ]),
-                                                  Row(children: [
-                                                    Opacity(
-                                                      opacity: p
-                                                              .geted13usersList[
-                                                                  p.selectedUserIndex]
-                                                              .enable!
-                                                          ? 0.5
-                                                          : 1,
-                                                      child: InkWell(
-                                                          onTap: () {},
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                          child: const Icon(
-                                                              Icons
-                                                                  .check_circle,
-                                                              size: 18,
-                                                              color: AppColors
-                                                                  .textGreen)),
-                                                    ),
-                                                    const Text(' Unblock',
-                                                        style: TextStyle(
-                                                            fontSize: 10))
-                                                  ]),
-                                                ],
-                                              )
                                             ])),
                                   ]),
                               p.geted13usersList.isEmpty
@@ -1155,15 +1254,53 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 20)),
-                                              CircleAvatar(
-                                                  radius: 30,
-                                                  backgroundColor:
-                                                      AppColors.gold,
+
+                                              ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          110),
                                                   child: CircleAvatar(
-                                                      radius: 28,
-                                                      backgroundImage:
-                                                          AssetImage(AppImages
-                                                              .profile2))),
+                                                      radius: 30,
+                                                      backgroundColor:
+                                                          AppColors.silverGold,
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(110),
+                                                        child: CircleAvatar(
+                                                            backgroundColor:
+                                                                AppColors
+                                                                    .bgColor,
+                                                            radius: 28,
+                                                            child: CachedNetworkImage(
+                                                                imageUrl:
+                                                                    "${p.geted13usersList[p.selectedUserIndex].image}",
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                                errorWidget: (context,
+                                                                        url,
+                                                                        error) =>
+                                                                    Opacity(
+                                                                        opacity:
+                                                                            0.5,
+                                                                        child: Image.asset(AppImages
+                                                                            .profiledarkgold)),
+                                                                progressIndicatorBuilder: (context,
+                                                                        url,
+                                                                        progress) =>
+                                                                    const Center(
+                                                                        child:
+                                                                            Padding(padding: EdgeInsets.all(5), child: CircularProgressIndicator(color: AppColors.primary, strokeWidth: 1))))),
+                                                      ))),
+                                              // CircleAvatar(
+                                              //     radius: 30,
+                                              //     backgroundColor:
+                                              //         AppColors.gold,
+                                              //     child: CircleAvatar(
+                                              //         radius: 28,
+                                              //         backgroundImage:
+                                              //             AssetImage(AppImages
+                                              //                 .profile2))),
                                             ]),
                                         Row(children: [
                                           const Text("Name: ",
@@ -1245,7 +1382,7 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                           .geted13usersList[p
                                                               .selectedUserIndex]
                                                           .varifiedStatus! ==
-                                                      0
+                                                      3
                                                   ? const Icon(
                                                       Icons.check_circle,
                                                       color:
@@ -1257,8 +1394,8 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                               p
                                                           .geted13usersList[p
                                                               .selectedUserIndex]
-                                                          .varifiedStatus! ==
-                                                      0
+                                                          .membership! !=
+                                                      "Free"
                                                   ? const Icon(
                                                       Icons.check_circle,
                                                       color:
@@ -1293,10 +1430,25 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                         color: AppColors
                                                             .silverGold)),
                                                 const SizedBox(width: 5),
-                                                Text(p
-                                                    .geted13usersList[
-                                                        p.selectedUserIndex]
-                                                    .deadlinemembership),
+
+                                                Text(
+                                                  p
+                                                      .geted13usersList[
+                                                          p.selectedUserIndex]
+                                                      .deadlinemembership,
+                                                )
+                                                // int.tryParse(p
+                                                //     .geted13usersList[
+                                                //         p.selectedUserIndex]
+                                                //     .deadlinemembership.toString()) == null
+                                                //     ? const Text("Empty",
+                                                //         style: TextStyle(
+                                                //           color: AppColors.textRed
+                                                //         ))
+                                                //     : Text("${DateTime.fromMicrosecondsSinceEpoch(int.parse(p
+                                                //         .geted13usersList[
+                                                //             p.selectedUserIndex]
+                                                //         .deadlinemembership.toString()))}"),
                                               ])
                                             ]),
                                         const Divider(thickness: 0.1),
@@ -1339,9 +1491,7 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                 color: AppColors.silverGold,
                                               )),
                                           const SizedBox(width: 5),
-                                          Text(
-                                            "${((int.parse(p.geted13usersList[p.selectedUserIndex].monthlyAppUsageInSeconds) / 30) / 60).toStringAsFixed(2)} min",
-                                          ),
+                                          Text("${p.sessionDurationOfUser} min")
                                         ]),
                                         const Divider(thickness: 0.1),
                                         Row(
@@ -1356,10 +1506,9 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                           AppColors.silverGold,
                                                     )),
                                                 const SizedBox(width: 5),
-                                                Text(p
-                                                    .geted13usersList[
-                                                        p.selectedUserIndex]
-                                                    .accountCreationLocation)
+                                                Text("${p.geted13usersList[p.selectedUserIndex].accountCreationLocation.isEmpty ? p.geted13usersList[p.selectedUserIndex].country : p.geted13usersList[p.selectedUserIndex].accountCreationLocation}"),
+                                                // Text("${p.userJoinedLocation}")
+                                                // Text("${(p.getLocationName(p.geted13usersList[p.selectedUserIndex].point!.latitude, p.geted13usersList[ p.selectedUserIndex].point!.longitude))}")
                                               ]),
                                               Row(children: [
                                                 const Text(
@@ -1385,20 +1534,31 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                   )),
                                               const SizedBox(width: 5),
                                               OutlinedButton(
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    p.downloadTransactionsF(
+                                                        uid: p
+                                                            .geted13usersList[p
+                                                                .selectedUserIndex]
+                                                            .uid!,
+                                                        loadingFor: 'tr',
+                                                        showLoading: true);
+                                                  },
                                                   style:
                                                       OutlinedButton.styleFrom(
                                                           side: const BorderSide(
                                                               width: 1,
                                                               color: AppColors
                                                                   .gold)),
-                                                  child: Text("Download CSV",
-                                                      style: TextTheme.of(
-                                                              context)
-                                                          .labelSmall!
-                                                          .copyWith(
-                                                              color: AppColors
-                                                                  .gold)))
+                                                  child: p.isLoading &&
+                                                          p.isLoadingFor == "tr"
+                                                      ? const DotLoader()
+                                                      : Text("Download CSV",
+                                                          style: TextTheme.of(
+                                                                  context)
+                                                              .labelSmall!
+                                                              .copyWith(
+                                                                  color: AppColors
+                                                                      .gold)))
                                             ]),
                                         const Divider(thickness: 0.1),
                                         Row(
@@ -1548,6 +1708,7 @@ class _UsersPageState extends ConsumerState<UsersPage> {
         // }
       );
     }));
+
     // } catch (e, st) {
     //   debugPrint("👉 users page error : $e, st: $st");
     //   WidgetsBinding.instance.addPostFrameCallback((_) {

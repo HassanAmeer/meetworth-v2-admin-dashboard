@@ -13,6 +13,8 @@ class NotificationsPage extends ConsumerStatefulWidget {
 }
 
 class _NotificationsPageState extends ConsumerState<NotificationsPage> {
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -144,15 +146,27 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
                             width: isPhone ? w * 0.7 : w * 0.3,
                             child: OutlinedButton(
                                 onPressed: () {
+                                  p.sendNotificationsF(
+                                      showLoading: true,
+                                      // fcm:
+                                      //     'foh4oK5bSVasEk2FiWCCpc:APA91bFE9bpRKXdnAuco-35DwGdnRc-cw4fBP59A4MQcNFUNT6Z2Uq0KfqYIVNAoLiDvdcWX-evLhdho7v0JkItd1A_47dNZDJKCFFynoHz5xUiNBQ0P3lo',
+                                      loadingFor: 'sending',
+                                      title: titleController.text,
+                                      body: descController.text,
+                                      json: {'data': "raw data"});
                                   // p.choosFilterOptionsF(gender: 'Female');
                                 },
                                 style: OutlinedButton.styleFrom(
                                     side: const BorderSide(
                                         width: 1, color: AppColors.textGold)),
-                                child: Text("Send Notifications",
-                                    style: TextTheme.of(context)
-                                        .labelSmall!
-                                        .copyWith(color: AppColors.textGold)))),
+                                child: p.isLoading &&
+                                        p.isLoadingFor == 'sending'
+                                    ? const DotLoader()
+                                    : Text("Send Notifications",
+                                        style: TextTheme.of(context)
+                                            .labelSmall!
+                                            .copyWith(
+                                                color: AppColors.textGold)))),
 
                         const SizedBox(height: 30),
                       ])),

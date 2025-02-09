@@ -7,6 +7,7 @@ import 'package:meetworth_admin/screens/verifications.dart';
 import 'package:cupertino_sidebar/cupertino_sidebar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import '../screens/faq.dart';
 import '../screens/goals.dart';
 import '../screens/interest.dart';
@@ -42,13 +43,11 @@ class _SidebarWidgetState extends ConsumerState<SidebarWidget> {
   int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-      var w = MediaQuery.of(context).size.width;
-      var h = MediaQuery.of(context).size.height;
-      var isPhone = constraints.maxWidth <= 431;
-      var isTablet =
-          (constraints.maxWidth >= 431 && constraints.maxWidth <= 1024);
+    var w = MediaQuery.of(context).size.width;
+    var h = MediaQuery.of(context).size.height;
+    return ResponsiveSizer(builder: (context, orientation, screenType) {
+      var isPhone = Device.screenType == ScreenType.mobile;
+
       return CupertinoPageScaffold(
           child: Row(children: [
         CupertinoSidebar(
