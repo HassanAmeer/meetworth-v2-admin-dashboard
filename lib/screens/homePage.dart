@@ -79,7 +79,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const DashboardHeader(),
+                               DashboardHeader(),
                               SizedBox(
                                   height: 70,
                                   child: ListView(

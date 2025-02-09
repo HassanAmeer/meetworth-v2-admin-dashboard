@@ -1,13 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meetworth_admin/screens/notifications.dart';
+import 'package:meetworth_admin/screens/profile.dart';
 
 import '../const/appColors.dart';
 import '../const/appImages.dart';
+import '../vm/homeVm.dart';
 
-class DashboardHeader extends StatelessWidget {
-  const DashboardHeader({super.key});
+class DashboardHeader extends ConsumerStatefulWidget {
+  DashboardHeader({super.key});
+
+  @override
+  ConsumerState<DashboardHeader> createState() => _DashboardHeaderState();
+}
+
+class _DashboardHeaderState extends ConsumerState<DashboardHeader> {
+  TextEditingController queryController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    var p = ref.watch(homeVm);
+
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
       var isPhone = constraints.maxWidth <= 424;
@@ -66,6 +79,18 @@ class DashboardHeader extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20)),
                           padding: const EdgeInsets.all(4),
                           child: TextField(
+                              onSubmitted: (query) {
+                                p.searchUsersF(
+                                    loadingFor: 'search',
+                                    showLoading: true,
+                                    query: queryController.text);
+                              },
+                              onTap: () {
+                                p.searchUsersF(
+                                    loadingFor: 'search',
+                                    showLoading: true,
+                                    query: queryController.text);
+                              },
                               cursorHeight: 12,
                               cursorColor: Colors.grey,
                               decoration: InputDecoration(
@@ -87,21 +112,38 @@ class DashboardHeader extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(20),
                                     borderSide: BorderSide.none),
                               ))),
-                      SizedBox(width: isPhone ? 7 : 16),
+                      // SizedBox(width: isPhone ? 7 : 16),
                       // Notification Icon
-                      const Icon(Icons.notifications_outlined,
-                          color: Colors.white, size: 24),
-                      SizedBox(width: isPhone ? 7 : 16),
+                      IconButton(
+                          onPressed: () {
+                            p.setTabSelectedIndexF(3);
+                          },
+                          icon: const Icon(Icons.notifications_outlined,
+                              color: Colors.white, size: 24)),
+                      // SizedBox(width: isPhone ? 7 : 16),
                       // Info Icon
-                      const Icon(Icons.info_outline,
-                          color: Colors.white, size: 24),
-                      SizedBox(width: isPhone ? 7 : 16),
+                      IconButton(
+                        onPressed: () {
+                          p.setTabSelectedIndexF(9);
+                        },
+                        icon: const Icon(Icons.info_outline,
+                            color: Colors.white, size: 24),
+                      ),
+                      // SizedBox(width: isPhone ? 7 : 16),
                       // Profile Image
                       isPhone
                           ? const SizedBox.shrink()
-                          : ClipOval(
-                              child: Image.asset(AppImages.profile2,
-                                  width: 36, height: 36, fit: BoxFit.cover)),
+                          : InkWell(
+                              borderRadius: BorderRadius.circular(100),
+                              onTap: () {
+                                p.setTabSelectedIndexF(9);
+                              },
+                              child: ClipOval(
+                                  child: Image.asset(AppImages.profile2,
+                                      width: 36,
+                                      height: 36,
+                                      fit: BoxFit.cover)),
+                            ),
                       const SizedBox(width: 4),
                     ]))
               ]));

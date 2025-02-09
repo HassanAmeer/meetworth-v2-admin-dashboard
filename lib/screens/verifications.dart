@@ -99,7 +99,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                     // SizedBox(height: 5),
                     // Text("Dashobard", style: TextTheme.of(context).headlineLarge),
 
-                    const DashboardHeader(),
+                     DashboardHeader(),
                     SizedBox(
                         height: 70,
                         child: ListView(

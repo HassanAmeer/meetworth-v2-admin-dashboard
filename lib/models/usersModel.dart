@@ -163,6 +163,54 @@ class UserModel {
       isValidBCard: map['isValidBCard'] ?? false,
     );
   }
+
+  //////////////
+  /// Converts a [UserModel] to a json map
+  Map<String, dynamic> toJson() {
+    return {
+      'firstname': firstname,
+      'lastname': lastname,
+      'email': email,
+      'phone': phone,
+      'bio': bio,
+      'referLinkUserCount': referLinkUserCount,
+      'image': image,
+      'country': country,
+      'fcm': fcm,
+      'age': age,
+      'adminActiveMemebership': adminActiveMemebership,
+      'file1': file1,
+      'file2': file2,
+      'uid': uid,
+      'loginType': loginType,
+      'username': username,
+      'dob': dob,
+      'deadlinemembership': deadlinemembership,
+      'gender': gender,
+      'splashTimes': splashTimes,
+      'interests': interests,
+      'goals': goals,
+      'businessCategory': businessCategory,
+      'membership': membership,
+      'position': point != null ? {'geopoint': point} : null,
+      'friends': friends,
+      'linked': linked,
+      'languages': languages,
+      'enable': enable,
+      'bookmark': bookmark,
+      'galleryImages': galleryImages,
+      'varifiedStatus': varifiedStatus,
+      'profileCompleted': profileCompleted,
+      'creationDate': creationDate,
+      'planKey': planKey,
+      'accountCreationLocation': accountCreationLocation,
+      'monthlyAppUsageInSeconds': monthlyAppUsageInSeconds,
+      'iCardDesc': iCardDesc,
+      'bCardDesc': bCardDesc,
+      'isValidICard': isValidICard,
+      'isValidBCard': isValidBCard,
+    };
+  }
 }
 
 List<String> generateArray(String name) {

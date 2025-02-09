@@ -16,6 +16,7 @@ import '../screens/notifications.dart';
 import '../screens/users.dart';
 import '../screens/homePage.dart';
 import '../vm/authVm.dart';
+import '../vm/homeVm.dart';
 
 class SidebarWidget extends ConsumerStatefulWidget {
   const SidebarWidget({super.key});
@@ -40,9 +41,11 @@ class _SidebarWidgetState extends ConsumerState<SidebarWidget> {
   ];
 
   // The index of the currently selected page.
-  int _selectedIndex = 0;
+  // int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
+    var p = ref.watch(homeVm);
+
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
     return ResponsiveSizer(builder: (context, orientation, screenType) {
@@ -58,9 +61,10 @@ class _SidebarWidgetState extends ConsumerState<SidebarWidget> {
             backgroundColor: AppColors.bgCard,
             // selectedIndex: _selectedIndex,
             onDestinationSelected: (value) {
-              setState(() {
-                _selectedIndex = value;
-              });
+              // setState(() {
+              //   _selectedIndex = value;
+              // });
+              p.setTabSelectedIndexF(value);
             },
             ////////////////////////////
             navigationBar: SidebarNavigationBar(
@@ -76,9 +80,9 @@ class _SidebarWidgetState extends ConsumerState<SidebarWidget> {
               SidebarDestination(
                   // isSelected: _selectedIndex == 0 ? true : false,
                   icon: Icon(CupertinoIcons.home,
-                      color: _selectedIndex == 0
+                      color: p.selectedIndex == 0
                           ? AppColors.primaryMid
-                          : _selectedIndex == 0
+                          : p.selectedIndex == 0
                               ? AppColors.primaryMid
                               : Colors.white),
                   label: isPhone
@@ -86,141 +90,141 @@ class _SidebarWidgetState extends ConsumerState<SidebarWidget> {
                       : Text(
                           'Home',
                           style: TextStyle(
-                              color: _selectedIndex == 0
+                              color: p.selectedIndex == 0
                                   ? AppColors.primaryMid
                                   : Colors.white),
                         )),
               SidebarDestination(
-                  // isSelected: _selectedIndex == 1 ? true : false,
+                  // isSelected: p.selectedIndex == 1 ? true : false,
                   icon: Icon(CupertinoIcons.person,
-                      color: _selectedIndex == 1
+                      color: p.selectedIndex == 1
                           ? AppColors.primaryMid
                           : Colors.white),
                   label: isPhone
                       ? const SizedBox.shrink()
                       : Text('Users',
                           style: TextStyle(
-                              color: _selectedIndex == 1
+                              color: p.selectedIndex == 1
                                   ? AppColors.primaryMid
                                   : Colors.white))),
               SidebarDestination(
-                  // isSelected: _selectedIndex == 2 ? true : false,
+                  // isSelected: p.selectedIndex == 2 ? true : false,
                   icon: Icon(Icons.verified,
-                      color: _selectedIndex == 2
+                      color: p.selectedIndex == 2
                           ? AppColors.primaryMid
                           : Colors.white),
                   label: isPhone
                       ? const SizedBox.shrink()
                       : Text('Verifications',
                           style: TextStyle(
-                              color: _selectedIndex == 2
+                              color: p.selectedIndex == 2
                                   ? AppColors.primaryMid
                                   : Colors.white))),
               SidebarDestination(
-                  // isSelected: _selectedIndex == 2 ? true : false,
+                  // isSelected: p.selectedIndex == 2 ? true : false,
                   icon: Icon(Icons.notifications_active,
-                      color: _selectedIndex == 3
+                      color: p.selectedIndex == 3
                           ? AppColors.primaryMid
                           : Colors.white),
                   label: isPhone
                       ? const SizedBox.shrink()
                       : Text('Notifications',
                           style: TextStyle(
-                              color: _selectedIndex == 3
+                              color: p.selectedIndex == 3
                                   ? AppColors.primaryMid
                                   : Colors.white))),
               SidebarDestination(
-                  // isSelected: _selectedIndex == 2 ? true : false,
+                  // isSelected: p.selectedIndex == 2 ? true : false,
                   icon: Icon(Icons.category_outlined,
-                      color: _selectedIndex == 4
+                      color: p.selectedIndex == 4
                           ? AppColors.primaryMid
                           : Colors.white),
                   label: isPhone
                       ? const SizedBox.shrink()
                       : Text('Business Categories',
                           style: TextStyle(
-                              color: _selectedIndex == 4
+                              color: p.selectedIndex == 4
                                   ? AppColors.primaryMid
                                   : Colors.white))),
               SidebarDestination(
-                  // isSelected: _selectedIndex == 2 ? true : false,
+                  // isSelected: p.selectedIndex == 2 ? true : false,
                   icon: Icon(Icons.interests,
-                      color: _selectedIndex == 5
+                      color: p.selectedIndex == 5
                           ? AppColors.primaryMid
                           : Colors.white),
                   label: isPhone
                       ? const SizedBox.shrink()
                       : Text('Interests',
                           style: TextStyle(
-                              color: _selectedIndex == 5
+                              color: p.selectedIndex == 5
                                   ? AppColors.primaryMid
                                   : Colors.white))),
               SidebarDestination(
-                  // isSelected: _selectedIndex == 2 ? true : false,
+                  // isSelected: p.selectedIndex == 2 ? true : false,
                   icon: Icon(Icons.translate,
-                      color: _selectedIndex == 6
+                      color: p.selectedIndex == 6
                           ? AppColors.primaryMid
                           : Colors.white),
                   label: isPhone
                       ? const SizedBox.shrink()
                       : Text('Language',
                           style: TextStyle(
-                              color: _selectedIndex == 6
+                              color: p.selectedIndex == 6
                                   ? AppColors.primaryMid
                                   : Colors.white))),
               SidebarDestination(
-                  // isSelected: _selectedIndex == 2 ? true : false,
+                  // isSelected: p.selectedIndex == 2 ? true : false,
                   icon: Icon(Icons.batch_prediction_outlined,
-                      color: _selectedIndex == 7
+                      color: p.selectedIndex == 7
                           ? AppColors.primaryMid
                           : Colors.white),
                   label: isPhone
                       ? const SizedBox.shrink()
                       : Text('Goals',
                           style: TextStyle(
-                              color: _selectedIndex == 7
+                              color: p.selectedIndex == 7
                                   ? AppColors.primaryMid
                                   : Colors.white))),
               SidebarDestination(
-                  // isSelected: _selectedIndex == 2 ? true : false,
+                  // isSelected: p.selectedIndex == 2 ? true : false,
                   icon: Icon(Icons.format_quote,
-                      color: _selectedIndex == 8
+                      color: p.selectedIndex == 8
                           ? AppColors.primaryMid
                           : Colors.white),
                   label: isPhone
                       ? const SizedBox.shrink()
                       : Text('FAQs',
                           style: TextStyle(
-                              color: _selectedIndex == 8
+                              color: p.selectedIndex == 8
                                   ? AppColors.primaryMid
                                   : Colors.white))),
               SidebarDestination(
-                  // isSelected: _selectedIndex == 2 ? true : false,
+                  // isSelected: p.selectedIndex == 2 ? true : false,
                   icon: Icon(Icons.person_4,
-                      color: _selectedIndex == 9
+                      color: p.selectedIndex == 9
                           ? AppColors.primaryMid
                           : Colors.white),
                   label: isPhone
                       ? const SizedBox.shrink()
                       : Text('Profile',
                           style: TextStyle(
-                              color: _selectedIndex == 9
+                              color: p.selectedIndex == 9
                                   ? AppColors.primaryMid
                                   : Colors.white))),
               SidebarDestination(
                   onTap: () {
                     ref.read(authVm).logOut(context);
                   },
-                  // isSelected: _selectedIndex == 2 ? true : false,
+                  // isSelected: p.selectedIndex == 2 ? true : false,
                   icon: Icon(Icons.logout,
-                      color: _selectedIndex == 10
+                      color: p.selectedIndex == 10
                           ? AppColors.primaryMid
                           : Colors.orange),
                   label: isPhone
                       ? const SizedBox.shrink()
                       : Text('Logout',
                           style: TextStyle(
-                              color: _selectedIndex == 10
+                              color: p.selectedIndex == 10
                                   ? AppColors.primaryMid
                                   : Colors.orange))),
             ]),
@@ -228,7 +232,7 @@ class _SidebarWidgetState extends ConsumerState<SidebarWidget> {
             width: MediaQuery.of(context).size.width * 0.82,
             child: CupertinoTabTransitionBuilder(
                 duration: const Duration(milliseconds: 700),
-                child: _pages.elementAt(_selectedIndex)))
+                child: _pages.elementAt(p.selectedIndex)))
       ]));
     });
   }

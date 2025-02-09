@@ -47,7 +47,7 @@ class _UsersPageState extends ConsumerState<UsersPage> {
       } else if (home.geted13usersList.isEmpty) {
         home.get13UsersF(loadingFor: 'users', showLoading: true);
       }
-      
+
       // if (home.userFilterIndexFrom == 0) {
       //   home.get13UsersF(loadingFor: 'users', showLoading: true);
       // }
@@ -105,7 +105,7 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const DashboardHeader(),
+                      DashboardHeader(),
                       Flex(
                           direction: isPhone ? Axis.vertical : Axis.horizontal,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,7 +132,12 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                             color: Colors.white,
                                                             fontSize: 20)),
                                                     OutlinedButton(
-                                                        onPressed: () {},
+                                                        onPressed: () {
+                                                          p.downloadUsersCsv(
+                                                              loadingFor: 'csv',
+                                                              showLoading:
+                                                                  true);
+                                                        },
                                                         style: OutlinedButton
                                                             .styleFrom(
                                                           side: const BorderSide(
@@ -140,14 +145,18 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                               color: AppColors
                                                                   .gold),
                                                         ),
-                                                        child: Text(
-                                                            "Download CSV",
-                                                            style: TextTheme.of(
-                                                                    context)
-                                                                .labelSmall!
-                                                                .copyWith(
-                                                                    color: AppColors
-                                                                        .gold))),
+                                                        child: p.isLoading &&
+                                                                p.isLoadingFor ==
+                                                                    'csv'
+                                                            ? const DotLoader()
+                                                            : Text(
+                                                                "Download Users CSV",
+                                                                style: TextTheme.of(
+                                                                        context)
+                                                                    .labelSmall!
+                                                                    .copyWith(
+                                                                        color: AppColors
+                                                                            .gold))),
                                                   ]),
                                               Container(
                                                   width:
@@ -248,7 +257,11 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                       fontSize: 20)),
                                               Row(children: [
                                                 OutlinedButton(
-                                                    onPressed: () {},
+                                                    onPressed: () {
+                                                      p.downloadUsersCsv(
+                                                          loadingFor: 'csv',
+                                                          showLoading: true);
+                                                    },
                                                     style: OutlinedButton
                                                         .styleFrom(
                                                       side: const BorderSide(
@@ -1506,7 +1519,8 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                           AppColors.silverGold,
                                                     )),
                                                 const SizedBox(width: 5),
-                                                Text("${p.geted13usersList[p.selectedUserIndex].accountCreationLocation.isEmpty ? p.geted13usersList[p.selectedUserIndex].country : p.geted13usersList[p.selectedUserIndex].accountCreationLocation}"),
+                                                Text(
+                                                    "${p.geted13usersList[p.selectedUserIndex].accountCreationLocation.isEmpty ? p.geted13usersList[p.selectedUserIndex].country : p.geted13usersList[p.selectedUserIndex].accountCreationLocation}"),
                                                 // Text("${p.userJoinedLocation}")
                                                 // Text("${(p.getLocationName(p.geted13usersList[p.selectedUserIndex].point!.latitude, p.geted13usersList[ p.selectedUserIndex].point!.longitude))}")
                                               ]),
