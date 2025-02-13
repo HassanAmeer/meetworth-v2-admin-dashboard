@@ -891,11 +891,21 @@ class FStore {
     });
   }
 
+  changeMembershipOfUsersF({docId, String? membership}) {
+    _instance.collection('userProfile').doc(docId).set(
+        {"membership": membership, 'adminActiveMemebership': membership},
+        SetOptions(merge: true));
+  }
+
   changeStatusUserF({docId, bool? status}) {
     _instance
         .collection('userProfile')
         .doc(docId)
         .set({"enable": status!}, SetOptions(merge: true));
+  }
+
+  deleteUserF({docId}) {
+    _instance.collection('userProfile').doc(docId).delete();
   }
 
   changeMemberShip(UserModel user, String status) {

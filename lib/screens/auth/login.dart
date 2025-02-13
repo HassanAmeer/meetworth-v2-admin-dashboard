@@ -150,71 +150,69 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                             p.isLoadingFor == 'reset'
                                         ? const DotLoader(color: AppColors.gold)
                                         : customText(
-                                                text: "Forgot password?",
-                                                color: AppColors.gold)
-                                            .animate(
-                                                onPlay: (controller) =>
-                                                    controller.repeat())
-                                            .shimmer(
-                                                color: AppColors.primary,
-                                                duration:
-                                                    const Duration(seconds: 7)))
+                                            text: "Forgot password?",
+                                            color: AppColors.gold)
+                                    // .animate(
+                                    //     onPlay: (controller) =>
+                                    //         controller.repeat())
+                                    // .shimmer(
+                                    //     color: AppColors.primary,
+                                    //     duration:
+                                    //         const Duration(seconds: 7)),
+                                    )
                               ]),
                           const SizedBox(height: 15),
                           InkWell(
-                                  onTap: () async {
-                                    if (email.text.trim().isEmpty) {
-                                      EasyLoading.showInfo("Email is required");
-                                    } else if (password.text.trim().isEmpty) {
-                                      EasyLoading.showInfo(
-                                          "Password is required");
-                                    } else {
-                                      if (email.text != "team@meetworth.com") {
-                                        EasyLoading.showError("Invalid Email");
-                                        return;
-                                      }
-                                      p.loginF(
-                                        context,
-                                        email: email.text,
-                                        password: password.text,
-                                        showLoading: true,
-                                        loadingFor: 'login',
-                                      );
-                                    }
-                                  },
-                                  child: Card(
-                                      elevation: 3,
-                                      shape: RoundedRectangleBorder(
+                              onTap: () async {
+                                if (email.text.trim().isEmpty) {
+                                  EasyLoading.showInfo("Email is required");
+                                } else if (password.text.trim().isEmpty) {
+                                  EasyLoading.showInfo("Password is required");
+                                } else {
+                                  if (email.text != "team@meetworth.com") {
+                                    EasyLoading.showError("Invalid Email");
+                                    return;
+                                  }
+                                  p.loginF(
+                                    context,
+                                    email: email.text,
+                                    password: password.text,
+                                    showLoading: true,
+                                    loadingFor: 'login',
+                                  );
+                                }
+                              },
+                              child: Card(
+                                  elevation: 3,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                          color: AppColors.gold,
+                                          gradient: const LinearGradient(
+                                              colors: [
+                                                AppColors.textGold,
+                                                AppColors.gold
+                                              ]),
                                           borderRadius:
                                               BorderRadius.circular(10)),
-                                      child: Container(
-                                          decoration: BoxDecoration(
-                                              color: AppColors.gold,
-                                              gradient: const LinearGradient(
-                                                  colors: [
-                                                    AppColors.textGold,
-                                                    AppColors.gold
-                                                  ]),
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          alignment: Alignment.center,
-                                          width: double.maxFinite,
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 16),
-                                          child: p.isLoading &&
-                                                  p.isLoadingFor == 'login'
-                                              ? const DotLoader(
-                                                  color: Colors.black)
-                                              : customText(
-                                                  text: "Login",
-                                                  color: Colors.black,
-                                                  weight: FontWeight.bold,
-                                                ))))
-                              .animate(
-                                  onPlay: (controller) => controller.repeat())
-                              .shimmer(
-                                  // color: AppColors.gold,
-                                  duration: const Duration(seconds: 2)),
+                                      alignment: Alignment.center,
+                                      width: double.maxFinite,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 16),
+                                      child: p.isLoading &&
+                                              p.isLoadingFor == 'login'
+                                          ? const DotLoader(color: Colors.black)
+                                          : customText(
+                                              text: "Login",
+                                              color: Colors.black,
+                                              weight: FontWeight.bold,
+                                            )))),
+                          // .animate(
+                          //     onPlay: (controller) => controller.repeat())
+                          // .shimmer(
+                          //     // color: AppColors.gold,
+                          //     duration: const Duration(seconds: 2)),
                           const SizedBox(height: 15)
                         ]))))
       ]);

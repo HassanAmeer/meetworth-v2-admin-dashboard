@@ -74,7 +74,7 @@ class _SidebarWidgetState extends ConsumerState<SidebarWidget> {
                             ? const Offset(-5, -17)
                             : const Offset(0, -20),
                         child: Image.asset(
-                            width: MediaQuery.of(context).size.width * 0.14,
+                            width: MediaQuery.of(context).size.width * 0.1,
                             isPhone ? AppImages.logo : AppImages.logoText)))),
             children: [
               SidebarDestination(
@@ -212,8 +212,8 @@ class _SidebarWidgetState extends ConsumerState<SidebarWidget> {
                                   ? AppColors.primaryMid
                                   : Colors.white))),
               SidebarDestination(
-                  onTap: () {
-                    ref.read(authVm).logOut(context);
+                  onTap: () async {
+                    await ref.read(authVm).logOut(context);
                   },
                   // isSelected: p.selectedIndex == 2 ? true : false,
                   icon: Icon(Icons.logout,

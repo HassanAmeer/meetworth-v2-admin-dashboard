@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:meetworth_admin/screens/notifications.dart';
-import 'package:meetworth_admin/screens/profile.dart';
-
 import '../const/appColors.dart';
 import '../const/appImages.dart';
 import '../vm/homeVm.dart';
@@ -122,13 +119,13 @@ class _DashboardHeaderState extends ConsumerState<DashboardHeader> {
                               color: Colors.white, size: 24)),
                       // SizedBox(width: isPhone ? 7 : 16),
                       // Info Icon
-                      IconButton(
-                        onPressed: () {
-                          p.setTabSelectedIndexF(9);
-                        },
-                        icon: const Icon(Icons.info_outline,
-                            color: Colors.white, size: 24),
-                      ),
+                      // IconButton(
+                      //   onPressed: () {
+                      //     p.setTabSelectedIndexF(9);
+                      //   },
+                      //   icon: const Icon(Icons.info_outline,
+                      //       color: Colors.white, size: 24),
+                      // ),
                       // SizedBox(width: isPhone ? 7 : 16),
                       // Profile Image
                       isPhone

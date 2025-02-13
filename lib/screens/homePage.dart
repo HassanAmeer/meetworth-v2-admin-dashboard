@@ -173,11 +173,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                                                         color: AppColors
                                                             .textSilver)),
                                             subtitle: Text(
-                                                int.parse(p.churnRatePer) <= 1
+                                                double.parse(p.churnRatePer.toString()) <= 1
                                                     ? '0%'
                                                     : '${p.churnRatePer}%',
                                                 style: TextTheme.of(context).labelSmall!.copyWith(
-                                                    color: int.parse(p.churnRatePer) < 0
+                                                    color: double.parse(p.churnRatePer) < 0
                                                         ? AppColors.textGreen
                                                         : AppColors.textRed)),
                                             trailing: Text(p.churnRate,
@@ -1519,17 +1519,17 @@ class _HomePageState extends ConsumerState<HomePage> {
                               ]),
                               const SizedBox(height: 40),
                             ]))
-                    .animate(
-                        // autoPlay: p.isLoading,
-                        onPlay: (controller) => controller.repeat(
-                            count: 2,
-                            period: Duration(
-                                seconds: p.isLoading && p.isLoadingFor == ""
-                                    ? 2
-                                    : 100)))
-                    .shimmer(
-                        color: Colors.white24,
-                        duration: const Duration(milliseconds: 300)),
+                    // .animate(
+                    //     // autoPlay: p.isLoading,
+                    //     onPlay: (controller) => controller.repeat(
+                    //         count: 2,
+                    //         period: Duration(
+                    //             seconds: p.isLoading && p.isLoadingFor == ""
+                    //                 ? 2
+                    //                 : 100)))
+                    // .shimmer(
+                    //     color: Colors.white24,
+                    //     duration: const Duration(milliseconds: 300)),
               )));
     }));
   }

@@ -1,3 +1,5 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:meetworth_admin/const/appColors.dart';
 import 'package:meetworth_admin/const/appimages.dart';
 import 'package:meetworth_admin/widgets/dotloader.dart';
@@ -10,6 +12,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../vm/homeVm.dart';
+import '../widgets/dropdownwidget.dart';
 import '../widgets/headers.dart';
 import '../widgets/minicard.dart';
 
@@ -131,6 +134,7 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                         style: TextStyle(
                                                             color: Colors.white,
                                                             fontSize: 20)),
+
                                                     OutlinedButton(
                                                         onPressed: () {
                                                           p.downloadUsersCsv(
@@ -251,10 +255,50 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                              const Text("All Users",
+                                              
+                                              Row(children:[
+                                                const Text("All Users    ",
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 20)),
+                                                      p.isLoading && p.isLoadingFor == "clear" ? const DotLoader(color: AppColors.gold) : OutlinedButton(
+                                                    onPressed: () {
+                                                      p.dropDownUsersFilterF(showLoading: true, loadingFor: "clear",clearAll: true);
+                                                    },
+                                                    style: OutlinedButton
+                                                        .styleFrom(
+                                                      side: const BorderSide(
+                                                          width: 1,
+                                                          color:
+                                                              AppColors.gold)
+                                                    ),
+                                                    child: Text("Clear Filter",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .labelSmall!
+                                                            .copyWith(
+                                                                color: AppColors
+                                                                    .gold))),
+                                                                    const SizedBox(width: 10),
+                                                      p.isLoading && p.isLoadingFor == "desc" ? const DotLoader(color: AppColors.gold) : OutlinedButton(
+                                                    onPressed: () {
+                                                      p.decAcUsersF(showLoading: true, loadingFor: "desc",desc: !p.isDecending);
+                                                    },
+                                                    style: OutlinedButton
+                                                        .styleFrom(
+                                                      side: const BorderSide(
+                                                          width: 1,
+                                                          color:
+                                                              AppColors.gold)
+                                                    ),
+                                                    child: Text(     p.isDecending?  "Decending" : "Ascending",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .labelSmall!
+                                                            .copyWith(
+                                                                color: AppColors
+                                                                    .gold))),
+                                              ]),
                                               Row(children: [
                                                 OutlinedButton(
                                                     onPressed: () {
@@ -381,6 +425,48 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                         ))),
                                               ]),
                                             ]),
+SizedBox(height: isPhone? 10: 0),
+                                           isPhone?  Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children:[
+                                                OutlinedButton(
+                                                    onPressed: () {
+                                                      p.dropDownUsersFilterF(showLoading: true, loadingFor: "clear",clearAll: true);
+                                                    },
+                                                    style: OutlinedButton
+                                                        .styleFrom(
+                                                      side: const BorderSide(
+                                                          width: 1,
+                                                          color:
+                                                              AppColors.gold)
+                                                    ),
+                                                    child: Text("Clear Filter",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .labelSmall!
+                                                            .copyWith(
+                                                                color: AppColors
+                                                                    .gold))),
+                                                                    const SizedBox(width: 10),
+                                                      p.isLoading && p.isLoadingFor == "desc" ? const DotLoader(color: AppColors.gold) : OutlinedButton(
+                                                    onPressed: () {
+                                                      p.decAcUsersF(showLoading: true, loadingFor: "desc",desc: !p.isDecending);
+                                                    },
+                                                    style: OutlinedButton
+                                                        .styleFrom(
+                                                      side: const BorderSide(
+                                                          width: 1,
+                                                          color:
+                                                              AppColors.gold)
+                                                    ),
+                                                    child: Text(     p.isDecending?  "Decending" : "Ascending",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .labelSmall!
+                                                            .copyWith(
+                                                                color: AppColors
+                                                                    .gold))),
+                                              ]) : const SizedBox.shrink(),
                                   ///////////////////////////////////////////////////////
                                   SizedBox(
                                     width: isPhone ? w * 1 : w * 0.75,
@@ -394,36 +480,92 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                           border: const TableBorder(
                                               horizontalInside: BorderSide.none,
                                               verticalInside: BorderSide.none),
-                                          columns: const [
-                                            DataColumn(
+                                          columns: [
+                                            const DataColumn(
                                                 label: Text('User',
                                                     style: TextStyle(
                                                         fontSize: 11))),
-                                            DataColumn(
+                                            const DataColumn(
                                                 label: Text('Email',
                                                     style: TextStyle(
                                                         fontSize: 11))),
                                             DataColumn(
-                                                label: Text('Gender',
-                                                    style: TextStyle(
-                                                        fontSize: 11))),
+                                              label: p.isLoading && p.isLoadingFor == "Gender" ? const Center(child: DotLoader()):  DropDownWidget(
+                                                isPhone: isPhone,
+                                                hint: "Gender",
+                                                onChanged: (value) {
+                                                  p.dropDownUsersFilterF(showLoading: true, loadingFor: "Gender",gender: value);
+                                                },
+                                                items: const [
+                                                  'Male',
+                                                  'Female',
+                                                ],
+                                                selectedValue: "${p.dropDownValueGender}",
+                                              )
+                                            ),
+                                            const DataColumn(
+                                              label: Text('USERNAME',
+                                                  style:
+                                                      TextStyle(fontSize: 11)),
+                                            ),
                                             DataColumn(
-                                                label: Text('USERNAME',
-                                                    style: TextStyle(
-                                                        fontSize: 11))),
-                                            DataColumn(
-                                                label: Text('VERIFICATION',
-                                                    style: TextStyle(
-                                                        fontSize: 11))),
-                                            DataColumn(
-                                                label: Text('MEMBERSHIP',
-                                                    style: TextStyle(
-                                                        fontSize: 11))),
-                                            DataColumn(
-                                                label: Text('STATUS',
-                                                    style: TextStyle(
-                                                        fontSize: 11))),
-                                            DataColumn(
+                                              label:p.isLoading && p.isLoadingFor == "VERIFICATION" ? const Center(child: DotLoader()): DropDownWidget(
+                                                hint: "VERIFICATION",
+                                                isPhone: isPhone,
+                                                onChanged: (value) {
+                                                  p.dropDownUsersFilterF(showLoading: true, loadingFor: "VERIFICATION",verification: value);
+                                                 
+                                                },
+                                                items: const [
+                                                  'Verified',
+                                                  'Not Verified',
+                                                  '⁠Verification Pending'
+                                                ],
+                                                selectedValue: "${p.dropDownValueVerification}",
+                                              )
+                                            ),
+                                             DataColumn(
+                                              label: p.isLoading && p.isLoadingFor == "MEMBERSHIP" ? const Center(child: DotLoader()):  DropDownWidget(
+                                                hint: "MEMBERSHIP",
+                                                isPhone: isPhone,
+                                                onChanged: (value) {
+                                                  p.dropDownUsersFilterF(showLoading: true, loadingFor: "MEMBERSHIP",membership: value);
+                                                },
+                                                items: const [
+                                                  'Free',
+                                                  'Silver',
+                                                  'Gold'
+                                                ],
+                                                selectedValue: "${p.dropDownValueMembership}",
+                                              )
+                                            ),
+                                             DataColumn(
+                                              label: p.isLoading && p.isLoadingFor == "STATUS" ? const Center(child: DotLoader()):  DropDownWidget(
+                                                hint: "STATUS",
+                                                isPhone: isPhone,
+                                                onChanged: (value) {
+                                                  p.dropDownUsersFilterF(showLoading: true, loadingFor: "STATUS",status: value);
+                                                },
+                                                items: const [
+                                                  'Enabled',
+                                                  'Block',
+                                                ],
+                                                selectedValue: "${p.dropDownValueStatus}",
+                                              )
+                                            ),
+                                            // const DataColumn(
+                                            //     label: Text('MEMBERSHIP',
+                                            //         style: TextStyle(
+                                            //             fontSize: 11))),
+                                            // const DataColumn(
+                                            //     label: Text('STATUS',
+                                            //         style: TextStyle(
+                                            //             fontSize: 11))),
+                                            // const DataColumn(
+                                            //     label: Text('STATUS',
+                                            //         style: TextStyle(
+                                            //             fontSize: 11))),
+                                            const DataColumn(
                                                 label: Text('ACTION',
                                                     style: TextStyle(
                                                         fontSize: 11))),
@@ -433,8 +575,9 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                               : List.generate(
                                                   p.geted13usersList.length,
                                                   (index) {
-                                                  var user =
-                                                      p.geted13usersList[index];
+                                                  var user =  p.isDecending?  p.geted13usersList.reversed.toList()[index]:p.geted13usersList[index];
+                                                  // var user =
+                                                  //     p.geted13usersList[index];
                                                   return DataRow(cells: [
                                                     DataCell(onTap: () {
                                                       p.selectUserIndexF(index,
@@ -565,11 +708,11 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                                         .start,
                                                                 user.varifiedStatus ==
                                                                         0
-                                                                    ? "Not Apply for varify"
+                                                                    ? "Not Verified "
                                                                     : user.varifiedStatus ==
                                                                             1
-                                                                        ? "Apply for varify"
-                                                                        : "Varified",
+                                                                        ? "Verification Pending"
+                                                                        : "Verified",
                                                                 style:
                                                                     const TextStyle(
                                                                         fontSize:
@@ -579,629 +722,85 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                                         .visible,
                                                                 maxLines: 3))),
                                                     DataCell(
-                                                      onTap: () {
-                                                        p.selectUserIndexF(
-                                                            index,
-                                                            showLoading: true,
-                                                            loadingFor:
-                                                                "selectinguser");
-                                                      },
-                                                      Text('${user.membership}',
-                                                          style: TextStyle(
-                                                              fontSize: 10,
-                                                              color: user.membership ==
-                                                                      'Gold'
-                                                                  ? AppColors
-                                                                      .gold
-                                                                  : user.membership ==
-                                                                          'Free'
-                                                                      ? AppColors
-                                                                          .silverGold
-                                                                      : AppColors
-                                                                          .pieChartColor2)),
+                                                      // onTap: () {
+                                                      //   p.selectUserIndexF(
+                                                      //       index,
+                                                      //       showLoading: true,
+                                                      //       loadingFor:
+                                                      //           "selectinguser");
+                                                      // },
+                                                      Padding(
+                                                        padding: const EdgeInsets.symmetric(vertical:2),
+                                                        child: Container(
+                                                          decoration: BoxDecoration(color: AppColors.silverGold.withOpacity(0.2)),
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.all(5),
+                                                            child: Wrap(
+                                                              spacing:3, runSpacing:3,
+                                                              children: [
+                                                              Opacity(
+                                                              opacity: user.membership ==
+                                                              'Free' ? 1 : 0.5,
+                                                                child: InkWell(onTap: (){
+                                                                      p.setMembershipUserF(
+                                                                  uid: user.uid,
+                                                                    showLoading: true,
+                                                                    membership: 'Free',
+                                                                    loadingFor:"membership");
+                                                                }, child: Container(
+                                                                    decoration: BoxDecoration(color:AppColors.bgColor, borderRadius: BorderRadius.circular(10)),
+                                                                  child: const Padding(
+                                                                    padding: EdgeInsets.symmetric(horizontal:10, vertical:1),
+                                                                    child: Text('Bronze',
+                                                                        style: TextStyle(fontSize: 10, color:Colors.white)),
+                                                                  ),
+                                                                ))
+                                                              ), 
+                                                              Opacity(
+                                                              opacity: user.membership ==
+                                                              'Silver' ? 1 : 0.5,
+                                                                child: InkWell(onTap: (){
+                                                                      p.setMembershipUserF(
+                                                                  uid: user.uid,
+                                                                    showLoading: true,
+                                                                    membership: 'Silver',
+                                                                    loadingFor:"membership");
+                                                                }, child: Container(
+                                                                  decoration: BoxDecoration(color:AppColors.bgColor, borderRadius: BorderRadius.circular(10)),
+                                                                  child: const Padding(
+                                                                    padding: EdgeInsets.symmetric(horizontal:10, vertical:1),
+                                                                    child: Text('Silver',
+                                                                        style: TextStyle(fontSize: 10, color:Colors.white)),
+                                                                  ),
+                                                                ))
+                                                              ), 
+                                                              Opacity(
+                                                              opacity: user.membership ==
+                                                              'Gold' ? 1 : 0.5,
+                                                                child: InkWell(onTap: (){
+                                                                      p.setMembershipUserF(
+                                                                  uid: user.uid,
+                                                                    showLoading: true,
+                                                                    membership: "Gold",
+                                                                    loadingFor:"membership");
+                                                                }, child: Container(
+                                                                    decoration: BoxDecoration(color:AppColors.bgColor, borderRadius: BorderRadius.circular(10)),
+                                                                  child: const Padding(
+                                                                    padding: EdgeInsets.symmetric(horizontal:10, vertical:1),
+                                                                    child: Text('Gold',
+                                                                        style: TextStyle(fontSize: 10, color:Colors.white)),
+                                                                  ),
+                                                                ))
+                                                              ), 
+                                                            
+                                                              ]
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
                                                     ),
                                                     DataCell(
-                                                        Row(children: [
-                                                          InkWell(
-                                                              // onTap: () {
-                                                              //   if (p
-                                                              //       .geted13usersList[
-                                                              //           index]
-                                                              //       .enable!) {
-                                                              //     p.activeOrBanUserF(
-                                                              //       showLoading:
-                                                              //           true,
-                                                              //       loadingFor:
-                                                              //           "$index",
-                                                              //           docId:  p
-                                                              //       .geted13usersList[
-                                                              //           index]
-                                                              //       .uid, 
-                                                              //       status: false);
-                                                              //   }else{
-                                                              //      if (p
-                                                              //       .geted13usersList[
-                                                              //           index]
-                                                              //       .enable!) {
-                                                              //     p.activeOrBanUserF(
-                                                              //       showLoading:
-                                                              //           true,
-                                                              //       loadingFor:
-                                                              //           "$index",
-                                                              //           docId:  p
-                                                              //       .geted13usersList[
-                                                              //           index]
-                                                              //       .uid, 
-                                                              //       status: true);
-                                                              //   }
-                                                              //   }
-                                                              // },
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10),
-                                                              child: Icon(
-                                                                  Icons
-                                                                      .check_circle,
-                                                                  size: 18,
-                                                                  color: user
-                                                                          .enable!
-                                                                      ? AppColors
-                                                                          .textGreen
-                                                                      : AppColors
-                                                                          .textRed)),
-                                                          Text(
-                                                              user.enable!
-                                                                  ? 'Active'
-                                                                  : 'Blocked',
-                                                              style: TextStyle(
-                                                                  fontSize: 10,
-                                                                  color: user
-                                                                          .enable!
-                                                                      ? Colors
-                                                                          .white
-                                                                      : Colors
-                                                                          .grey
-                                                                          .shade500))
-                                                        ])),
-                                                    DataCell( Row(children: [
-                                                          InkWell(
-                                                              onTap: () {
-                                                                 if (p
-                                                                    .geted13usersList[
-                                                                        index]
-                                                                    .enable!) {
-                                                                  p.activeOrBanUserF(
-                                                                    showLoading:
-                                                                        true,
-                                                                    loadingFor:
-                                                                        "$index",
-                                                                        docId:  p
-                                                                    .geted13usersList[
-                                                                        index]
-                                                                    .uid, 
-                                                                    status: false);
-                                                                }
-                                                              },
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10),
-                                                              child: const Icon(
-                                                                  Icons.cancel,
-                                                                  size: 18,
-                                                                  color: AppColors
-                                                                      .textRed)),
-                                                          const SizedBox(
-                                                              width: 7),
-                                                          InkWell(
-                                                              onTap: () {
-                                                                p.selectUserIndexF(index,
-                                                          showLoading: true,
-                                                          loadingFor:
-                                                              "selectinguser");
-                                                              },
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10),
-                                                              child: Image.asset(
-                                                                  width: 15,
-                                                                  AppImages
-                                                                      .shareIos))
-                                                        ])),
-                                                  ]);
-                                                })),
-                                    ),
-                                  ),
-
-                                  p.isLoading && p.isLoadingFor == 'users'
-                                      ? const Center(
-                                          child: Padding(
-                                              padding: EdgeInsets.only(
-                                                  top: 20, bottom: 20),
-                                              child: DotLoader(
-                                                  color: AppColors.gold)))
-                                      : p.geted13usersList.isEmpty
-                                          ? Center(
-                                              child: Padding(
-                                                  padding: EdgeInsets.only(
-                                                      top: isPhone ? 30 : 200,
-                                                      bottom:
-                                                          isPhone ? 30 : 200),
-                                                  child: const Text("Empty",
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight: FontWeight
-                                                              .bold))))
-                                          : const SizedBox.shrink()
-                                ])),
-                            Column(children: [
-                              CardWidget(
-                                  padding: const EdgeInsets.all(15),
-                                  widthRatio: isPhone ? 1 : 0.25,
-                                  child: Column(children: [
-                                    Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          const Text("GENDER: ",
-                                              style: TextStyle(
-                                                  color: AppColors.silverGold)),
-                                          Row(children: [
-                                            Opacity(
-                                                opacity:
-                                                    p.filteredGender == 'Male'
-                                                        ? 1.0
-                                                        : 0.5,
-                                                child: OutlinedButton(
-                                                    onPressed: () {
-                                                      p.choosFilterOptionsF(
-                                                          gender: 'Male');
-                                                    },
-                                                    style: OutlinedButton.styleFrom(
-                                                        side: const BorderSide(
-                                                            width: 1,
-                                                            color: AppColors
-                                                                .textSilver)),
-                                                    child: Text("Male",
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .labelSmall!
-                                                            .copyWith(
-                                                                color: AppColors
-                                                                    .textSilver)))),
-                                            const SizedBox(width: 10),
-                                            Opacity(
-                                                opacity:
-                                                    p.filteredGender == 'Female'
-                                                        ? 1.0
-                                                        : 0.5,
-                                                child: OutlinedButton(
-                                                    onPressed: () {
-                                                      p.choosFilterOptionsF(
-                                                          gender: 'Female');
-                                                    },
-                                                    style: OutlinedButton.styleFrom(
-                                                        side: const BorderSide(
-                                                            width: 1,
-                                                            color: AppColors
-                                                                .textSilver)),
-                                                    child: Text("Female",
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .labelSmall!
-                                                            .copyWith(
-                                                                color: AppColors
-                                                                    .textSilver))))
-                                          ])
-                                        ]),
-                                    const Row(children: [
-                                      Text("Verifications: ",
-                                          style: TextStyle(
-                                              color: AppColors.silverGold))
-                                    ]),
-                                    const SizedBox(height: 4),
-                                    Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Opacity(
-                                              opacity:
-                                                  p.filteredVerfication == 0
-                                                      ? 1.0
-                                                      : 0.5,
-                                              child: OutlinedButton(
-                                                  onPressed: () {
-                                                    p.choosFilterOptionsF(
-                                                        verfication: 0);
-                                                  },
-                                                  style:
-                                                      OutlinedButton.styleFrom(
-                                                          side: const BorderSide(
-                                                              width: 1,
-                                                              color: AppColors
-                                                                  .textSilver)),
-                                                  child: Text("Not Apply",
-                                                      style: TextTheme.of(
-                                                              context)
-                                                          .labelSmall!
-                                                          .copyWith(
-                                                              color: AppColors
-                                                                  .textSilver)))),
-                                          Opacity(
-                                              opacity:
-                                                  p.filteredVerfication == 1
-                                                      ? 1.0
-                                                      : 0.5,
-                                              child: OutlinedButton(
-                                                  onPressed: () {
-                                                    p.choosFilterOptionsF(
-                                                        verfication: 1);
-                                                  },
-                                                  style:
-                                                      OutlinedButton.styleFrom(
-                                                          side: const BorderSide(
-                                                              width: 1,
-                                                              color: AppColors
-                                                                  .textSilver)),
-                                                  child: Text(
-                                                      isPhone
-                                                          ? "Apply"
-                                                          : "Apply for varify ",
-                                                      style: TextTheme.of(
-                                                              context)
-                                                          .labelSmall!
-                                                          .copyWith(
-                                                              color: AppColors
-                                                                  .textSilver)))),
-                                          Opacity(
-                                              opacity:
-                                                  p.filteredVerfication == 2
-                                                      ? 1.0
-                                                      : 0.5,
-                                              child: OutlinedButton(
-                                                  onPressed: () {
-                                                    p.choosFilterOptionsF(
-                                                        verfication: 2);
-                                                  },
-                                                  style:
-                                                      OutlinedButton.styleFrom(
-                                                          side: const BorderSide(
-                                                              width: 1,
-                                                              color: AppColors
-                                                                  .textSilver)),
-                                                  child: Text("Verfied",
-                                                      style: TextTheme.of(
-                                                              context)
-                                                          .labelSmall!
-                                                          .copyWith(
-                                                              color: AppColors
-                                                                  .textSilver)))),
-                                        ]),
-                                    const SizedBox(height: 10),
-                                    const Row(children: [
-                                      Text("Membership: ",
-                                          style: TextStyle(
-                                              color: AppColors.silverGold))
-                                    ]),
-                                    const SizedBox(height: 4),
-                                    Wrap(
-                                        runSpacing: isPhone ? 10 : 5,
-                                        spacing: isPhone ? 10 : 5,
-                                        // mainAxisAlignment:
-                                        // MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Opacity(
-                                              opacity:
-                                                  p.filteredMembership == 'Free'
-                                                      ? 1.0
-                                                      : 0.5,
-                                              child: OutlinedButton(
-                                                  onPressed: () {
-                                                    p.choosFilterOptionsF(
-                                                        membership: 'Free');
-                                                  },
-                                                  style:
-                                                      OutlinedButton.styleFrom(
-                                                          side: const BorderSide(
-                                                              width: 1,
-                                                              color: AppColors
-                                                                  .textSilver)),
-                                                  child: Text("Free",
-                                                      style: TextTheme.of(
-                                                              context)
-                                                          .labelSmall!
-                                                          .copyWith(
-                                                              color: AppColors
-                                                                  .textSilver)))),
-                                          Opacity(
-                                              opacity: p.filteredMembership ==
-                                                      'Silver'
-                                                  ? 1.0
-                                                  : 0.5,
-                                              child: OutlinedButton(
-                                                  onPressed: () {
-                                                    p.choosFilterOptionsF(
-                                                        membership: 'Silver');
-                                                  },
-                                                  style:
-                                                      OutlinedButton.styleFrom(
-                                                          side: const BorderSide(
-                                                              width: 1,
-                                                              color: AppColors
-                                                                  .textSilver)),
-                                                  child: Text("Silver",
-                                                      style: TextTheme.of(
-                                                              context)
-                                                          .labelSmall!
-                                                          .copyWith(
-                                                              color: AppColors
-                                                                  .textSilver)))),
-                                          Opacity(
-                                              opacity: p.filteredMembership ==
-                                                      'Bronze'
-                                                  ? 1.0
-                                                  : 0.5,
-                                              child: OutlinedButton(
-                                                  onPressed: () {
-                                                    p.choosFilterOptionsF(
-                                                        membership: 'Bronze');
-                                                  },
-                                                  style:
-                                                      OutlinedButton.styleFrom(
-                                                          side: const BorderSide(
-                                                              width: 1,
-                                                              color: AppColors
-                                                                  .textSilver)),
-                                                  child: Text("Bronze",
-                                                      style: TextTheme.of(
-                                                              context)
-                                                          .labelSmall!
-                                                          .copyWith(
-                                                              color: AppColors
-                                                                  .textSilver)))),
-                                          Opacity(
-                                              opacity:
-                                                  p.filteredMembership == 'Gold'
-                                                      ? 1.0
-                                                      : 0.5,
-                                              child: OutlinedButton(
-                                                  onPressed: () {
-                                                    p.choosFilterOptionsF(
-                                                        membership: 'Gold');
-                                                  },
-                                                  style:
-                                                      OutlinedButton.styleFrom(
-                                                          side: const BorderSide(
-                                                              width: 1,
-                                                              color: AppColors
-                                                                  .textSilver)),
-                                                  child: Text("Gold",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .labelSmall!
-                                                          .copyWith(
-                                                              color: AppColors
-                                                                  .textSilver)))),
-                                        ]),
-                                    const SizedBox(height: 20),
-                                    Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          const Text("STATUS: ",
-                                              style: TextStyle(
-                                                  color: AppColors.silverGold)),
-                                          Row(children: [
-                                            Opacity(
-                                                opacity: p.filteredStatus
-                                                    ? 1.0
-                                                    : 0.5,
-                                                child: OutlinedButton(
-                                                    onPressed: () {
-                                                      p.choosFilterOptionsF(
-                                                          status: true);
-                                                    },
-                                                    style: OutlinedButton.styleFrom(
-                                                        side: const BorderSide(
-                                                            width: 1,
-                                                            color: AppColors
-                                                                .textSilver)),
-                                                    child: Text("Active",
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .labelSmall!
-                                                            .copyWith(
-                                                                color: AppColors
-                                                                    .textSilver)))),
-                                            const SizedBox(width: 10),
-                                            Opacity(
-                                                opacity: !p.filteredStatus
-                                                    ? 1.0
-                                                    : 0.5,
-                                                child: OutlinedButton(
-                                                    onPressed: () {
-                                                      p.choosFilterOptionsF(
-                                                          status: false);
-                                                    },
-                                                    style: OutlinedButton.styleFrom(
-                                                        side: const BorderSide(
-                                                            width: 1,
-                                                            color: AppColors
-                                                                .textSilver)),
-                                                    child: Text("Block",
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .labelSmall!
-                                                            .copyWith(
-                                                                color: AppColors
-                                                                    .textSilver))))
-                                          ])
-                                        ]),
-                                    const SizedBox(height: 20),
-                                    SizedBox(
-                                      width: w * 0.24,
-                                      child: OutlinedButton(
-                                          onPressed: () {
-                                            p.filterUsersF(
-                                                showLoading: true,
-                                                loadingFor: 'filtering');
-                                          },
-                                          style: OutlinedButton.styleFrom(
-                                              side: const BorderSide(
-                                                  width: 1,
-                                                  color: AppColors.gold)),
-                                          child: p.isLoading &&
-                                                  p.isLoadingFor == "filtering"
-                                              ? const DotLoader()
-                                              : Text("Filter",
-                                                  style: TextTheme.of(context)
-                                                      .labelSmall!
-                                                      .copyWith(
-                                                          color:
-                                                              AppColors.gold))),
-                                    )
-                                  ])),
-                              p.isUsersFiltered
-                                  ? CardWidget(
-                                      padding: EdgeInsets.all(isPhone ? 3 : 15),
-                                      widthRatio: isPhone ? 1 : 0.25,
-                                      child: Column(children: [
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              p.isLoading &&
-                                                      p.isLoadingFor ==
-                                                          "selectinguser"
-                                                  ? const DotLoader()
-                                                  : const Text("Filters",
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 20)),
-                                              OutlinedButton(
-                                                  onPressed: () {},
-                                                  style:
-                                                      OutlinedButton.styleFrom(
-                                                    side: const BorderSide(
-                                                        width: 1,
-                                                        color: AppColors.gold),
-                                                  ),
-                                                  child: Text("Recent Filters",
-                                                      style: TextTheme.of(
-                                                              context)
-                                                          .labelSmall!
-                                                          .copyWith(
-                                                              color: AppColors
-                                                                  .gold))),
-                                            ]),
-                                        Row(children: [
-                                          const Text("GENDER: ",
-                                              style: TextStyle(
-                                                  color: AppColors.silverGold)),
-                                          Row(children: [
-                                            Text(p.filteredGender),
-                                            const SizedBox(width: 5),
-                                            Icon(
-                                                p.filteredGender == 'Male'
-                                                    ? Icons.male
-                                                    : Icons.female,
-                                                size: 12)
-                                          ])
-                                        ]),
-                                        const Divider(thickness: 0.1),
-                                        Row(children: [
-                                          const Text("VARIFICATION: ",
-                                              style: TextStyle(
-                                                  color: AppColors.silverGold)),
-                                          Row(children: [
-                                            Text(p.filteredVerfication == 0
-                                                ? 'Not Apply'
-                                                : p.filteredVerfication == 1
-                                                    ? 'Apply'
-                                                    : 'Verified'),
-                                            const SizedBox(width: 5),
-                                            Icon(
-                                                p.filteredVerfication == 0
-                                                    ? Icons.close
-                                                    : Icons.check,
-                                                size: 12)
-                                          ])
-                                        ]),
-                                        const Divider(thickness: 0.1),
-                                        Row(children: [
-                                          const Text("MEMBERSHIP: ",
-                                              style: TextStyle(
-                                                  color: AppColors.silverGold)),
-                                          Text(p.filteredMembership)
-                                        ]),
-                                        const Divider(thickness: 0.1),
-                                        Row(children: [
-                                          const Text("STATUS: ",
-                                              style: TextStyle(
-                                                  color: AppColors.silverGold)),
-                                          p.filteredStatus
-                                              ? const Row(children: [
-                                                  Icon(Icons.cancel,
-                                                      color:
-                                                          AppColors.textGreen,
-                                                      size: 12),
-                                                  SizedBox(width: 5),
-                                                  Text("Active"),
-                                                ])
-                                              : const Row(children: [
-                                                  Icon(Icons.cancel,
-                                                      color: AppColors.textRed,
-                                                      size: 12),
-                                                  SizedBox(width: 5),
-                                                  Text("Blocked"),
-                                                ])
-                                        ]),
-                                      ]))
-                                  : const SizedBox.shrink(),
-                              Flex(
-                                  direction:
-                                      isPhone ? Axis.vertical : Axis.horizontal,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    p.geted13usersList.isEmpty
-                                        ? const SizedBox.shrink()
-                                        : CardWidget(
-                                            widthRatio: isPhone ? 1 : 0.12,
-                                            padding: const EdgeInsets.all(15),
-                                            child: Column(children: [
-                                              Text("Selection",
-                                                  style: TextTheme.of(context)
-                                                      .headlineSmall),
-                                              ElevatedButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                          backgroundColor:
-                                                              AppColors.gold),
-                                                  onPressed: () {},
-                                                  child: const Text(
-                                                      "Selection is on",
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.white))),
-                                            ])),
-                                    p.geted13usersList.isEmpty
-                                        ? const SizedBox.shrink()
-                                        : CardWidget(
-                                            widthRatio: isPhone ? 1 : 0.12,
-                                            padding: const EdgeInsets.all(15),
-                                            child: Column(children: [
-                                              Text("Action",
-                                                  style: TextTheme.of(context)
-                                                      .headlineSmall),
-                                              const SizedBox(height: 12),
-                                              Row(
+                                                         Column(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment
                                                           .spaceEvenly,
@@ -1214,24 +813,18 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                         p.activeOrBanUserF(
                                                             showLoading: true,
                                                             loadingFor: 'block',
-                                                            docId: p
-                                                                .geted13usersList[
-                                                                    p.selectedUserIndex]
+                                                            docId: user
                                                                 .uid!,
                                                             status: false);
                                                       },
                                                       child: Opacity(
-                                                        opacity: !p
-                                                                .geted13usersList[
-                                                                    p.selectedUserIndex]
+                                                        opacity: !user
                                                                 .enable!
                                                             ? 1
                                                             : 0.5,
                                                         child: Row(children: [
                                                           Opacity(
-                                                              opacity: p
-                                                                      .geted13usersList[p
-                                                                          .selectedUserIndex]
+                                                              opacity: user
                                                                       .enable!
                                                                   ? 0.5
                                                                   : 1,
@@ -1261,16 +854,12 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                               showLoading: true,
                                                               loadingFor:
                                                                   'active',
-                                                              docId: p
-                                                                  .geted13usersList[
-                                                                      p.selectedUserIndex]
+                                                              docId: user
                                                                   .uid!,
                                                               status: true);
                                                         },
                                                         child: Opacity(
-                                                          opacity: p
-                                                                  .geted13usersList[
-                                                                      p.selectedUserIndex]
+                                                          opacity: user
                                                                   .enable!
                                                               ? 1
                                                               : 0.5,
@@ -1293,8 +882,679 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                           ]),
                                                         ))
                                                   ]),
-                                            ])),
-                                  ]),
+                                                      ),
+                                                    DataCell(Row(children: [
+                                                      InkWell(
+                                                          onTap: () {
+                                                            showCupertinoDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return CupertinoAlertDialog(
+                                                                    title: Text(
+                                                                        'Delete This: ${p.geted13usersList[index].username} ?'),
+                                                                    actions: [
+                                                                      CupertinoButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            Navigator.pop(context);
+                                                                          },
+                                                                          child:
+                                                                              const Text('No')),
+                                                                      CupertinoButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            p.deleteUserByUidF(context,
+                                                                                showLoading: true,
+                                                                                loadingFor: "$index",
+                                                                                uid: p.geted13usersList[index].uid);
+                                                                          },
+                                                                          child: const Text(
+                                                                              'yes',
+                                                                              style: TextStyle(color: Colors.red))),
+                                                                    ],
+                                                                    insetAnimationCurve:
+                                                                        Curves
+                                                                            .slowMiddle,
+                                                                    insetAnimationDuration:
+                                                                        const Duration(
+                                                                            seconds:
+                                                                                2),
+                                                                  );
+                                                                });
+                                                            //  if (p
+                                                            //     .geted13usersList[
+                                                            //         index]
+                                                            //     .enable!) {
+                                                            //   p.activeOrBanUserF(
+                                                            //     showLoading:
+                                                            //         true,
+                                                            //     loadingFor:
+                                                            //         "$index",
+                                                            //         docId:  p
+                                                            //     .geted13usersList[
+                                                            //         index]
+                                                            //     .uid,
+                                                            //     status: false);
+                                                            // }
+                                                          },
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          child: const Icon(
+                                                              Icons
+                                                                  .delete_outline,
+                                                              size: 18,
+                                                              color: AppColors
+                                                                  .textRed)),
+                                                      const SizedBox(width: 7),
+                                                      InkWell(
+                                                          onTap: () {
+                                                            p.selectUserIndexF(
+                                                                index,
+                                                                showLoading:
+                                                                    true,
+                                                                loadingFor:
+                                                                    "selectinguser");
+                                                          },
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          child: Image.asset(
+                                                              width: 15,
+                                                              AppImages
+                                                                  .shareIos))
+                                                    ])),
+                                                  ]);
+                                                })),
+                                    ),
+                                  ),
+
+                                  p.isLoading && p.isLoadingFor == 'users'
+                                      ? const Center(
+                                          child: Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: 20, bottom: 20),
+                                              child: DotLoader(
+                                                  color: AppColors.gold)))
+                                      : p.geted13usersList.isEmpty
+                                          ? Center(
+                                              child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      top: isPhone ? 30 : 200,
+                                                      bottom:
+                                                          isPhone ? 30 : 200),
+                                                  child: const Text("Empty",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight: FontWeight
+                                                              .bold))))
+                                          : const SizedBox.shrink()
+                                ])),
+                            Column(children: [
+                              // CardWidget(
+                              //     padding: const EdgeInsets.all(15),
+                              //     widthRatio: isPhone ? 1 : 0.25,
+                              //     child: Column(children: [
+                              //       Row(
+                              //           mainAxisAlignment:
+                              //               MainAxisAlignment.spaceBetween,
+                              //           crossAxisAlignment:
+                              //               CrossAxisAlignment.center,
+                              //           children: [
+                              //             const Text("GENDER: ",
+                              //                 style: TextStyle(
+                              //                     color: AppColors.silverGold)),
+                              //             Row(children: [
+                              //               Opacity(
+                              //                   opacity:
+                              //                       p.filteredGender == 'Male'
+                              //                           ? 1.0
+                              //                           : 0.5,
+                              //                   child: OutlinedButton(
+                              //                       onPressed: () {
+                              //                         p.choosFilterOptionsF(
+                              //                             gender: 'Male');
+                              //                       },
+                              //                       style: OutlinedButton.styleFrom(
+                              //                           side: const BorderSide(
+                              //                               width: 1,
+                              //                               color: AppColors
+                              //                                   .textSilver)),
+                              //                       child: Text("Male",
+                              //                           style: Theme.of(context)
+                              //                               .textTheme
+                              //                               .labelSmall!
+                              //                               .copyWith(
+                              //                                   color: AppColors
+                              //                                       .textSilver)))),
+                              //               const SizedBox(width: 10),
+                              //               Opacity(
+                              //                   opacity:
+                              //                       p.filteredGender == 'Female'
+                              //                           ? 1.0
+                              //                           : 0.5,
+                              //                   child: OutlinedButton(
+                              //                       onPressed: () {
+                              //                         p.choosFilterOptionsF(
+                              //                             gender: 'Female');
+                              //                       },
+                              //                       style: OutlinedButton.styleFrom(
+                              //                           side: const BorderSide(
+                              //                               width: 1,
+                              //                               color: AppColors
+                              //                                   .textSilver)),
+                              //                       child: Text("Female",
+                              //                           style: Theme.of(context)
+                              //                               .textTheme
+                              //                               .labelSmall!
+                              //                               .copyWith(
+                              //                                   color: AppColors
+                              //                                       .textSilver))))
+                              //             ])
+                              //           ]),
+                              //       const Row(children: [
+                              //         Text("Verifications: ",
+                              //             style: TextStyle(
+                              //                 color: AppColors.silverGold))
+                              //       ]),
+                              //       const SizedBox(height: 4),
+                              //       Row(
+                              //           mainAxisAlignment:
+                              //               MainAxisAlignment.spaceBetween,
+                              //           children: [
+                              //             Opacity(
+                              //                 opacity:
+                              //                     p.filteredVerfication == 0
+                              //                         ? 1.0
+                              //                         : 0.5,
+                              //                 child: OutlinedButton(
+                              //                     onPressed: () {
+                              //                       p.choosFilterOptionsF(
+                              //                           verfication: 0);
+                              //                     },
+                              //                     style:
+                              //                         OutlinedButton.styleFrom(
+                              //                             side: const BorderSide(
+                              //                                 width: 1,
+                              //                                 color: AppColors
+                              //                                     .textSilver)),
+                              //                     child: Text("Not Apply",
+                              //                         style: TextTheme.of(
+                              //                                 context)
+                              //                             .labelSmall!
+                              //                             .copyWith(
+                              //                                 color: AppColors
+                              //                                     .textSilver)))),
+                              //             Opacity(
+                              //                 opacity:
+                              //                     p.filteredVerfication == 1
+                              //                         ? 1.0
+                              //                         : 0.5,
+                              //                 child: OutlinedButton(
+                              //                     onPressed: () {
+                              //                       p.choosFilterOptionsF(
+                              //                           verfication: 1);
+                              //                     },
+                              //                     style:
+                              //                         OutlinedButton.styleFrom(
+                              //                             side: const BorderSide(
+                              //                                 width: 1,
+                              //                                 color: AppColors
+                              //                                     .textSilver)),
+                              //                     child: Text(
+                              //                         isPhone
+                              //                             ? "Apply"
+                              //                             : "Apply for varify ",
+                              //                         style: TextTheme.of(
+                              //                                 context)
+                              //                             .labelSmall!
+                              //                             .copyWith(
+                              //                                 color: AppColors
+                              //                                     .textSilver)))),
+                              //             Opacity(
+                              //                 opacity:
+                              //                     p.filteredVerfication == 2
+                              //                         ? 1.0
+                              //                         : 0.5,
+                              //                 child: OutlinedButton(
+                              //                     onPressed: () {
+                              //                       p.choosFilterOptionsF(
+                              //                           verfication: 2);
+                              //                     },
+                              //                     style:
+                              //                         OutlinedButton.styleFrom(
+                              //                             side: const BorderSide(
+                              //                                 width: 1,
+                              //                                 color: AppColors
+                              //                                     .textSilver)),
+                              //                     child: Text("Verfied",
+                              //                         style: TextTheme.of(
+                              //                                 context)
+                              //                             .labelSmall!
+                              //                             .copyWith(
+                              //                                 color: AppColors
+                              //                                     .textSilver)))),
+                              //           ]),
+                              //       const SizedBox(height: 10),
+                              //       const Row(children: [
+                              //         Text("Membership: ",
+                              //             style: TextStyle(
+                              //                 color: AppColors.silverGold))
+                              //       ]),
+                              //       const SizedBox(height: 4),
+                              //       Wrap(
+                              //           runSpacing: isPhone ? 10 : 5,
+                              //           spacing: isPhone ? 10 : 5,
+                              //           // mainAxisAlignment:
+                              //           // MainAxisAlignment.spaceBetween,
+                              //           children: [
+                              //             Opacity(
+                              //                 opacity:
+                              //                     p.filteredMembership == 'Free'
+                              //                         ? 1.0
+                              //                         : 0.5,
+                              //                 child: OutlinedButton(
+                              //                     onPressed: () {
+                              //                       p.choosFilterOptionsF(
+                              //                           membership: 'Free');
+                              //                     },
+                              //                     style:
+                              //                         OutlinedButton.styleFrom(
+                              //                             side: const BorderSide(
+                              //                                 width: 1,
+                              //                                 color: AppColors
+                              //                                     .textSilver)),
+                              //                     child: Text("Free",
+                              //                         style: TextTheme.of(
+                              //                                 context)
+                              //                             .labelSmall!
+                              //                             .copyWith(
+                              //                                 color: AppColors
+                              //                                     .textSilver)))),
+                              //             Opacity(
+                              //                 opacity: p.filteredMembership ==
+                              //                         'Silver'
+                              //                     ? 1.0
+                              //                     : 0.5,
+                              //                 child: OutlinedButton(
+                              //                     onPressed: () {
+                              //                       p.choosFilterOptionsF(
+                              //                           membership: 'Silver');
+                              //                     },
+                              //                     style:
+                              //                         OutlinedButton.styleFrom(
+                              //                             side: const BorderSide(
+                              //                                 width: 1,
+                              //                                 color: AppColors
+                              //                                     .textSilver)),
+                              //                     child: Text("Silver",
+                              //                         style: TextTheme.of(
+                              //                                 context)
+                              //                             .labelSmall!
+                              //                             .copyWith(
+                              //                                 color: AppColors
+                              //                                     .textSilver)))),
+                              //             Opacity(
+                              //                 opacity: p.filteredMembership ==
+                              //                         'Bronze'
+                              //                     ? 1.0
+                              //                     : 0.5,
+                              //                 child: OutlinedButton(
+                              //                     onPressed: () {
+                              //                       p.choosFilterOptionsF(
+                              //                           membership: 'Bronze');
+                              //                     },
+                              //                     style:
+                              //                         OutlinedButton.styleFrom(
+                              //                             side: const BorderSide(
+                              //                                 width: 1,
+                              //                                 color: AppColors
+                              //                                     .textSilver)),
+                              //                     child: Text("Bronze",
+                              //                         style: TextTheme.of(
+                              //                                 context)
+                              //                             .labelSmall!
+                              //                             .copyWith(
+                              //                                 color: AppColors
+                              //                                     .textSilver)))),
+                              //             Opacity(
+                              //                 opacity:
+                              //                     p.filteredMembership == 'Gold'
+                              //                         ? 1.0
+                              //                         : 0.5,
+                              //                 child: OutlinedButton(
+                              //                     onPressed: () {
+                              //                       p.choosFilterOptionsF(
+                              //                           membership: 'Gold');
+                              //                     },
+                              //                     style:
+                              //                         OutlinedButton.styleFrom(
+                              //                             side: const BorderSide(
+                              //                                 width: 1,
+                              //                                 color: AppColors
+                              //                                     .textSilver)),
+                              //                     child: Text("Gold",
+                              //                         style: Theme.of(context)
+                              //                             .textTheme
+                              //                             .labelSmall!
+                              //                             .copyWith(
+                              //                                 color: AppColors
+                              //                                     .textSilver)))),
+                              //           ]),
+                              //       const SizedBox(height: 20),
+                              //       Row(
+                              //           mainAxisAlignment:
+                              //               MainAxisAlignment.spaceBetween,
+                              //           crossAxisAlignment:
+                              //               CrossAxisAlignment.center,
+                              //           children: [
+                              //             const Text("STATUS: ",
+                              //                 style: TextStyle(
+                              //                     color: AppColors.silverGold)),
+                              //             Row(children: [
+                              //               Opacity(
+                              //                   opacity: p.filteredStatus
+                              //                       ? 1.0
+                              //                       : 0.5,
+                              //                   child: OutlinedButton(
+                              //                       onPressed: () {
+                              //                         p.choosFilterOptionsF(
+                              //                             status: true);
+                              //                       },
+                              //                       style: OutlinedButton.styleFrom(
+                              //                           side: const BorderSide(
+                              //                               width: 1,
+                              //                               color: AppColors
+                              //                                   .textSilver)),
+                              //                       child: Text("Active",
+                              //                           style: Theme.of(context)
+                              //                               .textTheme
+                              //                               .labelSmall!
+                              //                               .copyWith(
+                              //                                   color: AppColors
+                              //                                       .textSilver)))),
+                              //               const SizedBox(width: 10),
+                              //               Opacity(
+                              //                   opacity: !p.filteredStatus
+                              //                       ? 1.0
+                              //                       : 0.5,
+                              //                   child: OutlinedButton(
+                              //                       onPressed: () {
+                              //                         p.choosFilterOptionsF(
+                              //                             status: false);
+                              //                       },
+                              //                       style: OutlinedButton.styleFrom(
+                              //                           side: const BorderSide(
+                              //                               width: 1,
+                              //                               color: AppColors
+                              //                                   .textSilver)),
+                              //                       child: Text("Block",
+                              //                           style: Theme.of(context)
+                              //                               .textTheme
+                              //                               .labelSmall!
+                              //                               .copyWith(
+                              //                                   color: AppColors
+                              //                                       .textSilver))))
+                              //             ])
+                              //           ]),
+                              //       const SizedBox(height: 20),
+                              //       SizedBox(
+                              //         width: w * 0.24,
+                              //         child: OutlinedButton(
+                              //             onPressed: () {
+                              //               p.filterUsersF(
+                              //                   showLoading: true,
+                              //                   loadingFor: 'filtering');
+                              //             },
+                              //             style: OutlinedButton.styleFrom(
+                              //                 side: const BorderSide(
+                              //                     width: 1,
+                              //                     color: AppColors.gold)),
+                              //             child: p.isLoading &&
+                              //                     p.isLoadingFor == "filtering"
+                              //                 ? const DotLoader()
+                              //                 : Text("Filter",
+                              //                     style: TextTheme.of(context)
+                              //                         .labelSmall!
+                              //                         .copyWith(
+                              //                             color:
+                              //                                 AppColors.gold))),
+                              //       )
+                              //     ])),
+                              // p.isUsersFiltered
+                              //     ? CardWidget(
+                              //         padding: EdgeInsets.all(isPhone ? 3 : 15),
+                              //         widthRatio: isPhone ? 1 : 0.25,
+                              //         child: Column(children: [
+                              //           Row(
+                              //               mainAxisAlignment:
+                              //                   MainAxisAlignment.spaceBetween,
+                              //               children: [
+                              //                 p.isLoading &&
+                              //                         p.isLoadingFor ==
+                              //                             "selectinguser"
+                              //                     ? const DotLoader()
+                              //                     : const Text("Filters",
+                              //                         style: TextStyle(
+                              //                             color: Colors.white,
+                              //                             fontSize: 20)),
+                              //                 OutlinedButton(
+                              //                     onPressed: () {},
+                              //                     style:
+                              //                         OutlinedButton.styleFrom(
+                              //                       side: const BorderSide(
+                              //                           width: 1,
+                              //                           color: AppColors.gold),
+                              //                     ),
+                              //                     child: Text("Recent Filters",
+                              //                         style: TextTheme.of(
+                              //                                 context)
+                              //                             .labelSmall!
+                              //                             .copyWith(
+                              //                                 color: AppColors
+                              //                                     .gold))),
+                              //               ]),
+                              //           Row(children: [
+                              //             const Text("GENDER: ",
+                              //                 style: TextStyle(
+                              //                     color: AppColors.silverGold)),
+                              //             Row(children: [
+                              //               Text(p.filteredGender),
+                              //               const SizedBox(width: 5),
+                              //               Icon(
+                              //                   p.filteredGender == 'Male'
+                              //                       ? Icons.male
+                              //                       : Icons.female,
+                              //                   size: 12)
+                              //             ])
+                              //           ]),
+                              //           const Divider(thickness: 0.1),
+                              //           Row(children: [
+                              //             const Text("VARIFICATION: ",
+                              //                 style: TextStyle(
+                              //                     color: AppColors.silverGold)),
+                              //             Row(children: [
+                              //               Text(p.filteredVerfication == 0
+                              //                   ? 'Not Apply'
+                              //                   : p.filteredVerfication == 1
+                              //                       ? 'Apply'
+                              //                       : 'Verified'),
+                              //               const SizedBox(width: 5),
+                              //               Icon(
+                              //                   p.filteredVerfication == 0
+                              //                       ? Icons.close
+                              //                       : Icons.check,
+                              //                   size: 12)
+                              //             ])
+                              //           ]),
+                              //           const Divider(thickness: 0.1),
+                              //           Row(children: [
+                              //             const Text("MEMBERSHIP: ",
+                              //                 style: TextStyle(
+                              //                     color: AppColors.silverGold)),
+                              //             Text(p.filteredMembership)
+                              //           ]),
+                              //           const Divider(thickness: 0.1),
+                              //           Row(children: [
+                              //             const Text("STATUS: ",
+                              //                 style: TextStyle(
+                              //                     color: AppColors.silverGold)),
+                              //             p.filteredStatus
+                              //                 ? const Row(children: [
+                              //                     Icon(Icons.cancel,
+                              //                         color:
+                              //                             AppColors.textGreen,
+                              //                         size: 12),
+                              //                     SizedBox(width: 5),
+                              //                     Text("Active"),
+                              //                   ])
+                              //                 : const Row(children: [
+                              //                     Icon(Icons.cancel,
+                              //                         color: AppColors.textRed,
+                              //                         size: 12),
+                              //                     SizedBox(width: 5),
+                              //                     Text("Blocked"),
+                              //                   ])
+                              //           ]),
+                              //         ]))
+                              //     : const SizedBox.shrink(),
+                           
+                           
+                           
+                              // Flex(
+                              //     direction:
+                              //         isPhone ? Axis.vertical : Axis.horizontal,
+                              //     mainAxisAlignment: MainAxisAlignment.start,
+                              //     crossAxisAlignment: CrossAxisAlignment.start,
+                              //     children: [
+                                  //   p.geted13usersList.isEmpty
+                                  //       ? const SizedBox.shrink()
+                                  //       : CardWidget(
+                                  //           widthRatio: isPhone ? 1 : 0.12,
+                                  //           padding: const EdgeInsets.all(15),
+                                  //           child: Column(children: [
+                                  //             Text("Selection",
+                                  //                 style: TextTheme.of(context)
+                                  //                     .headlineSmall),
+                                  //             ElevatedButton(
+                                  //                 style:
+                                  //                     ElevatedButton.styleFrom(
+                                  //                         backgroundColor:
+                                  //                             AppColors.gold),
+                                  //                 onPressed: () {},
+                                  //                 child: const Text(
+                                  //                     "Selection is on",
+                                  //                     style: TextStyle(
+                                  //                         color:
+                                  //                             Colors.white))),
+                                  //           ])),
+                                  //   p.geted13usersList.isEmpty
+                                  //       ? const SizedBox.shrink()
+                                  //       : CardWidget(
+                                  //           widthRatio: isPhone ? 1 : 0.12,
+                                  //           padding: const EdgeInsets.all(15),
+                                  //           child: Column(children: [
+                                  //             Text("Action",
+                                  //                 style: TextTheme.of(context)
+                                  //                     .headlineSmall),
+                                  //             const SizedBox(height: 12),
+                                  //             Row(
+                                  //                 mainAxisAlignment:
+                                  //                     MainAxisAlignment
+                                  //                         .spaceEvenly,
+                                  //                 children: [
+                                  //                   InkWell(
+                                  //                     borderRadius:
+                                  //                         BorderRadius.circular(
+                                  //                             10),
+                                  //                     onTap: () {
+                                  //                       p.activeOrBanUserF(
+                                  //                           showLoading: true,
+                                  //                           loadingFor: 'block',
+                                  //                           docId: p
+                                  //                               .geted13usersList[
+                                  //                                   p.selectedUserIndex]
+                                  //                               .uid!,
+                                  //                           status: false);
+                                  //                     },
+                                  //                     child: Opacity(
+                                  //                       opacity: !p
+                                  //                               .geted13usersList[
+                                  //                                   p.selectedUserIndex]
+                                  //                               .enable!
+                                  //                           ? 1
+                                  //                           : 0.5,
+                                  //                       child: Row(children: [
+                                  //                         Opacity(
+                                  //                             opacity: p
+                                  //                                     .geted13usersList[p
+                                  //                                         .selectedUserIndex]
+                                  //                                     .enable!
+                                  //                                 ? 0.5
+                                  //                                 : 1,
+                                  //                             child: const Icon(
+                                  //                                 Icons.cancel,
+                                  //                                 size: 18,
+                                  //                                 color: AppColors
+                                  //                                     .textRed)),
+                                  //                         p.isLoading &&
+                                  //                                 p.isLoadingFor ==
+                                  //                                     "block"
+                                  //                             ? const DotLoader()
+                                  //                             : const Text(
+                                  //                                 ' Block',
+                                  //                                 style: TextStyle(
+                                  //                                     fontSize:
+                                  //                                         10))
+                                  //                       ]),
+                                  //                     ),
+                                  //                   ),
+                                  //                   InkWell(
+                                  //                       borderRadius:
+                                  //                           BorderRadius
+                                  //                               .circular(10),
+                                  //                       onTap: () {
+                                  //                         p.activeOrBanUserF(
+                                  //                             showLoading: true,
+                                  //                             loadingFor:
+                                  //                                 'active',
+                                  //                             docId: p
+                                  //                                 .geted13usersList[
+                                  //                                     p.selectedUserIndex]
+                                  //                                 .uid!,
+                                  //                             status: true);
+                                  //                       },
+                                  //                       child: Opacity(
+                                  //                         opacity: p
+                                  //                                 .geted13usersList[
+                                  //                                     p.selectedUserIndex]
+                                  //                                 .enable!
+                                  //                             ? 1
+                                  //                             : 0.5,
+                                  //                         child: Row(children: [
+                                  //                           const Icon(
+                                  //                               Icons
+                                  //                                   .check_circle,
+                                  //                               size: 18,
+                                  //                               color: AppColors
+                                  //                                   .textGreen),
+                                  //                           p.isLoading &&
+                                  //                                   p.isLoadingFor ==
+                                  //                                       "active"
+                                  //                               ? const DotLoader()
+                                  //                               : const Text(
+                                  //                                   ' Active',
+                                  //                                   style: TextStyle(
+                                  //                                       fontSize:
+                                  //                                           10))
+                                  //                         ]),
+                                  //                       ))
+                                  //                 ]),
+                                  //           ])),
+                                  // ]),
                               p.geted13usersList.isEmpty
                                   ? const SizedBox.shrink()
                                   : CardWidget(

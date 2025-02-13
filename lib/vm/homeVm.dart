@@ -133,20 +133,6 @@ class HomeVm with ChangeNotifier {
                 DateTime.now().month))
             .toList();
 
-        sessionDuration = calculateUsageTime(monthlyAppOpeningTimes);
-
-        var inPercentSessionDuration = allUsersList.isNotEmpty
-            ? (2629746 /* total seconds in month*/ /
-                monthlyAppOpeningTimes
-                    .map((e) => int.parse(e.monthlyAppUsageInSeconds))
-                    .fold(0, (sum, e) => sum + e))
-            : 0.0;
-
-        sessionDurationPer = inPercentSessionDuration.toStringAsFixed(2);
-        if (sessionDurationPer == 0 || sessionDurationPer == 'Infinity') {
-          sessionDurationPer = '${Random().nextInt(20)}';
-        }
-
         frequencyOfUsage = newUsersListByMonths.last.toString();
         frequencyOfUsagePer =
             ((newUsersListByMonths.last / allUsersList.length) * 100)
@@ -176,9 +162,9 @@ class HomeVm with ChangeNotifier {
             : '0';
 
         churnRatePer = allUsersList.isNotEmpty
-            ? ((monthlyAppOpeningTimes.length / allUsersList.length) * 100)
-                .toString()
+            ? ((allUsersList.length - monthlyAppOpeningTimes.length)).toString()
             : '0';
+        churnRatePer = (int.parse(churnRatePer.toString()) / 100).toString();
 
         if (churnRatePer == '0') {
           churnRate = '${Random().nextInt(5)}';
@@ -210,6 +196,36 @@ class HomeVm with ChangeNotifier {
         allUsersMembershipPerc =
             (allUsersList.length / 100 * allUsersMembershipList.length)
                 .toStringAsFixed(1);
+
+        sessionDuration = calculateUsageTime(monthlyAppOpeningTimes);
+
+        var inPercentSessionDuration = monthlyAppOpeningTimes.fold<int>(
+                0,
+                (max, e) => e.monthlyAppUsageInSeconds == null
+                    ? max
+                    : int.parse(e.monthlyAppUsageInSeconds.toString().isNotEmpty
+                                ? e.monthlyAppUsageInSeconds.toString()
+                                : '0') >
+                            max
+                        ? int.parse(
+                            e.monthlyAppUsageInSeconds.toString().isNotEmpty
+                                ? e.monthlyAppUsageInSeconds.toString()
+                                : '0')
+                        : max) /
+            allUsersList.length /
+            30;
+        // var inPercentSessionDuration = allUsersList.isNotEmpty
+        //     ? (2629746 /* total seconds in month*/ /
+        //         monthlyAppOpeningTimes
+        //             .map((e) => int.parse(
+        //                 e.monthlyAppUsageInSeconds.toString() ?? '10.0'))
+        //             .fold(0, (sum, e) => sum + e))
+        //     : 0.0;
+
+        sessionDurationPer = inPercentSessionDuration.toStringAsFixed(2);
+        if (sessionDurationPer == 0 || sessionDurationPer == 'Infinity') {
+          sessionDurationPer = '${Random().nextInt(20)}';
+        }
       }
 
       ///
@@ -740,6 +756,165 @@ class HomeVm with ChangeNotifier {
     }
   }
 
+  //////////////////
+
+  String dropDownValueGender = "";
+  String dropDownValueMembership = "";
+  String dropDownValueVerification = "";
+  String dropDownValueStatus = "";
+  dropDownUsersFilterF(
+      {bool showLoading = false,
+      String loadingFor = "",
+      String? gender,
+      String? verification,
+      String? membership,
+      String? status,
+      bool clearAll = false}) async {
+    try {
+      if (showLoading) {
+        setLoadingF(true, loadingFor);
+        await Future.delayed(const Duration(milliseconds: 800));
+      }
+      if (clearAll) {
+        dropDownValueGender = "";
+        dropDownValueMembership = "";
+        dropDownValueVerification = "";
+        dropDownValueStatus = "";
+        isUsersFiltered = false;
+        get13UsersF();
+        setLoadingF(false);
+        return;
+      } else {
+        // if ((dropDownValueGender.isEmpty &&
+        //         dropDownValueMembership.isEmpty &&
+        //         dropDownValueVerification.isEmpty &&
+        //         dropDownValueStatus.isEmpty) &&
+        //     geted13usersList.length < 20) {
+        //   geted13usersList = allUsersList;
+        // }
+        if (gender != null) {
+          geted13usersList = allUsersList
+              .where((element) =>
+                  element.gender == gender &&
+                  (dropDownValueVerification.isNotEmpty
+                      ? element.varifiedStatus ==
+                          (dropDownValueVerification == 'Verified'
+                              ? 3
+                              : dropDownValueVerification == 'Not Verified'
+                                  ? 0
+                                  : 1)
+                      : true) &&
+                  (dropDownValueMembership.isNotEmpty
+                      ? element.membership == dropDownValueMembership
+                      : true) &&
+                  (dropDownValueStatus.isNotEmpty
+                      ? element.enable ==
+                          (dropDownValueStatus == 'Enabled' ? true : false)
+                      : true))
+              .toList();
+          dropDownValueGender = gender;
+        } else if (verification != null) {
+          var varif = verification == 'Verified'
+              ? 3
+              : verification == 'Not Verified'
+                  ? 0
+                  : 1;
+          geted13usersList = allUsersList
+              .where((element) =>
+                  (dropDownValueGender.isNotEmpty
+                      ? element.gender == dropDownValueGender
+                      : true) &&
+                  element.varifiedStatus == varif &&
+                  (dropDownValueMembership.isNotEmpty
+                      ? element.membership == dropDownValueMembership
+                      : true) &&
+                  (dropDownValueStatus.isNotEmpty
+                      ? element.enable ==
+                          (dropDownValueStatus == 'Enabled' ? true : false)
+                      : true))
+              .toList();
+
+          dropDownValueVerification = verification;
+        } else if (membership != null) {
+          geted13usersList = allUsersList
+              .where((element) =>
+                  (dropDownValueGender.isNotEmpty
+                      ? element.gender == dropDownValueGender
+                      : true) &&
+                  (dropDownValueVerification.isNotEmpty
+                      ? element.varifiedStatus ==
+                          (dropDownValueVerification == 'Verified'
+                              ? 3
+                              : dropDownValueVerification == 'Not Verified'
+                                  ? 0
+                                  : 1)
+                      : true) &&
+                  element.membership == membership &&
+                  (dropDownValueStatus.isNotEmpty
+                      ? element.enable ==
+                          (dropDownValueStatus == 'Enabled' ? true : false)
+                      : true))
+              .toList();
+          dropDownValueMembership = membership;
+        } else if (status != null) {
+          var stausIs = status == 'Enabled' ? true : false;
+          geted13usersList = allUsersList
+              .where((element) =>
+                  (dropDownValueGender.isNotEmpty
+                      ? element.gender == dropDownValueGender
+                      : true) &&
+                  (dropDownValueVerification.isNotEmpty
+                      ? element.varifiedStatus ==
+                          (dropDownValueVerification == 'Verified'
+                              ? 3
+                              : dropDownValueVerification == 'Not Verified'
+                                  ? 0
+                                  : 1)
+                      : true) &&
+                  (dropDownValueMembership.isNotEmpty
+                      ? element.membership == dropDownValueMembership
+                      : true) &&
+                  element.enable == stausIs)
+              .toList();
+          dropDownValueStatus = status;
+        }
+      }
+
+      isUsersFiltered = true;
+      // isUsersFiltered = true;
+      setLoadingF(false);
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint("💥 try catch dropDownGenderF error: $e , st:$st");
+    } finally {
+      setLoadingF(false);
+    }
+  }
+
+  bool isDecending = false;
+  decAcUsersF(
+      {bool showLoading = false,
+      String loadingFor = "",
+      bool desc = false}) async {
+    try {
+      if (showLoading) {
+        setLoadingF(true, loadingFor);
+        await Future.delayed(const Duration(milliseconds: 800));
+      }
+      isDecending = desc;
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint("💥 try catch decAcUsersF error: $e , st:$st");
+    } finally {
+      setLoadingF(false);
+    }
+    // geted13usersList = isDecending
+    //     ? geted13usersList.reversed.toList()
+    //     : geted13usersList.toList();
+  }
+
+  //////////////////
+
   searchUsersF(
       {bool showLoading = false, String loadingFor = "", String? query}) async {
     try {
@@ -776,6 +951,29 @@ class HomeVm with ChangeNotifier {
     }
   }
 
+  setMembershipUserF(
+      {bool showLoading = false,
+      String loadingFor = "",
+      String? uid,
+      String? membership}) async {
+    try {
+      if (showLoading) {
+        setLoadingF(true, loadingFor);
+      }
+
+      await FStore()
+          .changeMembershipOfUsersF(docId: uid, membership: membership);
+      geted13usersList.firstWhere((e) => e.uid == uid).membership = membership;
+      EasyLoading.showSuccess("Changed To $membership ");
+      setLoadingF(false);
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint("💥 try catch setMembershipUserF error: $e , st:$st");
+    } finally {
+      setLoadingF(false);
+    }
+  }
+
   activeOrBanUserF(
       {bool showLoading = false,
       String loadingFor = "",
@@ -793,6 +991,25 @@ class HomeVm with ChangeNotifier {
       EasyLoading.showError("$e");
       debugPrint("💥 try catch activeOrBanUserF error: $e , st:$st");
     } finally {
+      setLoadingF(false);
+    }
+  }
+
+  deleteUserByUidF(context,
+      {bool showLoading = false, String loadingFor = "", String? uid}) async {
+    try {
+      if (showLoading) {
+        setLoadingF(true, loadingFor);
+      }
+      await FStore().deleteUserF(docId: uid);
+      geted13usersList.removeWhere((e) => e.uid == uid);
+      EasyLoading.showSuccess("Deleted");
+      setLoadingF(false);
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint("💥 try catch deleteUserByUidF error: $e , st:$st");
+    } finally {
+      Navigator.pop(context);
       setLoadingF(false);
     }
   }
@@ -1023,7 +1240,37 @@ class HomeVm with ChangeNotifier {
         setLoadingF(true, loadingFor);
       }
       await jsonToCsv(
-        allUsersList.map((u) => u.toJson()).toList(),
+        (dropDownValueGender.isEmpty &&
+                dropDownValueMembership.isEmpty &&
+                dropDownValueVerification.isEmpty &&
+                dropDownValueStatus.isEmpty)
+            ? allUsersList.map((u) => u.toJson()).toList()
+            : allUsersList
+                .where((element) =>
+                    (dropDownValueGender.isNotEmpty
+                        ? element.gender == dropDownValueGender
+                        : true) &&
+                    (dropDownValueVerification.isNotEmpty
+                        ? element.varifiedStatus ==
+                            (dropDownValueVerification == 'Verified'
+                                ? 3
+                                : dropDownValueVerification == 'Not Verified'
+                                    ? 0
+                                    : 1)
+                        : true) &&
+                    (dropDownValueMembership.isNotEmpty
+                        ? element.membership == dropDownValueMembership
+                        : true) &&
+                    element.enable ==
+                        (dropDownValueMembership.isNotEmpty
+                            ? element.membership ==
+                                (dropDownValueStatus == 'Enabled'
+                                    ? true
+                                    : false)
+                            : true))
+                .toList()
+                .map((e) => e.toJson())
+                .toList(),
         'allusers',
       ).then((v) {
         EasyLoading.showSuccess("Downloaded");
@@ -1079,13 +1326,23 @@ class HomeVm with ChangeNotifier {
   String calculateUsageTime(List<UserModel> monthlyAppOpeningTimes) {
     var usageTimeInSeconds = 0;
 
-    var maxUsage = monthlyAppOpeningTimes.fold<int>(
-        0,
-        (max, e) => e.monthlyAppUsageInSeconds == null
-            ? max
-            : int.parse(e.monthlyAppUsageInSeconds) > max
-                ? int.parse(e.monthlyAppUsageInSeconds)
-                : max);
+    var maxUsage = 0;
+    try {
+      maxUsage = monthlyAppOpeningTimes.fold<int>(
+          0,
+          (max, e) => e.monthlyAppUsageInSeconds == null
+              ? max
+              : int.parse(e.monthlyAppUsageInSeconds.toString().isNotEmpty
+                          ? e.monthlyAppUsageInSeconds.toString()
+                          : '0') >
+                      max
+                  ? int.parse(e.monthlyAppUsageInSeconds.toString().isNotEmpty
+                      ? e.monthlyAppUsageInSeconds.toString()
+                      : '0')
+                  : max);
+    } catch (e, st) {
+      debugPrint("💥 try catch error: FormatException , st:${st.toString()}");
+    }
     // var minUsage = monthlyAppOpeningTimes.fold<int>(
     //     maxUsage,
     //     (min, e) => e.monthlyAppUsageInSeconds == null
@@ -1099,7 +1356,7 @@ class HomeVm with ChangeNotifier {
           (maxUsage / 30).round() ~/ monthlyAppOpeningTimes.length;
     }
 
-    debugPrint("usageTimeInSeconds: $usageTimeInSeconds");
+    debugPrint("👉 usageTimeInSeconds: $usageTimeInSeconds");
 
     int minutes = usageTimeInSeconds ~/ 60;
     int remainingSeconds = usageTimeInSeconds % 60;

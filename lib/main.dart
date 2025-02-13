@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
             appBarTheme: AppBarTheme(
                 centerTitle: true,
                 titleTextStyle: TextStyle(color: AppColors.primaryMid))),
-        home: const SidebarWidget(),
+        home: const SplashPage(),
         builder: EasyLoading.init());
   }
 }
@@ -104,14 +104,14 @@ class _SplashPageState extends ConsumerState<SplashPage> {
 
   onlineSpan() async {
     try {
-      User? fbUser = FirebaseAuth.instance.currentUser;
-      if (fbUser != null) {
+      User? fbUser = await FirebaseAuth.instance.currentUser;
+      if (fbUser == null) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           Timer(const Duration(seconds: 3), () async {
             Navigator.of(context).pushReplacement(PageRouteBuilder(
                 transitionDuration: const Duration(seconds: 3),
                 pageBuilder: (context, animation, secondaryAnimation) =>
-                    const SidebarWidget(),
+                    const LoginPage(),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) =>
                         FadeTransition(opacity: animation, child: child)));
@@ -122,7 +122,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
           Navigator.of(context).pushReplacement(PageRouteBuilder(
               transitionDuration: const Duration(seconds: 3),
               pageBuilder: (context, animation, secondaryAnimation) =>
-                  const LoginPage(),
+                  const SidebarWidget(),
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) =>
                       FadeTransition(opacity: animation, child: child)));
@@ -203,6 +203,12 @@ class _SplashPageState extends ConsumerState<SplashPage> {
             })));
   }
 }
+
+// flutter run -d chrome --web-renderer html
+// flutter build web --web-renderer html --release
+// flutter build web --release --web-renderer canvaskit
+
+
 
 
 // fcm
