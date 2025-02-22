@@ -108,7 +108,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
       User? fbUser = await FirebaseAuth.instance.currentUser;
       if (fbUser == null) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          Timer(const Duration(seconds: 0), () async {
+          Timer(const Duration(seconds: 3), () async {
             Navigator.of(context).pushReplacement(PageRouteBuilder(
                 transitionDuration: const Duration(seconds: 3),
                 pageBuilder: (context, animation, secondaryAnimation) =>
@@ -119,7 +119,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
           });
         });
       } else {
-        Timer(const Duration(seconds: 0), () async {
+        Timer(const Duration(seconds: 3), () async {
           Navigator.of(context).pushReplacement(PageRouteBuilder(
               transitionDuration: const Duration(seconds: 3),
               pageBuilder: (context, animation, secondaryAnimation) =>
