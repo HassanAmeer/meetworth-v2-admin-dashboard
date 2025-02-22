@@ -906,73 +906,105 @@ class _HomePageState extends ConsumerState<HomePage> {
                                                               .textGreen)),
                                             ]),
 
-                                        
-                                             CardWidget(
-                                                heightRatio:
-                                                    isPhone ? 0.4 : 0.1,
-                                                child:  
-                                                
-                                                p.trPaidSumList.fold<int>(
-                                                    0,
-                                                    (sum, element) =>
-                                                        sum +
-                                                        int.parse(element
-                                                            .toString())) ==
-                                                0
-                                            ? const Text("No Subscriptions", style: TextStyle(color: AppColors.textSilverDark))
-                                            :
-                                                BarChartWidget(
+                                        CardWidget(
+                                            heightRatio: isPhone ? 0.4 : 0.1,
+                                            child: p.trPaidSumList.fold<int>(
+                                                        0,
+                                                        (sum, element) =>
+                                                            sum +
+                                                            int.parse(element
+                                                                .toString())) ==
+                                                    0
+                                                ? const Text("No Subscriptions",
+                                                    style: TextStyle(
+                                                        color: AppColors
+                                                            .textSilverDark))
+                                                : BarChartWidget(
                                                     dataList: p.trPaidSumList))
                                       ])),
+                              // CardWidget(
+                              //     widthRatio: isPhone ? 1 : 0.22,
+                              //     heightRatio: isPhone ? 0.6 : 0.18,
+                              //     padding: const EdgeInsets.all(0),
+                              //     child: Stack(
+                              //       alignment: Alignment.topLeft,
+                              //       children: [
+                              //         SizedBox(
+                              //             child: CalendarDatePicker2(
+                              //           displayedMonthDate: p.bestSellingDay,
+                              //           config: CalendarDatePicker2Config(
+                              //             hideLastMonthIcon: true,
+                              //             hideMonthPickerDividers: true,
+                              //             hideNextMonthIcon: true,
+                              //             hideScrollViewMonthWeekHeader: true,
+                              //             hideScrollViewTopHeaderDivider: true,
+                              //             hideYearPickerDividers: true,
+                              //             hideScrollViewTopHeader: true,
+                              //             selectedDayHighlightColor:
+                              //                 AppColors.gold.withOpacity(0.9),
+                              //             selectedYearTextStyle:
+                              //                 const TextStyle(
+                              //                     color: Colors.white),
+                              //             disabledDayTextStyle: TextStyle(
+                              //                 color: AppColors.textSilver
+                              //                     .withOpacity(0.7)),
+                              //             controlsTextStyle: const TextStyle(
+                              //                 color: AppColors.textSilver),
+                              //             todayTextStyle: const TextStyle(
+                              //                 color: AppColors.textSilver),
+                              //             monthTextStyle: const TextStyle(
+                              //                 color: AppColors.textSilver),
+                              //             yearTextStyle: const TextStyle(
+                              //                 color: AppColors.textSilver),
+                              //             dayTextStyle: const TextStyle(
+                              //                 color: AppColors.textSilver),
+                              //             selectedDayTextStyle: const TextStyle(
+                              //                 color: Colors.white),
+                              //             calendarType:
+                              //                 CalendarDatePicker2Type.single,
+                              //           ),
+                              //           value: [p.bestSellingDay],
+                              //         )),
+                              //         Positioned(
+                              //           top: 3,
+                              //           right: 10,
+                              //           child: Text("Best Selling day",
+                              //               style: TextTheme.of(context)
+                              //                   .labelSmall!),
+                              //         ),
+                              //       ],
+                              //     )),
                               CardWidget(
                                   widthRatio: isPhone ? 1 : 0.22,
                                   heightRatio: isPhone ? 0.6 : 0.18,
                                   padding: const EdgeInsets.all(0),
-                                  child: Stack(
-                                    alignment: Alignment.topLeft,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
                                     children: [
+                                      SizedBox(height: 15),
+                                       Text("Verifications Status",
+                                                    style: TextTheme.of(context)
+                                                        .labelSmall!
+                                                        .copyWith(
+                                                            color: AppColors
+                                                                .textLight)),
+                                      SizedBox(height: 15),
+
                                       SizedBox(
-                                          child: CalendarDatePicker2(
-                                        displayedMonthDate: p.bestSellingDay,
-                                        config: CalendarDatePicker2Config(
-                                          hideLastMonthIcon: true,
-                                          hideMonthPickerDividers: true,
-                                          hideNextMonthIcon: true,
-                                          hideScrollViewMonthWeekHeader: true,
-                                          hideScrollViewTopHeaderDivider: true,
-                                          hideYearPickerDividers: true,
-                                          hideScrollViewTopHeader: true,
-                                          selectedDayHighlightColor:
-                                              AppColors.gold.withOpacity(0.9),
-                                          selectedYearTextStyle:
-                                              const TextStyle(
-                                                  color: Colors.white),
-                                          disabledDayTextStyle: TextStyle(
-                                              color: AppColors.textSilver
-                                                  .withOpacity(0.7)),
-                                          controlsTextStyle: const TextStyle(
-                                              color: AppColors.textSilver),
-                                          todayTextStyle: const TextStyle(
-                                              color: AppColors.textSilver),
-                                          monthTextStyle: const TextStyle(
-                                              color: AppColors.textSilver),
-                                          yearTextStyle: const TextStyle(
-                                              color: AppColors.textSilver),
-                                          dayTextStyle: const TextStyle(
-                                              color: AppColors.textSilver),
-                                          selectedDayTextStyle: const TextStyle(
-                                              color: Colors.white),
-                                          calendarType:
-                                              CalendarDatePicker2Type.single,
-                                        ),
-                                        value: [p.bestSellingDay],
-                                      )),
-                                      Positioned(
-                                        top: 3,
-                                        right: 10,
-                                        child: Text("Best Selling day",
-                                            style: TextTheme.of(context)
-                                                .labelSmall!),
+                                        height:isPhone ? w*0.4 : w*0.13,
+                                        child: VirificationBarChartWidget(dataList: [
+                                          p.newUsersListByFilter
+                                              .where((e) => e.varifiedStatus == 0)
+                                              .length,
+                                          p.newUsersListByFilter
+                                              .where((e) => e.varifiedStatus == 1)
+                                              .length,
+                                          p.newUsersListByFilter
+                                              .where((e) =>
+                                                  e.varifiedStatus == 2 ||
+                                                  e.varifiedStatus == 3)
+                                              .length
+                                        ]),
                                       ),
                                     ],
                                   )),
@@ -1240,7 +1272,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                                   ]),
                                               Column(children: [
                                                 Text(
-                                                    "  ${(p.allUsersList.length/p.filterUsersMemberShipList.length).toStringAsFixed(2)}%",
+                                                    "  ${(p.allUsersList.length / p.filterUsersMemberShipList.length).toStringAsFixed(2)}%",
                                                     style: TextTheme.of(context)
                                                         .labelSmall!
                                                         .copyWith(
@@ -1254,8 +1286,21 @@ class _HomePageState extends ConsumerState<HomePage> {
                                         CardWidget(
                                             heightRatio: isPhone ? 0.4 : 0.1,
                                             child: BarChartMemberShipWidget(
-                                              dataList:
-                                                  [p.filterUsersMemberShipList.where((e) => e.membership == "Free").length , p.filterUsersMemberShipList.where((e) => e.membership == "Silver").length ,p.filterUsersMemberShipList.where((e) => e.membership == "Gold").length  ],
+                                              dataList: [
+                                                p.filterUsersMemberShipList
+                                                    .where((e) =>
+                                                        e.membership == "Free")
+                                                    .length,
+                                                p.filterUsersMemberShipList
+                                                    .where((e) =>
+                                                        e.membership ==
+                                                        "Silver")
+                                                    .length,
+                                                p.filterUsersMemberShipList
+                                                    .where((e) =>
+                                                        e.membership == "Gold")
+                                                    .length
+                                              ],
                                             ))
                                       ])),
                               CardWidget(
@@ -1517,19 +1562,17 @@ class MsgChartWidget extends StatelessWidget {
                     showTitles: true,
                     reservedSize: 30,
                     getTitlesWidget: (value, meta) {
-                     DateTime now = DateTime.now();
-                        DateTime date =
-                            now.subtract(Duration(days: value.toInt()));
-                        if (value.toInt() >= 0 && value.toInt() < 6) {
-                          return Padding(
+                      DateTime now = DateTime.now();
+                      DateTime date =
+                          now.subtract(Duration(days: value.toInt()));
+                      if (value.toInt() >= 0 && value.toInt() < 6) {
+                        return Padding(
                             padding: const EdgeInsets.only(top: 13),
-                            child: Text(
-                              DateFormat('d').format(date),
-                              style: const TextStyle(
-                                  color: AppColors.textSilver, fontSize: 11)
-                            )
-                          );
-                        }
+                            child: Text(DateFormat('d').format(date),
+                                style: const TextStyle(
+                                    color: AppColors.textSilver,
+                                    fontSize: 11)));
+                      }
 
                       return const Padding(
                         padding: EdgeInsets.only(top: 13),
@@ -1750,6 +1793,83 @@ class BarChartWidget extends StatelessWidget {
     ));
   }
 }
+
+class VirificationBarChartWidget extends StatelessWidget {
+  final List dataList;
+  const VirificationBarChartWidget({super.key, required this.dataList});
+
+  @override
+  Widget build(BuildContext context) {
+    return BarChart(
+      
+      curve: Curves.bounceInOut,
+      BarChartData(
+      barTouchData: BarTouchData(
+          touchTooltipData: BarTouchTooltipData(
+              getTooltipColor: (touchedSpot) => Colors.black)),
+      gridData: const FlGridData(show: false),
+      titlesData: FlTitlesData(
+
+          show: true,
+          bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                  interval: 1,
+                  showTitles: true,
+                  reservedSize: 30,
+                  getTitlesWidget: (value, meta) {
+                    if (value == 0) {
+                      return const Padding(
+                          padding: EdgeInsets.only(top: 13),
+                          child: Text('Not Applied',
+                              style: TextStyle(
+                                  color: AppColors.textSilver, fontSize: 11)));
+                    }
+                    if (value == 1) {
+                      return const Padding(
+                          padding: EdgeInsets.only(top: 13),
+                          child: Text('Applied',
+                              style: TextStyle(
+                                  color: AppColors.textSilver, fontSize: 11)));
+                    }
+                    if (value == 2) {
+                      return const Padding(
+                          padding: EdgeInsets.only(top: 13),
+                          child: Text('Verified',
+                              style: TextStyle(
+                                  color: AppColors.textSilver, fontSize: 11)));
+                    }
+
+                    return const Padding(
+                      padding: EdgeInsets.only(top: 13),
+                      child: Text('',
+                          style: TextStyle(
+                              color: AppColors.textSilver, fontSize: 11)),
+                    );
+                  })),
+          leftTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          topTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false))),
+      borderData: FlBorderData(show: false),
+      barGroups: List.generate(
+        dataList.length,
+        (index) => BarChartGroupData(x: index, barRods: [
+          BarChartRodData(
+              // toY: dataList[index] == 0 ? 0 : dataList[index],
+              width: 35,
+              toY: dataList[index],
+              borderRadius: BorderRadius.circular(5),
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  colors: [AppColors.primaryMid.withOpacity(0.9), AppColors.gold.withOpacity(0.7)]))
+        ]),
+      ),
+    ));
+  }
+}
+
 class BarChartMemberShipWidget extends StatelessWidget {
   final List dataList;
   const BarChartMemberShipWidget({super.key, required this.dataList});
@@ -1769,35 +1889,26 @@ class BarChartMemberShipWidget extends StatelessWidget {
                   showTitles: true,
                   reservedSize: 30,
                   getTitlesWidget: (value, meta) {
-                    if (value == 0 ) {
+                    if (value == 0) {
                       return const Padding(
-                        padding:  EdgeInsets.only(top: 13),
-                        child: Text(
-                          'Free',
-                          style:  TextStyle(
-                              color: AppColors.textSilver, fontSize: 11)
-                        )
-                      );
+                          padding: EdgeInsets.only(top: 13),
+                          child: Text('Free',
+                              style: TextStyle(
+                                  color: AppColors.textSilver, fontSize: 11)));
                     }
-                    if(value == 1){
+                    if (value == 1) {
                       return const Padding(
-                        padding:  EdgeInsets.only(top: 13),
-                        child: Text(
-                          'Silver',
-                          style:  TextStyle(
-                              color: AppColors.textSilver, fontSize: 11)
-                        )
-                      );
+                          padding: EdgeInsets.only(top: 13),
+                          child: Text('Silver',
+                              style: TextStyle(
+                                  color: AppColors.textSilver, fontSize: 11)));
                     }
-                    if(value == 2){
+                    if (value == 2) {
                       return const Padding(
-                        padding:  EdgeInsets.only(top: 13),
-                        child: Text(
-                          'Gold',
-                          style:  TextStyle(
-                              color: AppColors.textSilver, fontSize: 11)
-                        )
-                      );
+                          padding: EdgeInsets.only(top: 13),
+                          child: Text('Gold',
+                              style: TextStyle(
+                                  color: AppColors.textSilver, fontSize: 11)));
                     }
 
                     return const Padding(

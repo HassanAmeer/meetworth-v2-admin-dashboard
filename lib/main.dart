@@ -123,7 +123,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
           Navigator.of(context).pushReplacement(PageRouteBuilder(
               transitionDuration: const Duration(seconds: 3),
               pageBuilder: (context, animation, secondaryAnimation) =>
-                  const SidebarWidget(),
+                  const SplashPage(),
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) =>
                       FadeTransition(opacity: animation, child: child)));

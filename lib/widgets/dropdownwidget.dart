@@ -31,19 +31,19 @@ class DropDownWidget extends StatelessWidget {
           .map((e) => DropdownMenuItem<String>(
               value: '$e',
               child: Text('$e',
-                  style: const TextStyle(color: AppColors.textGold))))
+                  style: t.labelSmall!.copyWith(color: AppColors.gold))))
           .toList(),
       value: selectedValue.toString().isEmpty ? null : selectedValue,
       onChanged: (String? value) {
         onChanged!(value);
       },
       buttonStyleData: ButtonStyleData(
-          decoration: BoxDecoration(color: Colors.transparent),
-          padding: EdgeInsets.symmetric(horizontal: 5),
+          decoration: const BoxDecoration(color: Colors.transparent),
+          padding: const EdgeInsets.symmetric(horizontal: 5),
           height: 40,
           width: isPhone
-              ? (items.first.length > 10 ? w * 0.35 : w * 0.25)
-              : (items.first.length > 10 ? w * 0.15 : w * 0.1)),
+              ? (items.first.length > 10 ? w * 0.3 : w * 0.25)
+              : (items.first.length > 10 ? w * 0.14 : w * 0.08)),
       dropdownStyleData: DropdownStyleData(
           decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),

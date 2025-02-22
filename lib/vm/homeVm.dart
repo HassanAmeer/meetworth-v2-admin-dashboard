@@ -71,6 +71,7 @@ class HomeVm with ChangeNotifier {
 
   ////////////////// 1.
   List<UserModel> allUsersList = <UserModel>[];
+  List<UserModel> allUsersForVerifPageList = <UserModel>[];
   String activeUsers = "0"; // numbers
   String activeUsersPer = "0"; // %
   String sessionDuration = "0"; // in Minutes
@@ -108,8 +109,9 @@ class HomeVm with ChangeNotifier {
     try {
       if (onlyUsers) {
         allUsersList = await FStore().getAllUsers();
+        allUsersForVerifPageList = allUsersList;
         get13UsersF();
-        debugPrint("👉 allUsersList length: ${allUsersList.length}");
+        // debugPrint("👉 allUsersList length: ${allUsersList.length}");
         setLoadingF(false);
       } else {
         allUsersList = await FStore().getAllUsers();
@@ -1153,7 +1155,17 @@ class HomeVm with ChangeNotifier {
                     element.username!
                         .toLowerCase()
                         .contains(query.toLowerCase()) ||
+                    element.firstname!
+                        .toLowerCase()
+                        .contains(query.toLowerCase()) ||
+                    element.lastname!
+                        .toLowerCase()
+                        .contains(query.toLowerCase()) ||
+                    element.email!
+                        .toLowerCase()
+                        .contains(query.toLowerCase()) ||
                     element.firstname!.toLowerCase() == query.toLowerCase() ||
+                    element.lastname!.toLowerCase() == query.toLowerCase() ||
                     element.email!.toLowerCase() == query.toLowerCase()
                 // element.gender == filteredGender ||
                 // element.membership == query ||
@@ -1171,6 +1183,43 @@ class HomeVm with ChangeNotifier {
     } catch (e, st) {
       EasyLoading.showError("$e");
       debugPrint("💥 try catch searchUsersF error: $e , st:$st");
+    } finally {
+      setLoadingF(false);
+    }
+  }
+
+  searchUsersForVerificationsF(
+      {bool showLoading = false, String loadingFor = "", String? query}) async {
+    try {
+      if (query != null || query!.trim() != "") {
+        if (showLoading) {
+          setLoadingF(true, loadingFor);
+          await Future.delayed(const Duration(milliseconds: 800));
+        }
+        allUsersForVerifPageList = allUsersList
+            .where((element) =>
+                element.username!.toLowerCase().contains(query.toLowerCase()) ||
+                element.firstname!
+                    .toLowerCase()
+                    .contains(query.toLowerCase()) ||
+                element.lastname!.toLowerCase().contains(query.toLowerCase()) ||
+                element.email!.toLowerCase().contains(query.toLowerCase()) ||
+                element.firstname!.toLowerCase() == query.toLowerCase() ||
+                element.lastname!.toLowerCase() == query.toLowerCase() ||
+                element.email!.toLowerCase() == query.toLowerCase())
+            .toList();
+        notifyListeners();
+        selectedUserIndex = 0;
+        isUsersFiltered = true;
+      } else {
+        await Future.delayed(const Duration(milliseconds: 800));
+        isUsersFiltered = false;
+        allUsersForVerifPageList = allUsersList;
+      }
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint(
+          "💥 try catch searchUsersForVerificationsF error: $e , st:$st");
     } finally {
       setLoadingF(false);
     }

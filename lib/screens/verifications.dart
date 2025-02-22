@@ -42,7 +42,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var home = ref.read(homeVm);
       await home.selectUserIndexF(0);
-      if (home.allUsersList.isEmpty) {
+      if (home.allUsersForVerifPageList.isEmpty) {
         home
             .getUsersF(context,
                 showLoading: true, loadingFor: "users", onlyUsers: true)
@@ -113,7 +113,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                           .copyWith(
                                               color: AppColors.textSilver)),
                                   trailing: Text(
-                                      "${p.allUsersList.where((e) =>  e.varifiedStatus == 1).toList().length}",
+                                      "${p.allUsersForVerifPageList.where((e) =>  e.varifiedStatus == 1).toList().length}",
                                       style: TextTheme.of(context)
                                           .headlineSmall!)),
                               MiniTileCardWidget(
@@ -123,7 +123,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                           .copyWith(
                                               color: AppColors.textSilver)),
                                   trailing: Text(
-                                      "${p.allUsersList.where((e) => e.varifiedStatus == 2 || e.varifiedStatus == 3).toList().length}",
+                                      "${p.allUsersForVerifPageList.where((e) => e.varifiedStatus == 2 || e.varifiedStatus == 3).toList().length}",
                                       style: TextTheme.of(context)
                                           .headlineSmall!)),
                               InkWell(
@@ -177,18 +177,18 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                               cursorColor: Colors.grey,
                                               controller: queryController,
                                               onSubmitted: (query) {
-                                                p.searchUsersF(
+                                                p.searchUsersForVerificationsF(
                                                     loadingFor: 'search',
                                                     showLoading: true,
                                                     query:
-                                                        queryController.text);
+                                                        queryController.text.trim());
                                               },
                                               onTap: () {
-                                                p.searchUsersF(
+                                                p.searchUsersForVerificationsF(
                                                     loadingFor: 'search',
                                                     showLoading: true,
                                                     query:
-                                                        queryController.text);
+                                                        queryController.text.trim());
                                               },
                                               decoration: InputDecoration(
                                                 border: InputBorder.none,
@@ -265,22 +265,22 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                     style: TextStyle(
                                                         fontSize: 11))),
                                           ],
-                                          rows: p.allUsersList.isEmpty
+                                          rows: p.allUsersForVerifPageList.isEmpty
                                               ? []
                                               : List.generate(
-                                                  p.allUsersList.where((e)=> e.varifiedStatus == 1).toList().length,
-                                                  // p.allUsersList.where((e)=> e.varifiedStatus == 1).toList().length,
+                                                  p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList().length,
+                                                  // p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList().length,
                                                   (index) {
                                                   var user =
-                                                      p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[index];
-                                                  // p.allUsersList
+                                                      p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[index];
+                                                  // p.allUsersForVerifPageList
                                                   //     .where((e) =>
                                                   //         e.varifiedStatus ==
                                                   //             0 ||
                                                   //         e.varifiedStatus == 1)
                                                   //     .toList()
                                                   //     .length, (index) {
-                                                  // var user = p.allUsersList
+                                                  // var user = p.allUsersForVerifPageList
                                                   //     .where((e) =>
                                                   //         e.varifiedStatus ==
                                                   //             0 ||
@@ -365,7 +365,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                 top: 5, bottom: 100),
                                             child: DotLoader(
                                                 color: AppColors.gold)))
-                                    : p.allUsersList.isEmpty
+                                    : p.allUsersForVerifPageList.isEmpty
                                         ? Center(
                                             child: Padding(
                                                 padding: EdgeInsets.only(
@@ -378,6 +378,8 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                             FontWeight.bold))))
                                         : const SizedBox.shrink()
                               ])),
+                              p.allUsersForVerifPageList.isEmpty? SizedBox(
+                                  width: isPhone ? w*1 : w*0.23): 
                           CardWidget(
                               widthRatio: isPhone ? 1 : 0.23,
                               child: Column(children: [
@@ -394,14 +396,14 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                 AppImages.twitter,
                                                 width: 30),
                                             title: Text(
-                                                p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
+                                                p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
                                                         .where((element) =>
                                                             element.containsKey(
                                                                 'Twitter'))
                                                         .isEmpty
                                                     ? "Empty"
                                                     : p
-                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                        .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .linked!
                                                         .firstWhere((element) =>
@@ -410,14 +412,14 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                             trailing: Row(children: [
                                               IconButton(
                                                   onPressed: () {
-                                                      FlutterClipboard.copy(p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
+                                                      FlutterClipboard.copy(p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
                                                         .where((element) =>
                                                             element.containsKey(
                                                                 'Twitter'))
                                                         .isEmpty
                                                     ? "Empty"
                                                     : p
-                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                        .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .linked!
                                                         .firstWhere((element) =>
@@ -432,14 +434,14 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                               const SizedBox(width: 7),
                                               InkWell(
                                                 onTap: () async{
-                                                  if(p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
+                                                  if(p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
                                                         .where((element) =>
                                                             element.containsKey(
                                                                 'Instagram'))
                                                         .isEmpty ) {
                                                       EasyLoading.showError("Empty");
                                                     }else if (!await launchUrl((Uri.parse( p
-                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                        .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .linked!
                                                         .firstWhere((element) =>
@@ -462,13 +464,13 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                             leading: Image.asset(AppImages.insta,
                                                 width: 30),
                                             title: Text(
-                                                p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
+                                                p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
                                                         .where((element) =>
                                                             element.containsKey(
                                                                 'Instagram'))
                                                         .isEmpty
                                                     ? "Empty"
-                                                    : p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
+                                                    : p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
                                                         .firstWhere((element) =>
                                                             element
                                                                 .containsKey('Instagram'))['Instagram'],
@@ -476,14 +478,14 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                             trailing: Row(children: [
                                                IconButton(
                                                   onPressed: () {
-                                                      FlutterClipboard.copy(p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
+                                                      FlutterClipboard.copy(p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
                                                         .where((element) =>
                                                             element.containsKey(
                                                                 'Instagram'))
                                                         .isEmpty
                                                     ? "Empty"
                                                     : p
-                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                        .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .linked!
                                                         .firstWhere((element) =>
@@ -498,14 +500,14 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                               const SizedBox(width: 7),
                                               InkWell(
                                                 onTap: () async{
-                                                        if(p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
+                                                        if(p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
                                                         .where((element) =>
                                                             element.containsKey(
                                                                 'Instagram'))
                                                         .isEmpty ) {
                                                       EasyLoading.showError("Empty");
                                                     }else if (!await launchUrl((Uri.parse(p
-                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                        .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .linked!
                                                         .firstWhere((element) =>
@@ -530,14 +532,14 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                 AppImages.global,
                                                 width: 30),
                                             title: Text(
-                                                p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
+                                                p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
                                                         .where((element) =>
                                                             element.containsKey(
                                                                 'Website'))
                                                         .isEmpty
                                                     ? "Empty"
                                                     : p
-                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                        .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .linked!
                                                         .firstWhere((element) =>
@@ -546,14 +548,14 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                             trailing: Row(children: [
                                                IconButton(
                                                   onPressed: () {
-                                                      FlutterClipboard.copy(p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
+                                                      FlutterClipboard.copy(p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
                                                         .where((element) =>
                                                             element.containsKey(
                                                                 'Website'))
                                                         .isEmpty
                                                     ? "Empty"
                                                     : p
-                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                        .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .linked!
                                                         .firstWhere((element) =>
@@ -569,14 +571,14 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                               InkWell(
                                                 onTap: () async{
                                          
-                                                    if(p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
+                                                    if(p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
                                                         .where((element) =>
                                                             element.containsKey(
                                                                 'Website'))
                                                         .isEmpty ) {
                                                       EasyLoading.showError("Empty");
                                                     }else if (!await launchUrl((Uri.parse(p
-                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                        .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .linked!
                                                         .firstWhere((element) =>
@@ -617,7 +619,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                               onTap: () async {
                                                 try {
                                                   if (p
-                                                      .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                      .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                           p.selectedUserIndex]
                                                       .linked!
                                                       .where((element) =>
@@ -629,7 +631,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                     return;
                                                   }
                                                   var username = p
-                                                      .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                      .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                           p.selectedUserIndex]
                                                       .linked!
                                                       .firstWhere((element) =>
@@ -662,7 +664,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                               onTap: () async {
                                                 try {
                                                   if (p
-                                                      .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                      .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                           p.selectedUserIndex]
                                                       .linked!
                                                       .where((element) =>
@@ -674,7 +676,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                     return;
                                                   }
                                                   var username = p
-                                                          .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p
+                                                          .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p
                                                               .selectedUserIndex]
                                                           .linked!
                                                           .firstWhere((element) =>
@@ -705,7 +707,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                               onTap: () async {
                                                 try {
                                                   if (p
-                                                      .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                      .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                           p.selectedUserIndex]
                                                       .linked!
                                                       .where((element) =>
@@ -717,7 +719,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                     return;
                                                   }
                                                   var username = p
-                                                      .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                      .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                           p.selectedUserIndex]
                                                       .linked!
                                                       .firstWhere((element) =>
@@ -753,7 +755,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                   GestureDetector(
                                                     onTap:(){
                                                        imagePreview(context,
-                                                          imageUrl: p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p
+                                                          imageUrl: p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p
                                                           .selectedUserIndex].image!);
                                                     },
                                                     child: Padding(
@@ -777,7 +779,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                                   child:
                                                                       CachedNetworkImage(
                                                                           imageUrl: p
-                                                                              .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p
+                                                                              .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p
                                                                                   .selectedUserIndex]
                                                                               .image!,
                                                                           progressIndicatorBuilder: (context,
@@ -799,15 +801,15 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                       bottom: 0,
                                                       child: Image.asset(
                                                           width: 40,
-                                                          p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].membership! ==
+                                                          p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].membership! ==
                                                                       'Free' ||
                                                                   p
-                                                                          .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p
+                                                                          .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p
                                                                               .selectedUserIndex]
                                                                           .membership! ==
                                                                       'Bronze'
                                                               ? AppImages.bronze
-                                                              : p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].membership! ==
+                                                              : p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].membership! ==
                                                                       'Silver'
                                                                   ? AppImages
                                                                       .silver
@@ -856,7 +858,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                             width: 12,
                                                             AppImages.location),
                                                         Text(
-                                                          " ${p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].country} ",
+                                                          " ${p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].country} ",
                                                           style: TextTheme.of(
                                                                   context)
                                                               .labelLarge,
@@ -902,12 +904,12 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                             AppImages.send),
                                                         Text(p.calculateDistanceInMiles(
                                                             p
-                                                                .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p
+                                                                .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p
                                                                     .selectedUserIndex]
                                                                 .point!
                                                                 .latitude,
                                                             p
-                                                                .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                                .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                                     p.selectedUserIndex]
                                                                 .point!
                                                                 .longitude,
@@ -933,13 +935,13 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                   children: [
                                                     Text(
                                                         "${p
-                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                        .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex].firstname} ${p
-                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                        .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex].lastname}"),
                                                     Opacity(
                                                       opacity: p
-                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                        .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex].membership == "Golds"?1:0.5,
                                                       child: Image.asset(
                                                           width: 20,
@@ -960,7 +962,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                         width: 15)
                                                   ]..addAll(
                                                       p
-                                                          .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p
+                                                          .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p
                                                               .selectedUserIndex]
                                                           .languages!
                                                           .map((e) => Text(
@@ -974,14 +976,14 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                               //   Image.asset(AppImages.lang,
                                               //       width: 15),
                                               //   Text(
-                                              //       " ${p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].languages!}",
+                                              //       " ${p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].languages!}",
                                               //       // "  Estonian 🇪🇪 • Russian 🇷🇺 • English 🇬🇧 ",
                                               //       style: TextTheme.of(context)
                                               //           .labelSmall!)
                                               // ]),
                                               const SizedBox(height: 5),
                                               Text(
-                                                  """${p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].bio!} """,
+                                                  """${p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].bio!} """,
                                                   // """Guiding businesses' success through strategic.| Problem Solver | Empowering Growth 🌱 Let's solve challenges together! 💼 """,
                                                   style: TextTheme.of(context)
                                                       .labelSmall!
@@ -995,14 +997,14 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                           .spaceEvenly,
                                                   children: List.generate(
                                                       p
-                                                          .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p
+                                                          .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p
                                                               .selectedUserIndex]
                                                           .galleryImages!
                                                           .length,
                                                       (index) => Expanded(
                                                           child: InkWell(
                                                             onTap: (){
-                                                             imagePreview(context, imageUrl: p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].galleryImages![index]);
+                                                             imagePreview(context, imageUrl: p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].galleryImages![index]);
                                                             },
                                                             child: Padding(
                                                                 padding:
@@ -1019,7 +1021,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                                             BorderRadius.circular(
                                                                                 15)),
                                                                     child: CachedNetworkImage(
-                                                                        imageUrl: p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].galleryImages![index],
+                                                                        imageUrl: p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].galleryImages![index],
                                                                         progressIndicatorBuilder: (context, url, downloadProgress) => const SizedBox(height: 60, child: DotLoader(color: AppColors.pieChartColor2)),
                                                                         errorWidget: (context, url, error) => Container(
                                                                             decoration: BoxDecoration(color: AppColors.bgColor, borderRadius: BorderRadius.circular(15)),
@@ -1045,7 +1047,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                         ScrollController(),
                                                     children: List.generate(
                                                         p
-                                                            .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p
+                                                            .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p
                                                                 .selectedUserIndex]
                                                             .goals!
                                                             .length, (index) {
@@ -1068,7 +1070,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                                     const EdgeInsets
                                                                         .all(5),
                                                                 child: Text(
-                                                                    " ${p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].goals![index]}",
+                                                                    " ${p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].goals![index]}",
                                                                     // " 🤝 Find partners",
                                                                     style: TextTheme.of(
                                                                             context)
@@ -1091,7 +1093,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                   spacing: 10,
                                                   children: List.generate(
                                                       p
-                                                          .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p
+                                                          .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p
                                                               .selectedUserIndex]
                                                           .interests!
                                                           .length, (index) {
@@ -1114,7 +1116,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                                   const EdgeInsets
                                                                       .all(5),
                                                               child: Text(
-                                                                  " ${p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].interests![index]}",
+                                                                  " ${p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].interests![index]}",
                                                                   style: TextTheme.of(context)
                                                                       .labelSmall))),
                                                     );
@@ -1173,6 +1175,8 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                 //       hintText: "Reason why it's invalid"),
                                 // )
                               ])),
+                                 p.allUsersForVerifPageList.isEmpty? SizedBox(
+                                  width: isPhone ? w*1 : w*0.2) : 
                           Column(children: [
                             CardWidget(
                               widthRatio: isPhone ? 1 : 0.2,
@@ -1185,13 +1189,13 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                     const SizedBox(height: 5),
                                     InkWell(
                                       onTap: () async{
-                                        if(p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                        if(p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                     p.selectedUserIndex]
                                                 .file1!
                                                         .isEmpty ) {
                                                       EasyLoading.showError("Empty");
                                                     }else if (!await launchUrl((Uri.parse(p
-                                                .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                     p.selectedUserIndex]
                                                 .file1!)))) {
                                                             EasyLoading.showError("Failed to Open");
@@ -1206,7 +1210,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                         child: Center(
                                           child: CachedNetworkImage(
                                             imageUrl: p
-                                                .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                     p.selectedUserIndex]
                                                 .file1!,
                                             placeholder: (context, url) =>
@@ -1232,7 +1236,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                       child: Row(children: [
                                         Opacity(
                                           opacity: p
-                                                  .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                  .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                       p.selectedUserIndex]
                                                   .isValidICard
                                               ? 1
@@ -1249,14 +1253,14 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                               onPressed: () {
                                                 p.setVerifBoolF(
                                                     docId: p
-                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                        .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .uid!,
                                                     verifiedStatus: p
-                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                        .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .isValidBCard ? 2: p
-                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                        .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .file1!.isEmpty ?   0 : 1,
                                                     isValidICard: true);
@@ -1269,7 +1273,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                         const SizedBox(width: 10),
                                         Opacity(
                                           opacity: p
-                                                      .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                      .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                           p.selectedUserIndex]
                                                       .isValidICard ==
                                                   false
@@ -1286,11 +1290,11 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                               onPressed: () {
                                                 p.setVerifBoolF(
                                                     docId: p
-                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                        .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .uid!,
                                                       verifiedStatus:  p
-                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                        .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .file1!.isEmpty ?   0 : 1,
                                                     isValidICard: false);
@@ -1302,13 +1306,13 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                         )
                                       ]),
                                     ),
-                                    p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex]
+                                    p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex]
                                             .iCardDesc.isNotEmpty
                                         ? Padding(
                                             padding: const EdgeInsets.only(
                                                 bottom: 8),
                                             child: Text(
-                                                "Previously: ${p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].iCardDesc}",
+                                                "Previously: ${p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].iCardDesc}",
                                                 style: const TextStyle(
                                                     color: AppColors
                                                         .textSilverDark)),
@@ -1342,13 +1346,13 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                     InkWell(
                                       onTap: () async{
                                         if(p
-                                                .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                     p.selectedUserIndex]
                                                 .file2!
                                                         .isEmpty ) {
                                                       EasyLoading.showError("Empty");
                                                     }else if (!await launchUrl((Uri.parse(p
-                                                .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                     p.selectedUserIndex]
                                                 .file2!)))) {
                                                             EasyLoading.showError("Failed to Open");
@@ -1363,7 +1367,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                         child: Center(
                                           child: CachedNetworkImage(
                                             imageUrl: p
-                                                .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                     p.selectedUserIndex]
                                                 .file2!,
                                             placeholder: (context, url) =>
@@ -1403,7 +1407,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                       child: Row(children: [
                                         Opacity(
                                           opacity: p
-                                                  .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                  .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                       p.selectedUserIndex]
                                                   .isValidBCard
                                               ? 1
@@ -1420,14 +1424,14 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                               onPressed: () {
                                                 p.setVerifBoolF(
                                                     docId: p
-                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                        .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .uid!,
                                                     verifiedStatus: p
-                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                        .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .isValidICard ? 2: p
-                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                        .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .file1!.isEmpty ? 0 : 1,
                                                     isValidBCard: true);
@@ -1440,7 +1444,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                         const SizedBox(width: 10),
                                         Opacity(
                                           opacity: p
-                                                      .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                      .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                           p.selectedUserIndex]
                                                       .isValidBCard ==
                                                   false
@@ -1457,11 +1461,11 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                               onPressed: () {
                                                 p.setVerifBoolF(
                                                     docId: p
-                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                        .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .uid!,
                                                         verifiedStatus:  p
-                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                        .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .file2!.isEmpty ? 0 : 1,
                                                     isValidBCard: false);
@@ -1474,13 +1478,13 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                       ]),
                                     ),
 
-                                    p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex]
+                                    p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex]
                                             .bCardDesc.isNotEmpty
                                         ? Padding(
                                             padding: const EdgeInsets.only(
                                                 bottom: 8),
                                             child: Text(
-                                                "Previously: ${p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].bCardDesc}",
+                                                "Previously: ${p.allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].bCardDesc}",
                                                 style: const TextStyle(
                                                     color: AppColors
                                                         .textSilverDark)),
@@ -1516,7 +1520,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                 showLoading: true,
                                                 loadingFor: 'verifying',
                                                 docId: p
-                                                    .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                    .allUsersForVerifPageList.where((e)=> e.varifiedStatus == 1).toList()[
                                                         p.selectedUserIndex]
                                                     .uid!,
                                                 iCardDesc:

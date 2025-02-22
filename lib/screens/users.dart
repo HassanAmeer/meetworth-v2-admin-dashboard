@@ -81,6 +81,7 @@ class _UsersPageState extends ConsumerState<UsersPage> {
     var p = ref.watch(homeVm);
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
+    var t = Theme.of(context).textTheme;
 
     // var isPhone = w <= 424;
     // try {
@@ -155,8 +156,8 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                             ? const DotLoader()
                                                             : Text(
                                                                 "Download Users CSV",
-                                                                style: TextTheme.of(
-                                                                        context)
+                                                                style: 
+                                                                      t
                                                                     .labelSmall!
                                                                     .copyWith(
                                                                         color: AppColors
@@ -181,7 +182,7 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                           loadingFor: 'search',
                                                           showLoading: true,
                                                           query: queryController
-                                                              .text);
+                                                              .text.trim());
                                                     },
                                                     cursorHeight: 12,
                                                     cursorColor: Colors.grey,
@@ -404,7 +405,7 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                                         showLoading:
                                                                             true,
                                                                         query: queryController
-                                                                            .text);
+                                                                            .text.trim());
                                                                   },
                                                                   icon: const Icon(
                                                                       Icons
@@ -515,14 +516,12 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                               horizontalInside: BorderSide.none,
                                               verticalInside: BorderSide.none),
                                           columns: [
-                                            const DataColumn(
+                                             DataColumn(
                                                 label: Text('User',
-                                                    style: TextStyle(
-                                                        fontSize: 11))),
-                                            const DataColumn(
+                                                    style: t.labelSmall!.copyWith(color: Colors.white))),
+                                             DataColumn(
                                                 label: Text('Email',
-                                                    style: TextStyle(
-                                                        fontSize: 11))),
+                                                    style: t.labelSmall!.copyWith(color: Colors.white))),
                                             DataColumn(
                                                 label: p.isLoading &&
                                                         p.isLoadingFor ==
@@ -1180,8 +1179,8 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                               //                                 color: AppColors
                               //                                     .textSilver)),
                               //                     child: Text("Not Apply",
-                              //                         style: TextTheme.of(
-                              //                                 context)
+                              //                         style: 
+                              //                                t
                               //                             .labelSmall!
                               //                             .copyWith(
                               //                                 color: AppColors
@@ -1206,8 +1205,8 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                               //                         isPhone
                               //                             ? "Apply"
                               //                             : "Apply for varify ",
-                              //                         style: TextTheme.of(
-                              //                                 context)
+                              //                         style: 
+                              //                                t
                               //                             .labelSmall!
                               //                             .copyWith(
                               //                                 color: AppColors
@@ -1229,8 +1228,8 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                               //                                 color: AppColors
                               //                                     .textSilver)),
                               //                     child: Text("Verfied",
-                              //                         style: TextTheme.of(
-                              //                                 context)
+                              //                         style: 
+                              //                                t
                               //                             .labelSmall!
                               //                             .copyWith(
                               //                                 color: AppColors
@@ -1266,8 +1265,8 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                               //                                 color: AppColors
                               //                                     .textSilver)),
                               //                     child: Text("Free",
-                              //                         style: TextTheme.of(
-                              //                                 context)
+                              //                         style: 
+                              //                                t
                               //                             .labelSmall!
                               //                             .copyWith(
                               //                                 color: AppColors
@@ -1289,8 +1288,8 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                               //                                 color: AppColors
                               //                                     .textSilver)),
                               //                     child: Text("Silver",
-                              //                         style: TextTheme.of(
-                              //                                 context)
+                              //                         style: 
+                              //                                t
                               //                             .labelSmall!
                               //                             .copyWith(
                               //                                 color: AppColors
@@ -1312,8 +1311,8 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                               //                                 color: AppColors
                               //                                     .textSilver)),
                               //                     child: Text("Bronze",
-                              //                         style: TextTheme.of(
-                              //                                 context)
+                              //                         style: 
+                              //                                t
                               //                             .labelSmall!
                               //                             .copyWith(
                               //                                 color: AppColors
@@ -1415,8 +1414,8 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                               //                     p.isLoadingFor == "filtering"
                               //                 ? const DotLoader()
                               //                 : Text("Filter",
-                              //                     style: TextTheme.of(context)
-                              //                         .labelSmall!
+                              //                     style: context)
+                              //                         .lat
                               //                         .copyWith(
                               //                             color:
                               //                                 AppColors.gold))),
@@ -1448,8 +1447,8 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                               //                           color: AppColors.gold),
                               //                     ),
                               //                     child: Text("Recent Filters",
-                              //                         style: TextTheme.of(
-                              //                                 context)
+                              //                         style: 
+                              //                                t
                               //                             .labelSmall!
                               //                             .copyWith(
                               //                                 color: AppColors
@@ -1533,8 +1532,8 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                               //           padding: const EdgeInsets.all(15),
                               //           child: Column(children: [
                               //             Text("Selection",
-                              //                 style: TextTheme.of(context)
-                              //                     .headlineSmall),
+                              //                 style: context)
+                              //                     .headlit
                               //             ElevatedButton(
                               //                 style:
                               //                     ElevatedButton.styleFrom(
@@ -1554,8 +1553,8 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                               //           padding: const EdgeInsets.all(15),
                               //           child: Column(children: [
                               //             Text("Action",
-                              //                 style: TextTheme.of(context)
-                              //                     .headlineSmall),
+                              //                 style: context)
+                              //                     .headlit
                               //             const SizedBox(height: 12),
                               //             Row(
                               //                 mainAxisAlignment:
@@ -1764,7 +1763,7 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                           Text(
                                               "${p.geted13usersList[p.selectedUserIndex].age}"),
                                         ]),
-                                        const SizedBox(height: 30),
+                                        const SizedBox(height: 20),
                                         const Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
@@ -1826,7 +1825,101 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                       color: AppColors.textRed,
                                                       size: 20),
                                             ]),
+                                        const SizedBox(height: 1),
                                         const Divider(thickness: 0.1),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                                const Text("Status: ",
+                                                    style: TextStyle(
+                                                        fontSize: 12,
+                                                        color: AppColors
+                                                            .silverGold)),
+                                                const SizedBox(width: 5),
+
+                                                 Wrap(
+                                                          spacing: 15,
+                                                                runSpacing: 3,
+                                                          children: [
+                                                            InkWell(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                              onTap: () {
+                                                                p.activeOrBanUserF(
+                                                                    showLoading:
+                                                                        true,
+                                                                    loadingFor:
+                                                                        'block',
+                                                                    docId: p.geted13usersList[p.selectedUserIndex].uid,
+                                                                    status:
+                                                                        false);
+                                                              },
+                                                              child: Opacity(
+                                                                opacity: !p.geted13usersList[p.selectedUserIndex].enable!
+                                                                    ? 1
+                                                                    : 0.5,
+                                                                child: Row(
+                                                                    children: [
+                                                                      Opacity(
+                                                                          opacity: p.geted13usersList[p.selectedUserIndex].enable!
+                                                                              ? 0.5
+                                                                              : 1,
+                                                                          child: const Icon(
+                                                                              Icons.cancel,
+                                                                              size: 18,
+                                                                              color: AppColors.textRed)),
+                                                                      p.isLoading &&
+                                                                              p.isLoadingFor ==
+                                                                                  "block"
+                                                                          ? const DotLoader()
+                                                                          : const Text(
+                                                                              ' Block',
+                                                                              style: TextStyle(fontSize: 10))
+                                                                    ]),
+                                                              ),
+                                                            ),
+                                                            InkWell(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                                onTap: () {
+                                                                  p.activeOrBanUserF(
+                                                                      showLoading:
+                                                                          true,
+                                                                      loadingFor:
+                                                                          'active',
+                                                                      docId: p.geted13usersList[p.selectedUserIndex]
+                                                                          .uid!,
+                                                                      status:
+                                                                          true);
+                                                                },
+                                                                child: Opacity(
+                                                                  opacity:
+                                                                      p.geted13usersList[p.selectedUserIndex].enable!
+                                                                          ? 1
+                                                                          : 0.5,
+                                                                  child: Row(
+                                                                      children: [
+                                                                        const Icon(
+                                                                            Icons
+                                                                                .check_circle,
+                                                                            size:
+                                                                                18,
+                                                                            color:
+                                                                                AppColors.textGreen),
+                                                                        p.isLoading &&
+                                                                                p.isLoadingFor == "active"
+                                                                            ? const DotLoader()
+                                                                            : const Text(' Active', style: TextStyle(fontSize: 10))
+                                                                      ]),
+                                                                ))
+                                                          ]),
+                                        ]),
+                                        const Divider(thickness: 0.1),
+
                                         Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -1844,7 +1937,104 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                     style: const TextStyle(
                                                         color: AppColors.gold))
                                               ]),
-                                              Row(children: [
+
+                                               Wrap(
+                                                                spacing: 3,
+                                                                runSpacing: 3,
+                                                                children: [
+                                                                  Opacity(
+                                                                      opacity: p.geted13usersList[p.selectedUserIndex].membership ==
+                                                                              'Free'
+                                                                          ? 1
+                                                                          : 0.5,
+                                                                      child: InkWell(
+                                                                          onTap: () {
+                                                                            p.setMembershipUserF(
+                                                                                uid: p.geted13usersList[p.selectedUserIndex].uid,
+                                                                                showLoading: true,
+                                                                                membership: 'Free',
+                                                                                loadingFor: "membership");
+                                                                          },
+                                                                          child: Container(
+                                                                            decoration:
+                                                                                BoxDecoration(color: AppColors.bgColor,
+                                                                                border: Border.all(color: p.geted13usersList[p.selectedUserIndex].membership ==
+                                                                              'Free' ?  AppColors.gold: Colors.transparent),
+                                                                                 borderRadius: BorderRadius.circular(10)),
+                                                                            child:
+                                                                                const Padding(
+                                                                              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 1),
+                                                                              child: Text('Bronze', style: TextStyle(fontSize: 12, color: Colors.white)),
+                                                                            ),
+                                                                          ))),
+                                                                  Opacity(
+                                                                      opacity: p.geted13usersList[p.selectedUserIndex].membership ==
+                                                                              'Silver'
+                                                                          ? 1
+                                                                          : 0.5,
+                                                                      child: InkWell(
+                                                                          onTap: () {
+                                                                            p.setMembershipUserF(
+                                                                                uid: p.geted13usersList[p.selectedUserIndex].uid,
+                                                                                showLoading: true,
+                                                                                membership: 'Silver',
+                                                                                loadingFor: "membership");
+                                                                          },
+                                                                          child: Container(
+                                                                            decoration:
+                                                                                BoxDecoration(color: AppColors.bgColor, 
+                                                                                 border: Border.all(color: p.geted13usersList[p.selectedUserIndex].membership ==
+                                                                              'Silver' ?  AppColors.gold: Colors.transparent),
+                                                                                borderRadius: BorderRadius.circular(10)),
+                                                                            child:
+                                                                                const Padding(
+                                                                              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 1),
+                                                                              child: Text('Silver', style: TextStyle(fontSize: 12, color: Colors.white)),
+                                                                            ),
+                                                                          ))),
+                                                                  Opacity(
+                                                                      opacity: p.geted13usersList[p.selectedUserIndex].membership ==
+                                                                              'Gold'
+                                                                          ? 1
+                                                                          : 0.5,
+                                                                      child: InkWell(
+                                                                          onTap: () {
+                                                                            p.setMembershipUserF(
+                                                                                uid: p.geted13usersList[p.selectedUserIndex].uid,
+                                                                                showLoading: true,
+                                                                                membership: "Gold",
+                                                                                loadingFor: "membership");
+                                                                          },
+                                                                          child: Container(
+                                                                            decoration:
+                                                                                BoxDecoration(color: AppColors.bgColor, 
+                                                                                 border: Border.all(color: p.geted13usersList[p.selectedUserIndex].membership ==
+                                                                              'Gold' ?  AppColors.gold: Colors.transparent),
+                                                                                borderRadius: BorderRadius.circular(10)),
+                                                                            child:
+                                                                                const Padding(
+                                                                              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 1),
+                                                                              child: Text('Gold', style: TextStyle(fontSize: 12, color: Colors.white)),
+                                                                            ),
+                                                                          ))),
+                                                                ]),
+                                              
+                                                // int.tryParse(p
+                                                //     .geted13usersList[
+                                                //         p.selectedUserIndex]
+                                                //     .deadlinemembership.toString()) == null
+                                                //     ? const Text("Empty",
+                                                //         style: TextStyle(
+                                                //           color: AppColors.textRed
+                                                //         ))
+                                                //     : Text("${DateTime.fromMicrosecondsSinceEpoch(int.parse(p
+                                                //         .geted13usersList[
+                                                //             p.selectedUserIndex]
+                                                //         .deadlinemembership.toString()))}"),
+                                              
+                                            ]),
+                                        const Divider(thickness: 0.1),
+                                        Row(children: [
                                                 const Text("Expire Date: ",
                                                     style: TextStyle(
                                                         fontSize: 12,
@@ -1858,20 +2048,7 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                           p.selectedUserIndex]
                                                       .deadlinemembership,
                                                 )
-                                                // int.tryParse(p
-                                                //     .geted13usersList[
-                                                //         p.selectedUserIndex]
-                                                //     .deadlinemembership.toString()) == null
-                                                //     ? const Text("Empty",
-                                                //         style: TextStyle(
-                                                //           color: AppColors.textRed
-                                                //         ))
-                                                //     : Text("${DateTime.fromMicrosecondsSinceEpoch(int.parse(p
-                                                //         .geted13usersList[
-                                                //             p.selectedUserIndex]
-                                                //         .deadlinemembership.toString()))}"),
-                                              ])
-                                            ]),
+                                        ]),
                                         const Divider(thickness: 0.1),
                                         Row(children: [
                                           const Text("Business Type: ",
@@ -1881,7 +2058,8 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                               )),
                                           const SizedBox(width: 5),
                                           Text(
-                                              "${p.geted13usersList[p.selectedUserIndex].businessCategory}")
+                                            maxLines: 1,
+                                              "${p.geted13usersList[p.selectedUserIndex].businessCategory}", style:t.labelSmall)
                                         ]),
                                         const Divider(thickness: 0.1),
                                         Row(children: [
@@ -1975,8 +2153,8 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                           p.isLoadingFor == "tr"
                                                       ? const DotLoader()
                                                       : Text("Download CSV",
-                                                          style: TextTheme.of(
-                                                                  context)
+                                                          style: 
+                                                                t
                                                               .labelSmall!
                                                               .copyWith(
                                                                   color: AppColors
