@@ -51,6 +51,22 @@ class HomeVm with ChangeNotifier {
     notifyListeners();
   }
 
+// Monthly, Weekly, Today
+  String _homeFilterIs = 'Monthly';
+  String get homeFilterIs => _homeFilterIs;
+  void setHomeFilterIs(context, {String filterIs = ""}) {
+    _homeFilterIs = filterIs;
+    notifyListeners();
+    getUsersF(context, showLoading: true);
+    newUsersChartsF(context, showLoading: true);
+    getTransactionsF(context, showLoading: true);
+    getAllChatsF(context, showLoading: true);
+    getAllPostsCommentsLikesShareF(context, showLoading: true);
+    getAllFriendsF(context, showLoading: true);
+    getAppInfoListF(context, showLoading: true);
+    getFeedBacksF(context, showLoading: true);
+  }
+
 ////////////////// 1.
 
   ////////////////// 1.
@@ -67,7 +83,11 @@ class HomeVm with ChangeNotifier {
   String churnRatePer = "0"; // %
   String newUsers = "0"; // numbers
 
-  List newUsersListByMonths = [];
+  List newUsersCountByDayListByFilter = [];
+  List<UserModel> newUsersListByFilter = [];
+  // List newUsersListByMonths = [];
+  List<UserModel> filterUsersMemberShipList = [];
+
   List<int> allUsersMembershipList = [];
   String allUsersMembershipPerc = '0';
 
@@ -78,6 +98,13 @@ class HomeVm with ChangeNotifier {
     if (showLoading) {
       setLoadingF(true, loadingFor);
     }
+
+    int filterInDays = _homeFilterIs == 'Monthly'
+        ? 30
+        : _homeFilterIs == 'Weekly'
+            ? 7
+            : 1;
+
     try {
       if (onlyUsers) {
         allUsersList = await FStore().getAllUsers();
@@ -88,93 +115,130 @@ class HomeVm with ChangeNotifier {
         allUsersList = await FStore().getAllUsers();
         debugPrint("allUsersList length: ${allUsersList.length}");
 
-        //
+        // by 6 months
         //////get last six months
-        List<int> getLastSixMonths() {
-          DateTime now = DateTime.now();
-          return List.generate(6, (index) {
-            return DateTime(now.year, now.month - index, 1).month;
-            // return DateFormat('MMM').format(month); // by month name
-          }).reversed.toList();
-        }
+        // List<int> getLastSixMonths() {
+        //   DateTime now = DateTime.now();
+        //   return List.generate(filterInDays, (index) {
+        //     return DateTime(now.year, now.month - index, 1).month;
+        //     // return DateFormat('MMM').format(month); // by month name
+        //   }).reversed.toList();
+        // }
 
-        List<int> lastSixMonths = getLastSixMonths();
+        // List<int> lastSixMonths = getLastSixMonths();
 
-        newUsersListByMonths = allUsersList
+        // newUsersListByMonths = allUsersList
+        //     .where((e) =>
+        //         lastSixMonths.any((m) => m == e.creationDate!.month) &&
+        //         e.creationDate!.isAfter(
+        //             DateTime.now().subtract(Duration(days: filterInDays))))
+        //     .fold<Map<int, int>>({}, (map, e) {
+        //       map[e.creationDate!.month] =
+        //           map.containsKey(e.creationDate!.month)
+        //               ? map[e.creationDate!.month]! + 1
+        //               : 1;
+        //       return map;
+        //     })
+        //     .values
+        //     .toList();
+
+        /////////
+
+// Monthly, Weekly, Today
+// 30 , 7 ,1
+        newUsersCountByDayListByFilter = allUsersList
             .where((e) =>
-                lastSixMonths.any((m) => m == e.creationDate!.month) &&
-                e.creationDate!.isAfter(
-                    DateTime.now().subtract(const Duration(days: 180))))
+                (DateTime.now().month == e.creationDate!.month) &&
+                DateTime.now().difference(e.creationDate!).inDays <=
+                    filterInDays)
             .fold<Map<int, int>>({}, (map, e) {
-              map[e.creationDate!.month] =
-                  map.containsKey(e.creationDate!.month)
-                      ? map[e.creationDate!.month]! + 1
-                      : 1;
+              map[e.creationDate!.day] = map.containsKey(e.creationDate!.day)
+                  ? map[e.creationDate!.day]! + 1
+                  : 1;
               return map;
             })
             .values
             .toList();
 
-        // debugPrint(" 👉 newUsersListByMonths  $newUsersListByMonths");
+        // debugPrint(" 👉 newUsersCountByDayListByFilter  $newUsersCountByDayListByFilter");
+        // 👉 newUsersCountByDayListByFilter  [8, 20, 24, 31, 19, 13]
         // 👉 newUsersListByMonths  [8, 20, 24, 31, 19, 13]
         //
-        var allusers = allUsersList
-            .map((e) => e.creationDate!.month == DateTime.now().month)
+        // var newUsersListByFilter = allUsersList
+        //     .map((e) =>
+        //         DateTime.now().difference(e.creationDate!).inDays <=
+        //         filterInDays)
+        //     .toList();
+
+        newUsersListByFilter = allUsersList
+            .where((e) =>
+                DateTime.now().difference(e.creationDate!).inDays <=
+                filterInDays)
             .toList();
-        activeUsers = allusers.length.toString();
-        activeUsersPer = (allUsersList.length / 100 * allusers.length) > 95
-            ? "95"
-            : (allUsersList.length / 100 * allusers.length).toString();
+
+        // debugPrint(" 👉 newUsersListByFilter length:   $newUsersListByFilter");
+
+        filterUsersMemberShipList =
+            newUsersListByFilter.toList().reversed.toList();
+
+        activeUsers = newUsersListByFilter.length.toString();
+        activeUsersPer =
+            (newUsersListByFilter.length / allUsersList.length * 100) > 95
+                ? "95"
+                : (newUsersListByFilter.length / allUsersList.length * 100)
+                    .toStringAsFixed(2);
 
         //
-        List<UserModel> monthlyAppOpeningTimes = allUsersList
+        List<UserModel> byFilterDaysAppOpeningTimes = allUsersList
             .where((e) => e.splashTimes!.any((time) =>
-                DateTime.fromMillisecondsSinceEpoch(int.parse(time)).month ==
-                DateTime.now().month))
+                DateTime.now()
+                    .difference(
+                        DateTime.fromMillisecondsSinceEpoch(int.parse(time)))
+                    .inDays <=
+                filterInDays))
             .toList();
 
-        frequencyOfUsage = newUsersListByMonths.last.toString();
+        frequencyOfUsage = newUsersCountByDayListByFilter.last.toString();
         frequencyOfUsagePer =
-            ((newUsersListByMonths.last / allUsersList.length) * 100)
+            ((newUsersCountByDayListByFilter.last / allUsersList.length) * 100)
                 .toStringAsFixed(2);
-        // frequencyOfUsage = monthlyAppOpeningTimes.length.toString();
-        // var inPercentFrequencyOfUsage = monthlyAppOpeningTimes.isNotEmpty
-        //     ? (allUsersList.length / monthlyAppOpeningTimes.length) * 100
-        //     : 0.0;
-        // frequencyOfUsagePer = inPercentFrequencyOfUsage.toStringAsFixed(2);
 
-        reAtentionRate = (monthlyAppOpeningTimes.length).toString();
+        reAtentionRate = (byFilterDaysAppOpeningTimes.length).toString();
 
-        reAtentionRatePer = (allUsersList.length / 100 * allusers.length) > 95
-            ? "95"
-            : (allUsersList.length / 100 * allusers.length).toString();
+        reAtentionRatePer = (byFilterDaysAppOpeningTimes.length /
+                    allUsersList.length *
+                    100) >
+                90
+            ? "90"
+            : (byFilterDaysAppOpeningTimes.length / allUsersList.length * 100)
+                .toStringAsFixed(2);
+
         if (reAtentionRate == '0') {
           reAtentionRatePer = '${Random().nextInt(5)}';
         }
-        // churnRate = allUsersList.isNotEmpty
-        //     ? (allUsersList.length - newUsersListByMonths.last).toString()
-        //     : '0';
-        // churnRatePer = ((newUsersListByMonths.last / allUsersList.length) * 100)
-        //     .toStringAsFixed(2);
 
         churnRate = allUsersList.isNotEmpty
-            ? (allUsersList.length - monthlyAppOpeningTimes.length).toString()
+            ? (allUsersList.length - int.parse(activeUsers)).toString()
             : '0';
 
         churnRatePer = allUsersList.isNotEmpty
-            ? ((allUsersList.length - monthlyAppOpeningTimes.length)).toString()
+            ? ((int.parse(activeUsers)) / allUsersList.length * 100)
+                .toStringAsFixed(2)
             : '0';
-        churnRatePer = (int.parse(churnRatePer.toString()) / 100).toString();
 
         if (churnRatePer == '0') {
           churnRate = '${Random().nextInt(5)}';
         }
 
-        debugPrint("👉 monthlyAppOpeningTimes: $monthlyAppOpeningTimes");
+        debugPrint(
+            "👉 byFilterDaysAppOpeningTimes: $byFilterDaysAppOpeningTimes");
         // List citiesName = allUsersList.map((e) => e.country).toSet().toList();
         // dev.log("👉 citiesName: $citiesName");
         // [log] 👉 citiesName: [, Pakistan, United States, Malaysia, Australia, India, Poland, United Kingdom, United Arab Emirates, Mexico, Latvia, Denmark, France, Belgium, Armenia, Tunisia, Ireland, Spain, Estonia, Cyprus, Sweden, Ukraine, Portugal, Türkiye, Paraguay, Italy, North Macedonia, Philippines, Mauritius, Canada, Nigeria, Lithuania, Uganda, Kenya, Tanzania, Congo Republic, Iraq, Norway, Indonesia, Thailand, Colombia, The Netherlands, Russia, Peru, Japan, Namibia, Cambodia, South Africa, Morocco, Albania, Germany, Libya, Greece, Dominican Republic, Chile, Hungary, Czechia, Austria, Hong Kong, Ethiopia, Bangladesh, Romania, Croatia, Bulgaria, Switzerland]
 
+        allUsersMembershipPerc =
+            (allUsersList.length / 100 * allUsersMembershipList.length)
+                .toStringAsFixed(1);
 //// 2.  allUsersMembershipList
         ///
 
@@ -183,12 +247,13 @@ class HomeVm with ChangeNotifier {
                 (e.membership! == "Bronze" ||
                     e.membership! == "Silver" ||
                     e.membership! == "Gold") &&
-                lastSixMonths.any((m) => m == e.creationDate!.month))
+                // lastSixMonths.any((m) => m == e.creationDate!.month))
+                DateTime.now().difference(e.creationDate!).inDays <
+                    filterInDays)
             .fold<Map<int, int>>({}, (map, e) {
-              map[e.creationDate!.month] =
-                  map.containsKey(e.creationDate!.month)
-                      ? map[e.creationDate!.month]! + 1
-                      : 1;
+              map[e.creationDate!.day] = map.containsKey(e.creationDate!.day)
+                  ? map[e.creationDate!.day]! + 1
+                  : 1;
               return map;
             })
             .values
@@ -197,9 +262,9 @@ class HomeVm with ChangeNotifier {
             (allUsersList.length / 100 * allUsersMembershipList.length)
                 .toStringAsFixed(1);
 
-        sessionDuration = calculateUsageTime(monthlyAppOpeningTimes);
+        sessionDuration = calculateUsageTime(byFilterDaysAppOpeningTimes);
 
-        var inPercentSessionDuration = monthlyAppOpeningTimes.fold<int>(
+        var inPercentSessionDuration = byFilterDaysAppOpeningTimes.fold<int>(
                 0,
                 (max, e) => e.monthlyAppUsageInSeconds == null
                     ? max
@@ -214,19 +279,14 @@ class HomeVm with ChangeNotifier {
                         : max) /
             allUsersList.length /
             30;
-        // var inPercentSessionDuration = allUsersList.isNotEmpty
-        //     ? (2629746 /* total seconds in month*/ /
-        //         monthlyAppOpeningTimes
-        //             .map((e) => int.parse(
-        //                 e.monthlyAppUsageInSeconds.toString() ?? '10.0'))
-        //             .fold(0, (sum, e) => sum + e))
-        //     : 0.0;
 
         sessionDurationPer = inPercentSessionDuration.toStringAsFixed(2);
         if (sessionDurationPer == 0 || sessionDurationPer == 'Infinity') {
           sessionDurationPer = '${Random().nextInt(20)}';
         }
       }
+
+      newUsersChartsF(context);
 
       ///
       setLoadingF(false);
@@ -255,32 +315,30 @@ class HomeVm with ChangeNotifier {
     try {
       trList = await FStore().getTransactions();
 
-      // for (int i = 0; i < trList.length; i++) {
-      //   print("${trList[i].price}");
-      //   print("${trList[i].isPending}");
-      //   print(
-      //       "ts: ${trList[i].timestamp}:  ${DateTime.fromMillisecondsSinceEpoch(int.parse(trList[i].timestamp))}");
-      //   print("________________");
-      // }
+      int filterInDays = _homeFilterIs == 'Monthly'
+          ? 30
+          : _homeFilterIs == 'Weekly'
+              ? 7
+              : 1;
 
       totalTRRatio =
           (trList.where((e) => e.isPending == true).length / trList.length)
               .toStringAsFixed(2);
 
       //////get last six months
-      List<int> getLastSixMonths() {
-        DateTime now = DateTime.now();
-        return List.generate(6, (index) {
-          return DateTime(now.year, now.month - index, 1).month;
-          // return DateFormat('MMM').format(month); // by month name
-        }).reversed.toList();
-      }
+      // List<int> getLastSixMonths() {
+      //   DateTime now = DateTime.now();
+      //   return List.generate(6, (index) {
+      //     return DateTime(now.year, now.month - index, 1).month;
+      //     // return DateFormat('MMM').format(month); // by month name
+      //   }).reversed.toList();
+      // }
 
-      List<int> lastSixMonths = getLastSixMonths();
+      // List<int> lastSixMonths = getLastSixMonths();
 
 //
-      Map<DateTime, int> salesPerDay = {};
 
+      Map<DateTime, int> salesPerDay = {};
       for (var transaction in trList.where((e) => e.isPending == false)) {
         DateTime date = DateTime.fromMillisecondsSinceEpoch(
             int.parse(transaction.timestamp));
@@ -308,50 +366,118 @@ class HomeVm with ChangeNotifier {
       trPaidSumList = trList
           .where((e) =>
               e.isPending == false &&
-              lastSixMonths.any((m) =>
-                  m ==
-                  DateTime.fromMillisecondsSinceEpoch(int.parse(e.timestamp))
-                      .month))
+              DateTime.now()
+                      .difference(DateTime.fromMillisecondsSinceEpoch(
+                          int.parse(e.timestamp)))
+                      .inDays <=
+                  filterInDays)
           .fold<Map<int, int>>({}, (map, e) {
-            int month =
-                DateTime.fromMillisecondsSinceEpoch(int.parse(e.timestamp))
-                    .month;
-            map[month] = map.containsKey(month)
-                ? map[month]! + int.parse(e.price)
+            int day =
+                DateTime.fromMillisecondsSinceEpoch(int.parse(e.timestamp)).day;
+            map[day] = map.containsKey(day)
+                ? map[day]! + int.parse(e.price)
                 : int.parse(e.price);
             return map;
           })
           .values
+          .toList()
+          .take(6)
           .toList();
+
+      if (trPaidSumList.length < 6) {
+        while (trPaidSumList.length < 6) {
+          trPaidSumList.add(0);
+        }
+      }
 
       trUnPaidSumList = trList
           .where((e) =>
               e.isPending &&
-              lastSixMonths.any((m) =>
-                  m ==
-                  DateTime.fromMillisecondsSinceEpoch(int.parse(e.timestamp))
-                      .month))
+              DateTime.now()
+                      .difference(DateTime.fromMillisecondsSinceEpoch(
+                          int.parse(e.timestamp)))
+                      .inDays <=
+                  filterInDays)
           .fold<Map<int, int>>({}, (map, e) {
-            int month =
-                DateTime.fromMillisecondsSinceEpoch(int.parse(e.timestamp))
-                    .month;
-            map[month] = map.containsKey(month)
-                ? map[month]! + int.parse(e.price)
+            int day =
+                DateTime.fromMillisecondsSinceEpoch(int.parse(e.timestamp)).day;
+            map[day] = map.containsKey(day)
+                ? map[day]! + int.parse(e.price)
                 : int.parse(e.price);
             return map;
           })
           .values
+          .toList()
+          .take(6)
           .toList();
+
+      // if empty or length is less then 6 then also add 0 0 on empty index
+
+      if (trUnPaidSumList.length < 6) {
+        while (trUnPaidSumList.length < 6) {
+          trUnPaidSumList.add(0);
+        }
+      }
 
       totalTRPrice = trPaidSumList
           .fold(0, (sum, e) => (sum + int.parse(e.toString())))
           .toString();
 
-      // debugPrint("trPaidSumList: $trPaidSumList");
-      // debugPrint("trUnPaidSumList: $trUnPaidSumList");
+      // debugPrint("👉trPaidSumList: $trPaidSumList");
+      // debugPrint("👉trUnPaidSumList: $trUnPaidSumList");
     } catch (e, st) {
       EasyLoading.showError("$e");
-      debugPrint("💥 try catch error: $e , st:$st");
+      debugPrint("💥 getTransaction try catch error: $e , st:$st");
+    } finally {
+      setLoadingF(false);
+    }
+  }
+
+  List newUsersChartsList = [];
+
+  Future newUsersChartsF(context,
+      {bool showLoading = false, String loadingFor = ""}) async {
+    if (showLoading) {
+      setLoadingF(true, loadingFor);
+    }
+    try {
+      trList = await FStore().getTransactions();
+
+      int filterInDays = _homeFilterIs == 'Monthly'
+          ? 30
+          : _homeFilterIs == 'Weekly'
+              ? 7
+              : 1;
+
+      // newUsersChartsList = newUsersListByFilter.take(6).toList();
+
+      newUsersChartsList = allUsersList
+          .where((e) =>
+              (DateTime.now().month == e.creationDate!.month) &&
+              DateTime.now().difference(e.creationDate!).inDays < filterInDays)
+          .fold<Map<int, int>>({}, (map, e) {
+            map[e.creationDate!.day] = map.containsKey(e.creationDate!.day)
+                ? map[e.creationDate!.day]! + 1
+                : 1;
+            return map;
+          })
+          .values
+          .toList()
+          .take(6)
+          .toList()
+          .reversed
+          .toList();
+
+      if (newUsersChartsList.length < 6) {
+        while (newUsersChartsList.length < 6) {
+          newUsersChartsList.add(0);
+        }
+      }
+
+      debugPrint("👉 newUsersChartsList : $newUsersChartsList");
+    } catch (e, st) {
+      EasyLoading.showError("$e");
+      debugPrint("💥 getTransaction try catch error: $e , st:$st");
     } finally {
       setLoadingF(false);
     }
@@ -368,24 +494,42 @@ class HomeVm with ChangeNotifier {
       allChatsList = await FStore().getAllChatsF();
       // debugPrint("getAllChatsF: ${allChatsList.length}");
 
-      List<int> getLastSixMonths() {
-        DateTime now = DateTime.now();
-        return List.generate(5, (index) {
-          return DateTime(now.year, now.month - index, 1).month;
-          // return DateFormat('MMM').format(month); // by month name
-        }).reversed.toList();
-      }
+      // List<int> getLastSixMonths() {
+      //   DateTime now = DateTime.now();
+      //   return List.generate(5, (index) {
+      //     return DateTime(now.year, now.month - index, 1).month;
+      //     // return DateFormat('MMM').format(month); // by month name
+      //   }).reversed.toList();
+      // }
 
-      List<int> lastSixMonths = getLastSixMonths();
+      // List<int> lastSixMonths = getLastSixMonths();
+
+      int filterInDays = _homeFilterIs == 'Monthly'
+          ? 30
+          : _homeFilterIs == 'Weekly'
+              ? 7
+              : 1;
+
       last5MonthsChatsList = allChatsList
-          .where((e) => lastSixMonths.any((m) => m == e.date!.month))
+          .where(
+              (e) => DateTime.now().difference(e.date!).inDays < filterInDays)
           .fold<Map<int, int>>({}, (map, e) {
-            map[e.date!.month] =
-                map.containsKey(e.date!.month) ? map[e.date!.month]! + 1 : 1;
+            map[e.date!.day] =
+                map.containsKey(e.date!.day) ? map[e.date!.day]! + 1 : 1;
             return map;
           })
           .values
+          .take(6)
+          .toList()
+          .reversed
+          .toList()
           .toList();
+
+      if (last5MonthsChatsList.length < 6) {
+        while (last5MonthsChatsList.length < 6) {
+          last5MonthsChatsList.add(0);
+        }
+      }
 
       // debugPrint("👉last5MonthsChatsList: ${last5MonthsChatsList.length}");
       // debugPrint("👉last5MonthsChatsList: ${last5MonthsChatsList.map((e) => e.toMap()).toList()}");
@@ -420,26 +564,43 @@ class HomeVm with ChangeNotifier {
       totalComments = 0;
       totalShare = 0;
 
-      for (var e in allPostsCommentsLikesShare) {
-        if (e.likes.isNotEmpty) {
-          totalLikes += e.likes.length;
+      int filterInDays = _homeFilterIs == 'Monthly'
+          ? 30
+          : _homeFilterIs == 'Weekly'
+              ? 7
+              : 1;
+
+      var postsByFilterInDays = allPostsCommentsLikesShare.where(
+          (e) => DateTime.now().difference(e.inDate!).inDays < filterInDays);
+
+      for (var e in postsByFilterInDays) {
+        try {
+          if (e.likes.isNotEmpty) {
+            totalLikes += e.likes.length;
+          }
+          totalComments += e.commentCount;
+          totalPosts++;
+        } catch (e) {
+          debugPrint("💥 try catch error: $e");
         }
-        totalComments += e.commentCount;
-        totalPosts++;
       }
 
-      totalShare = int.parse((totalComments - totalLikes).toString());
-      totalPostsPer = allPostsCommentsLikesShare.isNotEmpty
-          ? ((totalPosts / allPostsCommentsLikesShare.length) * 100).toInt()
+      totalShare = int.parse((totalComments - totalLikes).toString()) <= 0
+          ? 0
+          : int.parse((totalComments - totalLikes).toString());
+      totalPostsPer = postsByFilterInDays.isNotEmpty
+          ? ((totalPosts / postsByFilterInDays.length) * 100).toInt()
           : 0;
-      totalLikesPer = allPostsCommentsLikesShare.isNotEmpty
-          ? ((totalLikes / allPostsCommentsLikesShare.length) * 100).toInt()
+      totalLikesPer = postsByFilterInDays.isNotEmpty
+          ? ((totalLikes / postsByFilterInDays.length) * 100).toInt()
           : 0;
-      totalCommentsPer = allPostsCommentsLikesShare.isNotEmpty
-          ? ((totalComments / allPostsCommentsLikesShare.length) * 100).toInt()
+      totalCommentsPer = postsByFilterInDays.isNotEmpty
+          ? ((totalComments / postsByFilterInDays.length) * 100).toInt()
           : 0;
-      totalSharePer = allPostsCommentsLikesShare.isNotEmpty
-          ? ((totalShare / allPostsCommentsLikesShare.length) * 100).toInt()
+      totalSharePer = postsByFilterInDays.isNotEmpty
+          ? ((totalShare / postsByFilterInDays.length) * 100).toInt() <= 0
+              ? 0
+              : ((totalShare / postsByFilterInDays.length) * 100).toInt()
           : 0;
 
       // debugPr("👉last5MonthsChatsList: ${last5MonthsChatsList.length}");
@@ -465,36 +626,49 @@ class HomeVm with ChangeNotifier {
       allFriendsList = await FStore().getAllFriendsF();
       // debugPrint("allFriendsList: ${allFriendsList.length}");
 
-      List<int> getLastSixMonths() {
-        DateTime now = DateTime.now();
-        return List.generate(
-            allFriendsList.length > 6 ? 6 : allFriendsList.length, (index) {
-          return DateTime(now.year, now.month - index, 1).month;
-          // return DateFormat('MMM').format(month); // by month name
-        }).reversed.toList();
-      }
+      int filterInDays = _homeFilterIs == 'Monthly'
+          ? 30
+          : _homeFilterIs == 'Weekly'
+              ? 7
+              : 1;
 
-      List<int> lastSixMonths = getLastSixMonths();
       last5MonthsFriendsListAccepted = allFriendsList
           .where((e) =>
-              e.enable == true && lastSixMonths.any((m) => m == e.date.month))
+              e.enable == true &&
+              DateTime.now().difference(e.date).inDays < filterInDays)
           .fold<Map<int, int>>({}, (map, e) {
             map[e.date.month] =
                 map.containsKey(e.date.month) ? map[e.date.month]! + 1 : 1;
             return map;
           })
           .values
+          .toList()
+          .reversed
           .toList();
+      if (last5MonthsFriendsListAccepted.length < 6) {
+        while (last5MonthsFriendsListAccepted.length < 6) {
+          last5MonthsFriendsListAccepted.add(0);
+        }
+      }
       last5MonthsFriendsListPending = allFriendsList
           .where((e) =>
-              e.isRead == false && lastSixMonths.any((m) => m == e.date.month))
+              e.isRead == false &&
+              DateTime.now().difference(e.date).inDays < filterInDays)
           .fold<Map<int, int>>({}, (map, e) {
             map[e.date.month] =
                 map.containsKey(e.date.month) ? map[e.date.month]! + 1 : 1;
             return map;
           })
           .values
+          .toList()
+          .reversed
           .toList();
+
+      if (last5MonthsFriendsListPending.length < 6) {
+        while (last5MonthsFriendsListPending.length < 6) {
+          last5MonthsFriendsListPending.add(0);
+        }
+      }
       totalConnections =
           last5MonthsFriendsListAccepted.fold(0, (sum, e) => sum + e);
       // debugPrint(
@@ -518,34 +692,59 @@ class HomeVm with ChangeNotifier {
       if (showLoading) {
         setLoadingF(true, loadingFor);
       }
-      appInfoList = await FStore().getAppInfoListF();
-      // debugPrint("getAllChatsF: ${allChatsList.length}");
+      appInfoChartList = [];
+      int filterInDays = _homeFilterIs == 'Monthly'
+          ? 30
+          : _homeFilterIs == 'Weekly'
+              ? 7
+              : 1;
+      appInfoList = await FStore().getAppInfoListF().then((v) {
+        if (v.isEmpty) {
+          return [];
+        }
+        return v
+            .where(
+                (e) => DateTime.now().difference(e.date!).inDays < filterInDays)
+            .take(filterInDays > 6 ? 6 : filterInDays)
+            .toList();
+      });
 
-      List<int> getLastSixMonths() {
-        DateTime now = DateTime.now();
-        return List.generate(5, (index) {
-          return DateTime(now.year, now.month - index, 1).month;
-          // return DateFormat('MMM').format(month); // by month name
-        }).reversed.toList();
+      if (appInfoList.isEmpty) {
+        while (appInfoChartList.length < 6) {
+          appInfoChartList.add(0);
+        }
+        totalCrashes = 0;
+        totalErrors = 0;
+        totalCrashesPerc = 0;
+      } else {
+        // debugPrint("getAllChatsF: ${allChatsList.length}");
+
+        appInfoChartList = appInfoList
+            // .where(
+            //     (e) => DateTime.now().difference(e.date!).inDays < filterInDays)
+            .fold<Map<int, int>>({}, (map, e) {
+              map[e.date!.day] =
+                  map.containsKey(e.date!.day) ? map[e.date!.day]! + 1 : 1;
+              return map;
+            })
+            .values
+            .toList();
+
+        if (appInfoList.isEmpty || appInfoChartList.length < 6) {
+          while (appInfoChartList.length < 6) {
+            appInfoChartList.add(0);
+          }
+        }
+
+        totalErrors =
+            appInfoList.where((e) => e.type == 'error').toList().length;
+        totalCrashes =
+            appInfoList.where((e) => e.type == 'crash').toList().length;
+        totalCrashesPerc = ((totalCrashes / appInfoList.length) * 100).toInt();
+        // debugPrint("appInfoChartList: $appInfoChartList");
+        // debugPrint("👉last5MonthsChatsList: ${last5MonthsChatsList.length}");
+        // debugPrint("👉last5MonthsChatsList: ${last5MonthsChatsList.map((e) => e.toMap()).toList()}");
       }
-
-      List<int> lastSixMonths = getLastSixMonths();
-      appInfoChartList = appInfoList
-          .where((e) => lastSixMonths.any((m) => m == e.date!.month))
-          .fold<Map<int, int>>({}, (map, e) {
-            map[e.date!.month] =
-                map.containsKey(e.date!.month) ? map[e.date!.month]! + 1 : 1;
-            return map;
-          })
-          .values
-          .toList();
-
-      totalErrors = appInfoList.where((e) => e.type == 'error').toList().length;
-      totalCrashes =
-          appInfoList.where((e) => e.type == 'crash').toList().length;
-      totalCrashesPerc = ((totalCrashes / appInfoList.length) * 100).toInt();
-      // debugPrint("👉last5MonthsChatsList: ${last5MonthsChatsList.length}");
-      // debugPrint("👉last5MonthsChatsList: ${last5MonthsChatsList.map((e) => e.toMap()).toList()}");
     } catch (e, st) {
       EasyLoading.showError("$e");
       debugPrint("💥 try catch error: $e , st:$st");
@@ -565,37 +764,63 @@ class HomeVm with ChangeNotifier {
       if (showLoading) {
         setLoadingF(true, loadingFor);
       }
-      feedBackList = await FStore().getFeedbacksF();
+
+      int filterInDays = _homeFilterIs == 'Monthly'
+          ? 30
+          : _homeFilterIs == 'Weekly'
+              ? 7
+              : 1;
+
+      feedBackList = await FStore().getFeedbacksF().then((v) {
+        if (v.isEmpty) {
+          return [];
+        }
+        return v
+            .where((e) =>
+                DateTime.now()
+                    .difference(DateTime.fromMillisecondsSinceEpoch(
+                        int.parse(e.timestamp)))
+                    .inDays <
+                filterInDays)
+            .take(filterInDays > 6 ? 6 : filterInDays)
+            .toList();
+      });
       // debugPrint("👉 feedBackList: ${feedBackList.length}");
 
-      List<int> getLastSixMonths() {
-        DateTime now = DateTime.now();
-        return List.generate(5, (index) {
-          return DateTime(now.year, now.month - index, 1).month;
-          // return DateFormat('MMM').format(month); // by month name
-        }).reversed.toList();
-      }
-
-      List<int> lastSixMonths = getLastSixMonths();
       feedBackListChart = feedBackList
-          .where((e) {
-            var d = DateTime.fromMillisecondsSinceEpoch(int.parse(e.timestamp));
-            return lastSixMonths.any((m) => m == d.month);
-          })
+          // .where((e) =>
+          //     DateTime.now()
+          //         .difference(DateTime.fromMillisecondsSinceEpoch(
+          //             int.parse(e.timestamp)))
+          //         .inDays <
+          //     filterInDays)
           .fold<Map<int, int>>({}, (map, e) {
             var d = DateTime.fromMillisecondsSinceEpoch(int.parse(e.timestamp));
             map[d.month] = map.containsKey(d.month) ? map[d.month]! + 1 : 1;
             return map;
           })
           .values
+          .toList()
+          .reversed
+          .take(filterInDays > 6 ? 6 : filterInDays)
           .toList();
+
+      feedBackListPositive = 0;
+      feedBackListNagetive = 0;
+
+      if (feedBackList.isEmpty || feedBackListChart.length < 6) {
+        while (feedBackListChart.length < 6) {
+          feedBackListChart.add(0);
+        }
+      }
 
       // debugPrint("👉 feedBackListChart: ${feedBackListChart.length}");
       feedBackListPositive =
           feedBackList.where((e) => e.isPositive == true).toList().length;
       feedBackListNagetive =
           feedBackList.where((e) => e.isPositive == false).toList().length;
-      debugPrint("👉 feedBackListPositive: $feedBackListPositive");
+
+      // debugPrint("👉 feedBackListPositive: $feedBackListPositive");
       // debugPrint("👉 feedBackListNagetive: ${feedBackListNagetive}");
     } catch (e, st) {
       EasyLoading.showError("$e");

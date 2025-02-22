@@ -22,10 +22,11 @@ class DropDownWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
+    var t = Theme.of(context).textTheme;
     return DropdownButtonHideUnderline(
         child: DropdownButton2<String>(
       isExpanded: true,
-      hint: Text('$hint ', style: const TextStyle(color: Colors.white)),
+      hint: Text('$hint ', style: t.labelSmall!.copyWith(color: Colors.white)),
       items: items
           .map((e) => DropdownMenuItem<String>(
               value: '$e',

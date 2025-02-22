@@ -1,10 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:meetworth_admin/helpers/nullables.dart';
+import 'package:intl/intl.dart'; // For date formatting
 
 class PostsModel {
   String address;
   String body;
   int commentCount;
   String date;
+  DateTime? inDate;
   String file;
   String id;
   bool isPublic;
@@ -29,14 +33,21 @@ class PostsModel {
     this.userId = "",
     this.userImg = "",
     this.userName = "",
+    this.inDate,
   });
 
   factory PostsModel.fromMap(Map<String, dynamic> jsonMap) {
+    // debugPrint("👉 PostsModel jsonMap: $jsonMap");
     return PostsModel(
       address: jsonMap['address'].toString().toNullString(),
       body: jsonMap['body'].toString().toNullString(),
       commentCount: jsonMap['commentCount'] ?? 0,
       date: jsonMap['date'].toString().toNullString(),
+      inDate: jsonMap['date'] == null ||
+              jsonMap['date'].toString().toNullString().isEmpty
+          ? DateTime.now()
+          : (jsonMap['date'] as Timestamp).toDate(),
+      // : DateTime.tryParse(jsonMap['date'].toString()) ?? DateTime.now(),
       file: jsonMap['file'].toString().toNullString(),
       id: jsonMap['id'].toString().toNullString(),
       isPublic: jsonMap['isPublic'] ?? false,

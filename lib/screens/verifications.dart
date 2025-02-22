@@ -12,6 +12,7 @@ import '../const/appimages.dart';
 import '../vm/homeVm.dart';
 import '../widgets/dotloader.dart';
 import '../widgets/headers.dart';
+import '../widgets/imagePreview.dart';
 import '../widgets/minicard.dart';
 import '../widgets/mintile.dart';
 
@@ -112,7 +113,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                           .copyWith(
                                               color: AppColors.textSilver)),
                                   trailing: Text(
-                                      "${p.allUsersList.where((e) => e.varifiedStatus == 0 || e.varifiedStatus == 1).toList().length}",
+                                      "${p.allUsersList.where((e) =>  e.varifiedStatus == 1).toList().length}",
                                       style: TextTheme.of(context)
                                           .headlineSmall!)),
                               MiniTileCardWidget(
@@ -264,22 +265,22 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                     style: TextStyle(
                                                         fontSize: 11))),
                                           ],
-                                          rows: p.geted13usersList.isEmpty
+                                          rows: p.allUsersList.isEmpty
                                               ? []
                                               : List.generate(
-                                                  p.geted13usersList.length,
+                                                  p.allUsersList.where((e)=> e.varifiedStatus == 1).toList().length,
+                                                  // p.allUsersList.where((e)=> e.varifiedStatus == 1).toList().length,
                                                   (index) {
                                                   var user =
-                                                      p.geted13usersList[index];
-
-                                                  // p.geted13usersList
+                                                      p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[index];
+                                                  // p.allUsersList
                                                   //     .where((e) =>
                                                   //         e.varifiedStatus ==
                                                   //             0 ||
                                                   //         e.varifiedStatus == 1)
                                                   //     .toList()
                                                   //     .length, (index) {
-                                                  // var user = p.geted13usersList
+                                                  // var user = p.allUsersList
                                                   //     .where((e) =>
                                                   //         e.varifiedStatus ==
                                                   //             0 ||
@@ -288,6 +289,10 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
 
                                                   return DataRow(cells: [
                                                     DataCell(
+                                                      onTap: (){
+                                                        imagePreview(context,
+                                                          imageUrl: user.image!);
+                                                      },
                                                       ClipRRect(
                                                           borderRadius:
                                                               BorderRadius
@@ -323,7 +328,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                         child: Text(
                                                             textAlign: TextAlign
                                                                 .center,
-                                                            '${user.username}',
+                                                            '${user.firstname} ${user.lastname}',
                                                             style:
                                                                 const TextStyle(
                                                                     fontSize:
@@ -335,6 +340,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                     DataCell(OutlinedButton(
                                                         onPressed: () {
                                                           p.selectUserIndexF(
+                                                            // selectFromAllUsersLost : true,
                                                               index);
                                                         },
                                                         style: OutlinedButton.styleFrom(
@@ -359,7 +365,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                 top: 5, bottom: 100),
                                             child: DotLoader(
                                                 color: AppColors.gold)))
-                                    : p.geted13usersList.isEmpty
+                                    : p.allUsersList.isEmpty
                                         ? Center(
                                             child: Padding(
                                                 padding: EdgeInsets.only(
@@ -388,14 +394,14 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                 AppImages.twitter,
                                                 width: 30),
                                             title: Text(
-                                                p.geted13usersList[p.selectedUserIndex].linked!
+                                                p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
                                                         .where((element) =>
                                                             element.containsKey(
                                                                 'Twitter'))
                                                         .isEmpty
                                                     ? "Empty"
                                                     : p
-                                                        .geted13usersList[
+                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .linked!
                                                         .firstWhere((element) =>
@@ -404,14 +410,14 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                             trailing: Row(children: [
                                               IconButton(
                                                   onPressed: () {
-                                                      FlutterClipboard.copy(p.geted13usersList[p.selectedUserIndex].linked!
+                                                      FlutterClipboard.copy(p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
                                                         .where((element) =>
                                                             element.containsKey(
                                                                 'Twitter'))
                                                         .isEmpty
                                                     ? "Empty"
                                                     : p
-                                                        .geted13usersList[
+                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .linked!
                                                         .firstWhere((element) =>
@@ -426,18 +432,18 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                               const SizedBox(width: 7),
                                               InkWell(
                                                 onTap: () async{
-                                                  if(p.geted13usersList[p.selectedUserIndex].linked!
+                                                  if(p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
                                                         .where((element) =>
                                                             element.containsKey(
                                                                 'Instagram'))
                                                         .isEmpty ) {
                                                       EasyLoading.showError("Empty");
                                                     }else if (!await launchUrl((Uri.parse( p
-                                                        .geted13usersList[
+                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .linked!
                                                         .firstWhere((element) =>
-                                                            element.containsKey('Twitter'))['Twitter'])))) {
+                                                            element.containsKey('Instagram'))['Instagram'])))) {
                                                             EasyLoading.showError("Failed to launch URL");
                                                           }
                                                 },
@@ -456,13 +462,13 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                             leading: Image.asset(AppImages.insta,
                                                 width: 30),
                                             title: Text(
-                                                p.geted13usersList[p.selectedUserIndex].linked!
+                                                p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
                                                         .where((element) =>
                                                             element.containsKey(
                                                                 'Instagram'))
                                                         .isEmpty
                                                     ? "Empty"
-                                                    : p.geted13usersList[p.selectedUserIndex].linked!
+                                                    : p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
                                                         .firstWhere((element) =>
                                                             element
                                                                 .containsKey('Instagram'))['Instagram'],
@@ -470,14 +476,14 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                             trailing: Row(children: [
                                                IconButton(
                                                   onPressed: () {
-                                                      FlutterClipboard.copy(p.geted13usersList[p.selectedUserIndex].linked!
+                                                      FlutterClipboard.copy(p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
                                                         .where((element) =>
                                                             element.containsKey(
                                                                 'Instagram'))
                                                         .isEmpty
                                                     ? "Empty"
                                                     : p
-                                                        .geted13usersList[
+                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .linked!
                                                         .firstWhere((element) =>
@@ -492,14 +498,14 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                               const SizedBox(width: 7),
                                               InkWell(
                                                 onTap: () async{
-                                                        if(p.geted13usersList[p.selectedUserIndex].linked!
+                                                        if(p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
                                                         .where((element) =>
                                                             element.containsKey(
                                                                 'Instagram'))
                                                         .isEmpty ) {
                                                       EasyLoading.showError("Empty");
                                                     }else if (!await launchUrl((Uri.parse(p
-                                                        .geted13usersList[
+                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .linked!
                                                         .firstWhere((element) =>
@@ -524,14 +530,14 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                 AppImages.global,
                                                 width: 30),
                                             title: Text(
-                                                p.geted13usersList[p.selectedUserIndex].linked!
+                                                p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
                                                         .where((element) =>
                                                             element.containsKey(
                                                                 'Website'))
                                                         .isEmpty
                                                     ? "Empty"
                                                     : p
-                                                        .geted13usersList[
+                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .linked!
                                                         .firstWhere((element) =>
@@ -540,14 +546,14 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                             trailing: Row(children: [
                                                IconButton(
                                                   onPressed: () {
-                                                      FlutterClipboard.copy(p.geted13usersList[p.selectedUserIndex].linked!
+                                                      FlutterClipboard.copy(p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
                                                         .where((element) =>
                                                             element.containsKey(
                                                                 'Website'))
                                                         .isEmpty
                                                     ? "Empty"
                                                     : p
-                                                        .geted13usersList[
+                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .linked!
                                                         .firstWhere((element) =>
@@ -563,14 +569,14 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                               InkWell(
                                                 onTap: () async{
                                          
-                                                    if(p.geted13usersList[p.selectedUserIndex].linked!
+                                                    if(p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].linked!
                                                         .where((element) =>
                                                             element.containsKey(
                                                                 'Website'))
                                                         .isEmpty ) {
                                                       EasyLoading.showError("Empty");
                                                     }else if (!await launchUrl((Uri.parse(p
-                                                        .geted13usersList[
+                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .linked!
                                                         .firstWhere((element) =>
@@ -611,7 +617,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                               onTap: () async {
                                                 try {
                                                   if (p
-                                                      .geted13usersList[
+                                                      .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                           p.selectedUserIndex]
                                                       .linked!
                                                       .where((element) =>
@@ -623,7 +629,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                     return;
                                                   }
                                                   var username = p
-                                                      .geted13usersList[
+                                                      .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                           p.selectedUserIndex]
                                                       .linked!
                                                       .firstWhere((element) =>
@@ -656,7 +662,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                               onTap: () async {
                                                 try {
                                                   if (p
-                                                      .geted13usersList[
+                                                      .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                           p.selectedUserIndex]
                                                       .linked!
                                                       .where((element) =>
@@ -668,7 +674,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                     return;
                                                   }
                                                   var username = p
-                                                          .geted13usersList[p
+                                                          .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p
                                                               .selectedUserIndex]
                                                           .linked!
                                                           .firstWhere((element) =>
@@ -699,7 +705,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                               onTap: () async {
                                                 try {
                                                   if (p
-                                                      .geted13usersList[
+                                                      .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                           p.selectedUserIndex]
                                                       .linked!
                                                       .where((element) =>
@@ -711,7 +717,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                     return;
                                                   }
                                                   var username = p
-                                                      .geted13usersList[
+                                                      .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                           p.selectedUserIndex]
                                                       .linked!
                                                       .firstWhere((element) =>
@@ -744,57 +750,64 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                 alignment:
                                                     Alignment.bottomRight,
                                                 children: [
-                                                  Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              10),
-                                                      child: CircleAvatar(
-                                                          radius: 40,
-                                                          backgroundColor:
-                                                              AppColors.gold,
-                                                          child: ClipRRect(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        40),
-                                                            child: CircleAvatar(
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .black,
-                                                                radius: 38,
-                                                                child:
-                                                                    CachedNetworkImage(
-                                                                        imageUrl: p
-                                                                            .geted13usersList[p
-                                                                                .selectedUserIndex]
-                                                                            .image!,
-                                                                        progressIndicatorBuilder: (context,
-                                                                                url,
-                                                                                downloadProgress) =>
-                                                                            CircularProgressIndicator(
-                                                                              value: downloadProgress.progress,
-                                                                              color: AppColors.gold,
-                                                                            ),
-                                                                        errorWidget: (context, url, error) => const Icon(
-                                                                            Icons
-                                                                                .image_not_supported_outlined,
-                                                                            color:
-                                                                                AppColors.gold))),
-                                                          ))),
+                                                  GestureDetector(
+                                                    onTap:(){
+                                                       imagePreview(context,
+                                                          imageUrl: p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p
+                                                          .selectedUserIndex].image!);
+                                                    },
+                                                    child: Padding(
+                                                        padding:
+                                                            const EdgeInsets.all(
+                                                                10),
+                                                        child: CircleAvatar(
+                                                            radius: 40,
+                                                            backgroundColor:
+                                                                AppColors.gold,
+                                                            child: ClipRRect(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          40),
+                                                              child: CircleAvatar(
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .black,
+                                                                  radius: 38,
+                                                                  child:
+                                                                      CachedNetworkImage(
+                                                                          imageUrl: p
+                                                                              .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p
+                                                                                  .selectedUserIndex]
+                                                                              .image!,
+                                                                          progressIndicatorBuilder: (context,
+                                                                                  url,
+                                                                                  downloadProgress) =>
+                                                                              CircularProgressIndicator(
+                                                                                value: downloadProgress.progress,
+                                                                                color: AppColors.gold,
+                                                                              ),
+                                                                          errorWidget: (context, url, error) => const Icon(
+                                                                              Icons
+                                                                                  .image_not_supported_outlined,
+                                                                              color:
+                                                                                  AppColors.gold))),
+                                                            ))),
+                                                  ),
                                                   Positioned(
                                                       right: 0,
                                                       bottom: 0,
                                                       child: Image.asset(
                                                           width: 40,
-                                                          p.geted13usersList[p.selectedUserIndex].membership! ==
+                                                          p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].membership! ==
                                                                       'Free' ||
                                                                   p
-                                                                          .geted13usersList[p
+                                                                          .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p
                                                                               .selectedUserIndex]
                                                                           .membership! ==
                                                                       'Bronze'
                                                               ? AppImages.bronze
-                                                              : p.geted13usersList[p.selectedUserIndex].membership! ==
+                                                              : p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].membership! ==
                                                                       'Silver'
                                                                   ? AppImages
                                                                       .silver
@@ -843,7 +856,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                             width: 12,
                                                             AppImages.location),
                                                         Text(
-                                                          " ${p.geted13usersList[p.selectedUserIndex].country} ",
+                                                          " ${p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].country} ",
                                                           style: TextTheme.of(
                                                                   context)
                                                               .labelLarge,
@@ -889,12 +902,12 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                             AppImages.send),
                                                         Text(p.calculateDistanceInMiles(
                                                             p
-                                                                .geted13usersList[p
+                                                                .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p
                                                                     .selectedUserIndex]
                                                                 .point!
                                                                 .latitude,
                                                             p
-                                                                .geted13usersList[
+                                                                .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                                     p.selectedUserIndex]
                                                                 .point!
                                                                 .longitude,
@@ -918,13 +931,20 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.start,
                                                   children: [
-                                                    Text(p
-                                                        .geted13usersList[
-                                                            p.selectedUserIndex]
-                                                        .username!),
-                                                    Image.asset(
-                                                        width: 20,
-                                                        AppImages.checkGold)
+                                                    Text(
+                                                        "${p
+                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                            p.selectedUserIndex].firstname} ${p
+                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                            p.selectedUserIndex].lastname}"),
+                                                    Opacity(
+                                                      opacity: p
+                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
+                                                            p.selectedUserIndex].membership == "Golds"?1:0.5,
+                                                      child: Image.asset(
+                                                          width: 20,
+                                                          AppImages.checkGold),
+                                                    )
                                                   ]),
                                               const SizedBox(height: 5),
                                               const Row(children: [
@@ -940,7 +960,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                         width: 15)
                                                   ]..addAll(
                                                       p
-                                                          .geted13usersList[p
+                                                          .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p
                                                               .selectedUserIndex]
                                                           .languages!
                                                           .map((e) => Text(
@@ -954,14 +974,14 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                               //   Image.asset(AppImages.lang,
                                               //       width: 15),
                                               //   Text(
-                                              //       " ${p.geted13usersList[p.selectedUserIndex].languages!}",
+                                              //       " ${p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].languages!}",
                                               //       // "  Estonian 🇪🇪 • Russian 🇷🇺 • English 🇬🇧 ",
                                               //       style: TextTheme.of(context)
                                               //           .labelSmall!)
                                               // ]),
                                               const SizedBox(height: 5),
                                               Text(
-                                                  """${p.geted13usersList[p.selectedUserIndex].bio!} """,
+                                                  """${p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].bio!} """,
                                                   // """Guiding businesses' success through strategic.| Problem Solver | Empowering Growth 🌱 Let's solve challenges together! 💼 """,
                                                   style: TextTheme.of(context)
                                                       .labelSmall!
@@ -975,37 +995,42 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                           .spaceEvenly,
                                                   children: List.generate(
                                                       p
-                                                          .geted13usersList[p
+                                                          .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p
                                                               .selectedUserIndex]
                                                           .galleryImages!
                                                           .length,
                                                       (index) => Expanded(
-                                                          child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(5),
-                                                              child: Container(
-                                                                  decoration: BoxDecoration(
-                                                                      border: Border.all(
-                                                                          width:
-                                                                              1,
-                                                                          color: AppColors
-                                                                              .gold),
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              15)),
-                                                                  child: CachedNetworkImage(
-                                                                      imageUrl: p.geted13usersList[p.selectedUserIndex].galleryImages![index],
-                                                                      progressIndicatorBuilder: (context, url, downloadProgress) => const SizedBox(height: 60, child: DotLoader(color: AppColors.pieChartColor2)),
-                                                                      errorWidget: (context, url, error) => Container(
-                                                                          decoration: BoxDecoration(color: AppColors.bgColor, borderRadius: BorderRadius.circular(15)),
-                                                                          child: const SizedBox(
-                                                                              height: 60,
-                                                                              child: Icon(
-                                                                                Icons.image_not_supported_outlined,
-                                                                                color: AppColors.pieChartColor2,
-                                                                              ))),
-                                                                      fit: BoxFit.cover)))))),
+                                                          child: InkWell(
+                                                            onTap: (){
+                                                             imagePreview(context, imageUrl: p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].galleryImages![index]);
+                                                            },
+                                                            child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(5),
+                                                                child: Container(
+                                                                    decoration: BoxDecoration(
+                                                                        border: Border.all(
+                                                                            width:
+                                                                                1,
+                                                                            color: AppColors
+                                                                                .gold),
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(
+                                                                                15)),
+                                                                    child: CachedNetworkImage(
+                                                                        imageUrl: p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].galleryImages![index],
+                                                                        progressIndicatorBuilder: (context, url, downloadProgress) => const SizedBox(height: 60, child: DotLoader(color: AppColors.pieChartColor2)),
+                                                                        errorWidget: (context, url, error) => Container(
+                                                                            decoration: BoxDecoration(color: AppColors.bgColor, borderRadius: BorderRadius.circular(15)),
+                                                                            child: const SizedBox(
+                                                                                height: 60,
+                                                                                child: Icon(
+                                                                                  Icons.image_not_supported_outlined,
+                                                                                  color: AppColors.pieChartColor2,
+                                                                                ))),
+                                                                        fit: BoxFit.cover))),
+                                                          )))),
                                               const SizedBox(height: 5),
                                               const Row(
                                                   children: [Text("Goals")]),
@@ -1020,7 +1045,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                         ScrollController(),
                                                     children: List.generate(
                                                         p
-                                                            .geted13usersList[p
+                                                            .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p
                                                                 .selectedUserIndex]
                                                             .goals!
                                                             .length, (index) {
@@ -1043,7 +1068,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                                     const EdgeInsets
                                                                         .all(5),
                                                                 child: Text(
-                                                                    " ${p.geted13usersList[p.selectedUserIndex].goals![index]}",
+                                                                    " ${p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].goals![index]}",
                                                                     // " 🤝 Find partners",
                                                                     style: TextTheme.of(
                                                                             context)
@@ -1066,7 +1091,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                   spacing: 10,
                                                   children: List.generate(
                                                       p
-                                                          .geted13usersList[p
+                                                          .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p
                                                               .selectedUserIndex]
                                                           .interests!
                                                           .length, (index) {
@@ -1089,7 +1114,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                                   const EdgeInsets
                                                                       .all(5),
                                                               child: Text(
-                                                                  " ${p.geted13usersList[p.selectedUserIndex].interests![index]}",
+                                                                  " ${p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].interests![index]}",
                                                                   style: TextTheme.of(context)
                                                                       .labelSmall))),
                                                     );
@@ -1160,14 +1185,13 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                     const SizedBox(height: 5),
                                     InkWell(
                                       onTap: () async{
-                                        if(p
-                                                .geted13usersList[
+                                        if(p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                     p.selectedUserIndex]
                                                 .file1!
                                                         .isEmpty ) {
                                                       EasyLoading.showError("Empty");
                                                     }else if (!await launchUrl((Uri.parse(p
-                                                .geted13usersList[
+                                                .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                     p.selectedUserIndex]
                                                 .file1!)))) {
                                                             EasyLoading.showError("Failed to Open");
@@ -1182,7 +1206,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                         child: Center(
                                           child: CachedNetworkImage(
                                             imageUrl: p
-                                                .geted13usersList[
+                                                .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                     p.selectedUserIndex]
                                                 .file1!,
                                             placeholder: (context, url) =>
@@ -1208,7 +1232,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                       child: Row(children: [
                                         Opacity(
                                           opacity: p
-                                                  .geted13usersList[
+                                                  .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                       p.selectedUserIndex]
                                                   .isValidICard
                                               ? 1
@@ -1225,14 +1249,14 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                               onPressed: () {
                                                 p.setVerifBoolF(
                                                     docId: p
-                                                        .geted13usersList[
+                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .uid!,
                                                     verifiedStatus: p
-                                                        .geted13usersList[
+                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .isValidBCard ? 2: p
-                                                        .geted13usersList[
+                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .file1!.isEmpty ?   0 : 1,
                                                     isValidICard: true);
@@ -1245,7 +1269,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                         const SizedBox(width: 10),
                                         Opacity(
                                           opacity: p
-                                                      .geted13usersList[
+                                                      .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                           p.selectedUserIndex]
                                                       .isValidICard ==
                                                   false
@@ -1262,11 +1286,11 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                               onPressed: () {
                                                 p.setVerifBoolF(
                                                     docId: p
-                                                        .geted13usersList[
+                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .uid!,
                                                       verifiedStatus:  p
-                                                        .geted13usersList[
+                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .file1!.isEmpty ?   0 : 1,
                                                     isValidICard: false);
@@ -1278,13 +1302,13 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                         )
                                       ]),
                                     ),
-                                    p.geted13usersList[p.selectedUserIndex]
+                                    p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex]
                                             .iCardDesc.isNotEmpty
                                         ? Padding(
                                             padding: const EdgeInsets.only(
                                                 bottom: 8),
                                             child: Text(
-                                                "Previously: ${p.geted13usersList[p.selectedUserIndex].iCardDesc}",
+                                                "Previously: ${p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].iCardDesc}",
                                                 style: const TextStyle(
                                                     color: AppColors
                                                         .textSilverDark)),
@@ -1318,13 +1342,13 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                     InkWell(
                                       onTap: () async{
                                         if(p
-                                                .geted13usersList[
+                                                .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                     p.selectedUserIndex]
                                                 .file2!
                                                         .isEmpty ) {
                                                       EasyLoading.showError("Empty");
                                                     }else if (!await launchUrl((Uri.parse(p
-                                                .geted13usersList[
+                                                .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                     p.selectedUserIndex]
                                                 .file2!)))) {
                                                             EasyLoading.showError("Failed to Open");
@@ -1339,7 +1363,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                         child: Center(
                                           child: CachedNetworkImage(
                                             imageUrl: p
-                                                .geted13usersList[
+                                                .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                     p.selectedUserIndex]
                                                 .file2!,
                                             placeholder: (context, url) =>
@@ -1379,7 +1403,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                       child: Row(children: [
                                         Opacity(
                                           opacity: p
-                                                  .geted13usersList[
+                                                  .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                       p.selectedUserIndex]
                                                   .isValidBCard
                                               ? 1
@@ -1396,14 +1420,14 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                               onPressed: () {
                                                 p.setVerifBoolF(
                                                     docId: p
-                                                        .geted13usersList[
+                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .uid!,
                                                     verifiedStatus: p
-                                                        .geted13usersList[
+                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .isValidICard ? 2: p
-                                                        .geted13usersList[
+                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .file1!.isEmpty ? 0 : 1,
                                                     isValidBCard: true);
@@ -1416,7 +1440,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                         const SizedBox(width: 10),
                                         Opacity(
                                           opacity: p
-                                                      .geted13usersList[
+                                                      .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                           p.selectedUserIndex]
                                                       .isValidBCard ==
                                                   false
@@ -1433,11 +1457,11 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                               onPressed: () {
                                                 p.setVerifBoolF(
                                                     docId: p
-                                                        .geted13usersList[
+                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .uid!,
                                                         verifiedStatus:  p
-                                                        .geted13usersList[
+                                                        .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                             p.selectedUserIndex]
                                                         .file2!.isEmpty ? 0 : 1,
                                                     isValidBCard: false);
@@ -1450,13 +1474,13 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                       ]),
                                     ),
 
-                                    p.geted13usersList[p.selectedUserIndex]
+                                    p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex]
                                             .bCardDesc.isNotEmpty
                                         ? Padding(
                                             padding: const EdgeInsets.only(
                                                 bottom: 8),
                                             child: Text(
-                                                "Previously: ${p.geted13usersList[p.selectedUserIndex].bCardDesc}",
+                                                "Previously: ${p.allUsersList.where((e)=> e.varifiedStatus == 1).toList()[p.selectedUserIndex].bCardDesc}",
                                                 style: const TextStyle(
                                                     color: AppColors
                                                         .textSilverDark)),
@@ -1492,7 +1516,7 @@ class _VerificatiosPageState extends ConsumerState<VerificatiosPage> {
                                                 showLoading: true,
                                                 loadingFor: 'verifying',
                                                 docId: p
-                                                    .geted13usersList[
+                                                    .allUsersList.where((e)=> e.varifiedStatus == 1).toList()[
                                                         p.selectedUserIndex]
                                                     .uid!,
                                                 iCardDesc:

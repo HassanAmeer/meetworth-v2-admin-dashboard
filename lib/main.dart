@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meetworth_admin/screens/auth/login.dart';
+// import 'package:meetworth_admin/screens/homePage.dart';
 import 'package:meetworth_admin/widgets/sidebar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +64,7 @@ class MyApp extends StatelessWidget {
             appBarTheme: AppBarTheme(
                 centerTitle: true,
                 titleTextStyle: TextStyle(color: AppColors.primaryMid))),
-        home: const SplashPage(),
+        home: const SidebarWidget(),
         builder: EasyLoading.init());
   }
 }
@@ -107,7 +108,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
       User? fbUser = await FirebaseAuth.instance.currentUser;
       if (fbUser == null) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          Timer(const Duration(seconds: 3), () async {
+          Timer(const Duration(seconds: 0), () async {
             Navigator.of(context).pushReplacement(PageRouteBuilder(
                 transitionDuration: const Duration(seconds: 3),
                 pageBuilder: (context, animation, secondaryAnimation) =>
@@ -118,7 +119,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
           });
         });
       } else {
-        Timer(const Duration(seconds: 3), () async {
+        Timer(const Duration(seconds: 0), () async {
           Navigator.of(context).pushReplacement(PageRouteBuilder(
               transitionDuration: const Duration(seconds: 3),
               pageBuilder: (context, animation, secondaryAnimation) =>
@@ -163,23 +164,23 @@ class _SplashPageState extends ConsumerState<SplashPage> {
                   children: [
                     Center(
                         child: SizedBox(
-                                width: isPhone
-                                    ? w * 0.7
-                                    : isTablet
-                                        ? w * 0.4
-                                        : w * 0.2,
-                                child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Image.asset(
-                                      AppImages.logodark,
-                                      // color: AppColor.primary.withOpacity(0.1),
-                                    )))
-                            .animate(
-                                onPlay: (controller) => controller.repeat())
-                            .shakeX()
-                            .shimmer(
-                                duration: const Duration(milliseconds: 1700),
-                                delay: const Duration(milliseconds: 1000))),
+                            width: isPhone
+                                ? w * 0.7
+                                : isTablet
+                                    ? w * 0.4
+                                    : w * 0.2,
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: Image.asset(
+                                  AppImages.logodark,
+                                  // color: AppColor.primary.withOpacity(0.1),
+                                )))),
+                    // .animate(
+                    //     onPlay: (controller) => controller.repeat())
+                    // .shakeX()
+                    // .shimmer(
+                    //     duration: const Duration(milliseconds: 1700),
+                    //     delay: const Duration(milliseconds: 1000))),
                     SizedBox(height: h * 0.1),
                     Text('Meetworth',
                             textAlign: TextAlign.center,

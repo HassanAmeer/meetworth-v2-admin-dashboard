@@ -7,6 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meetworth_admin/widgets/imagePreview.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -134,7 +135,6 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                         style: TextStyle(
                                                             color: Colors.white,
                                                             fontSize: 20)),
-
                                                     OutlinedButton(
                                                         onPressed: () {
                                                           p.downloadUsersCsv(
@@ -255,49 +255,68 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                              
-                                              Row(children:[
+                                              Row(children: [
                                                 const Text("All Users    ",
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 20)),
-                                                      p.isLoading && p.isLoadingFor == "clear" ? const DotLoader(color: AppColors.gold) : OutlinedButton(
-                                                    onPressed: () {
-                                                      p.dropDownUsersFilterF(showLoading: true, loadingFor: "clear",clearAll: true);
-                                                    },
-                                                    style: OutlinedButton
-                                                        .styleFrom(
-                                                      side: const BorderSide(
-                                                          width: 1,
-                                                          color:
-                                                              AppColors.gold)
-                                                    ),
-                                                    child: Text("Clear Filter",
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .labelSmall!
-                                                            .copyWith(
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 20)),
+                                                p.isLoading &&
+                                                        p.isLoadingFor ==
+                                                            "clear"
+                                                    ? const DotLoader(
+                                                        color: AppColors.gold)
+                                                    : OutlinedButton(
+                                                        onPressed: () {
+                                                          p.dropDownUsersFilterF(
+                                                              showLoading: true,
+                                                              loadingFor:
+                                                                  "clear",
+                                                              clearAll: true);
+                                                        },
+                                                        style: OutlinedButton.styleFrom(
+                                                            side: const BorderSide(
+                                                                width: 1,
                                                                 color: AppColors
-                                                                    .gold))),
-                                                                    const SizedBox(width: 10),
-                                                      p.isLoading && p.isLoadingFor == "desc" ? const DotLoader(color: AppColors.gold) : OutlinedButton(
-                                                    onPressed: () {
-                                                      p.decAcUsersF(showLoading: true, loadingFor: "desc",desc: !p.isDecending);
-                                                    },
-                                                    style: OutlinedButton
-                                                        .styleFrom(
-                                                      side: const BorderSide(
-                                                          width: 1,
-                                                          color:
-                                                              AppColors.gold)
-                                                    ),
-                                                    child: Text(     p.isDecending?  "Decending" : "Ascending",
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .labelSmall!
-                                                            .copyWith(
+                                                                    .gold)),
+                                                        child: Text(
+                                                            "Clear Filter",
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .labelSmall!
+                                                                .copyWith(
+                                                                    color: AppColors
+                                                                        .gold))),
+                                                const SizedBox(width: 10),
+                                                p.isLoading &&
+                                                        p.isLoadingFor == "desc"
+                                                    ? const DotLoader(
+                                                        color: AppColors.gold)
+                                                    : OutlinedButton(
+                                                        onPressed: () {
+                                                          p.decAcUsersF(
+                                                              showLoading: true,
+                                                              loadingFor:
+                                                                  "desc",
+                                                              desc: !p
+                                                                  .isDecending);
+                                                        },
+                                                        style: OutlinedButton.styleFrom(
+                                                            side: const BorderSide(
+                                                                width: 1,
                                                                 color: AppColors
-                                                                    .gold))),
+                                                                    .gold)),
+                                                        child: Text(
+                                                            p.isDecending
+                                                                ? "Decending"
+                                                                : "Ascending",
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .labelSmall!
+                                                                .copyWith(
+                                                                    color: AppColors
+                                                                        .gold))),
                                               ]),
                                               Row(children: [
                                                 OutlinedButton(
@@ -425,48 +444,63 @@ class _UsersPageState extends ConsumerState<UsersPage> {
                                                         ))),
                                               ]),
                                             ]),
-SizedBox(height: isPhone? 10: 0),
-                                           isPhone?  Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children:[
-                                                OutlinedButton(
-                                                    onPressed: () {
-                                                      p.dropDownUsersFilterF(showLoading: true, loadingFor: "clear",clearAll: true);
-                                                    },
-                                                    style: OutlinedButton
-                                                        .styleFrom(
-                                                      side: const BorderSide(
-                                                          width: 1,
-                                                          color:
-                                                              AppColors.gold)
-                                                    ),
-                                                    child: Text("Clear Filter",
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .labelSmall!
-                                                            .copyWith(
-                                                                color: AppColors
-                                                                    .gold))),
-                                                                    const SizedBox(width: 10),
-                                                      p.isLoading && p.isLoadingFor == "desc" ? const DotLoader(color: AppColors.gold) : OutlinedButton(
-                                                    onPressed: () {
-                                                      p.decAcUsersF(showLoading: true, loadingFor: "desc",desc: !p.isDecending);
-                                                    },
-                                                    style: OutlinedButton
-                                                        .styleFrom(
-                                                      side: const BorderSide(
-                                                          width: 1,
-                                                          color:
-                                                              AppColors.gold)
-                                                    ),
-                                                    child: Text(     p.isDecending?  "Decending" : "Ascending",
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .labelSmall!
-                                                            .copyWith(
-                                                                color: AppColors
-                                                                    .gold))),
-                                              ]) : const SizedBox.shrink(),
+                                  SizedBox(height: isPhone ? 10 : 0),
+                                  isPhone
+                                      ? Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                              OutlinedButton(
+                                                  onPressed: () {
+                                                    p.dropDownUsersFilterF(
+                                                        showLoading: true,
+                                                        loadingFor: "clear",
+                                                        clearAll: true);
+                                                  },
+                                                  style:
+                                                      OutlinedButton.styleFrom(
+                                                          side: const BorderSide(
+                                                              width: 1,
+                                                              color: AppColors
+                                                                  .gold)),
+                                                  child: Text("Clear Filter",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .labelSmall!
+                                                          .copyWith(
+                                                              color: AppColors
+                                                                  .gold))),
+                                              const SizedBox(width: 10),
+                                              p.isLoading &&
+                                                      p.isLoadingFor == "desc"
+                                                  ? const DotLoader(
+                                                      color: AppColors.gold)
+                                                  : OutlinedButton(
+                                                      onPressed: () {
+                                                        p.decAcUsersF(
+                                                            showLoading: true,
+                                                            loadingFor: "desc",
+                                                            desc:
+                                                                !p.isDecending);
+                                                      },
+                                                      style: OutlinedButton.styleFrom(
+                                                          side: const BorderSide(
+                                                              width: 1,
+                                                              color: AppColors
+                                                                  .gold)),
+                                                      child: Text(
+                                                          p.isDecending
+                                                              ? "Decending"
+                                                              : "Ascending",
+                                                          style: Theme.of(
+                                                                  context)
+                                                              .textTheme
+                                                              .labelSmall!
+                                                              .copyWith(
+                                                                  color: AppColors
+                                                                      .gold))),
+                                            ])
+                                      : const SizedBox.shrink(),
                                   ///////////////////////////////////////////////////////
                                   SizedBox(
                                     width: isPhone ? w * 1 : w * 0.75,
@@ -490,69 +524,106 @@ SizedBox(height: isPhone? 10: 0),
                                                     style: TextStyle(
                                                         fontSize: 11))),
                                             DataColumn(
-                                              label: p.isLoading && p.isLoadingFor == "Gender" ? const Center(child: DotLoader()):  DropDownWidget(
-                                                isPhone: isPhone,
-                                                hint: "Gender",
-                                                onChanged: (value) {
-                                                  p.dropDownUsersFilterF(showLoading: true, loadingFor: "Gender",gender: value);
-                                                },
-                                                items: const [
-                                                  'Male',
-                                                  'Female',
-                                                ],
-                                                selectedValue: "${p.dropDownValueGender}",
-                                              )
-                                            ),
+                                                label: p.isLoading &&
+                                                        p.isLoadingFor ==
+                                                            "Gender"
+                                                    ? const Center(
+                                                        child: DotLoader())
+                                                    : DropDownWidget(
+                                                        isPhone: isPhone,
+                                                        hint: "Gender",
+                                                        onChanged: (value) {
+                                                          p.dropDownUsersFilterF(
+                                                              showLoading: true,
+                                                              loadingFor:
+                                                                  "Gender",
+                                                              gender: value);
+                                                        },
+                                                        items: const [
+                                                          'Male',
+                                                          'Female',
+                                                        ],
+                                                        selectedValue:
+                                                            "${p.dropDownValueGender}",
+                                                      )),
                                             const DataColumn(
                                               label: Text('USERNAME',
                                                   style:
                                                       TextStyle(fontSize: 11)),
                                             ),
                                             DataColumn(
-                                              label:p.isLoading && p.isLoadingFor == "VERIFICATION" ? const Center(child: DotLoader()): DropDownWidget(
-                                                hint: "VERIFICATION",
-                                                isPhone: isPhone,
-                                                onChanged: (value) {
-                                                  p.dropDownUsersFilterF(showLoading: true, loadingFor: "VERIFICATION",verification: value);
-                                                 
-                                                },
-                                                items: const [
-                                                  'Verified',
-                                                  'Not Verified',
-                                                  '⁠Verification Pending'
-                                                ],
-                                                selectedValue: "${p.dropDownValueVerification}",
-                                              )
-                                            ),
-                                             DataColumn(
-                                              label: p.isLoading && p.isLoadingFor == "MEMBERSHIP" ? const Center(child: DotLoader()):  DropDownWidget(
-                                                hint: "MEMBERSHIP",
-                                                isPhone: isPhone,
-                                                onChanged: (value) {
-                                                  p.dropDownUsersFilterF(showLoading: true, loadingFor: "MEMBERSHIP",membership: value);
-                                                },
-                                                items: const [
-                                                  'Free',
-                                                  'Silver',
-                                                  'Gold'
-                                                ],
-                                                selectedValue: "${p.dropDownValueMembership}",
-                                              )
-                                            ),
-                                             DataColumn(
-                                              label: p.isLoading && p.isLoadingFor == "STATUS" ? const Center(child: DotLoader()):  DropDownWidget(
-                                                hint: "STATUS",
-                                                isPhone: isPhone,
-                                                onChanged: (value) {
-                                                  p.dropDownUsersFilterF(showLoading: true, loadingFor: "STATUS",status: value);
-                                                },
-                                                items: const [
-                                                  'Enabled',
-                                                  'Block',
-                                                ],
-                                                selectedValue: "${p.dropDownValueStatus}",
-                                              )
-                                            ),
+                                                label: p.isLoading &&
+                                                        p.isLoadingFor ==
+                                                            "VERIFICATION"
+                                                    ? const Center(
+                                                        child: DotLoader())
+                                                    : DropDownWidget(
+                                                        hint: "VERIFICATION",
+                                                        isPhone: isPhone,
+                                                        onChanged: (value) {
+                                                          p.dropDownUsersFilterF(
+                                                              showLoading: true,
+                                                              loadingFor:
+                                                                  "VERIFICATION",
+                                                              verification:
+                                                                  value);
+                                                        },
+                                                        items: const [
+                                                          'Verified',
+                                                          'Not Verified',
+                                                          '⁠Verification Pending'
+                                                        ],
+                                                        selectedValue:
+                                                            "${p.dropDownValueVerification}",
+                                                      )),
+                                            DataColumn(
+                                                label: p.isLoading &&
+                                                        p.isLoadingFor ==
+                                                            "MEMBERSHIP"
+                                                    ? const Center(
+                                                        child: DotLoader())
+                                                    : DropDownWidget(
+                                                        hint: "MEMBERSHIP",
+                                                        isPhone: isPhone,
+                                                        onChanged: (value) {
+                                                          p.dropDownUsersFilterF(
+                                                              showLoading: true,
+                                                              loadingFor:
+                                                                  "MEMBERSHIP",
+                                                              membership:
+                                                                  value);
+                                                        },
+                                                        items: const [
+                                                          'Free',
+                                                          'Silver',
+                                                          'Gold'
+                                                        ],
+                                                        selectedValue:
+                                                            "${p.dropDownValueMembership}",
+                                                      )),
+                                            DataColumn(
+                                                label: p.isLoading &&
+                                                        p.isLoadingFor ==
+                                                            "STATUS"
+                                                    ? const Center(
+                                                        child: DotLoader())
+                                                    : DropDownWidget(
+                                                        hint: "STATUS",
+                                                        isPhone: isPhone,
+                                                        onChanged: (value) {
+                                                          p.dropDownUsersFilterF(
+                                                              showLoading: true,
+                                                              loadingFor:
+                                                                  "STATUS",
+                                                              status: value);
+                                                        },
+                                                        items: const [
+                                                          'Enabled',
+                                                          'Block',
+                                                        ],
+                                                        selectedValue:
+                                                            "${p.dropDownValueStatus}",
+                                                      )),
                                             // const DataColumn(
                                             //     label: Text('MEMBERSHIP',
                                             //         style: TextStyle(
@@ -575,15 +646,22 @@ SizedBox(height: isPhone? 10: 0),
                                               : List.generate(
                                                   p.geted13usersList.length,
                                                   (index) {
-                                                  var user =  p.isDecending?  p.geted13usersList.reversed.toList()[index]:p.geted13usersList[index];
+                                                  var user = p.isDecending
+                                                      ? p.geted13usersList
+                                                          .reversed
+                                                          .toList()[index]
+                                                      : p.geted13usersList[
+                                                          index];
                                                   // var user =
                                                   //     p.geted13usersList[index];
                                                   return DataRow(cells: [
                                                     DataCell(onTap: () {
-                                                      p.selectUserIndexF(index,
-                                                          showLoading: true,
-                                                          loadingFor:
-                                                              "selectinguser");
+                                                      imagePreview(context,
+                                                          imageUrl: user.image!);
+                                                      // p.selectUserIndexF(index,
+                                                      //     showLoading: true,
+                                                      //     loadingFor:
+                                                      //         "selectinguser");
                                                     },
                                                         Row(
                                                             mainAxisSize:
@@ -621,8 +699,7 @@ SizedBox(height: isPhone? 10: 0),
                                                                       textAlign:
                                                                           TextAlign
                                                                               .center,
-                                                                      user
-                                                                          .firstname!,
+                                                                      "  ${user.firstname!} ${user.lastname!}",
                                                                       style: const TextStyle(
                                                                           fontSize:
                                                                               10),
@@ -730,159 +807,180 @@ SizedBox(height: isPhone? 10: 0),
                                                       //           "selectinguser");
                                                       // },
                                                       Padding(
-                                                        padding: const EdgeInsets.symmetric(vertical:2),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                                vertical: 2),
                                                         child: Container(
-                                                          decoration: BoxDecoration(color: AppColors.silverGold.withOpacity(0.2)),
+                                                          decoration: BoxDecoration(
+                                                              color: AppColors
+                                                                  .silverGold
+                                                                  .withOpacity(
+                                                                      0.2)),
                                                           child: Padding(
-                                                            padding: const EdgeInsets.all(5),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(5),
                                                             child: Wrap(
-                                                              spacing:3, runSpacing:3,
-                                                              children: [
-                                                              Opacity(
-                                                              opacity: user.membership ==
-                                                              'Free' ? 1 : 0.5,
-                                                                child: InkWell(onTap: (){
-                                                                      p.setMembershipUserF(
-                                                                  uid: user.uid,
-                                                                    showLoading: true,
-                                                                    membership: 'Free',
-                                                                    loadingFor:"membership");
-                                                                }, child: Container(
-                                                                    decoration: BoxDecoration(color:AppColors.bgColor, borderRadius: BorderRadius.circular(10)),
-                                                                  child: const Padding(
-                                                                    padding: EdgeInsets.symmetric(horizontal:10, vertical:1),
-                                                                    child: Text('Bronze',
-                                                                        style: TextStyle(fontSize: 10, color:Colors.white)),
-                                                                  ),
-                                                                ))
-                                                              ), 
-                                                              Opacity(
-                                                              opacity: user.membership ==
-                                                              'Silver' ? 1 : 0.5,
-                                                                child: InkWell(onTap: (){
-                                                                      p.setMembershipUserF(
-                                                                  uid: user.uid,
-                                                                    showLoading: true,
-                                                                    membership: 'Silver',
-                                                                    loadingFor:"membership");
-                                                                }, child: Container(
-                                                                  decoration: BoxDecoration(color:AppColors.bgColor, borderRadius: BorderRadius.circular(10)),
-                                                                  child: const Padding(
-                                                                    padding: EdgeInsets.symmetric(horizontal:10, vertical:1),
-                                                                    child: Text('Silver',
-                                                                        style: TextStyle(fontSize: 10, color:Colors.white)),
-                                                                  ),
-                                                                ))
-                                                              ), 
-                                                              Opacity(
-                                                              opacity: user.membership ==
-                                                              'Gold' ? 1 : 0.5,
-                                                                child: InkWell(onTap: (){
-                                                                      p.setMembershipUserF(
-                                                                  uid: user.uid,
-                                                                    showLoading: true,
-                                                                    membership: "Gold",
-                                                                    loadingFor:"membership");
-                                                                }, child: Container(
-                                                                    decoration: BoxDecoration(color:AppColors.bgColor, borderRadius: BorderRadius.circular(10)),
-                                                                  child: const Padding(
-                                                                    padding: EdgeInsets.symmetric(horizontal:10, vertical:1),
-                                                                    child: Text('Gold',
-                                                                        style: TextStyle(fontSize: 10, color:Colors.white)),
-                                                                  ),
-                                                                ))
-                                                              ), 
-                                                            
-                                                              ]
-                                                            ),
+                                                                spacing: 3,
+                                                                runSpacing: 3,
+                                                                children: [
+                                                                  Opacity(
+                                                                      opacity: user.membership ==
+                                                                              'Free'
+                                                                          ? 1
+                                                                          : 0.5,
+                                                                      child: InkWell(
+                                                                          onTap: () {
+                                                                            p.setMembershipUserF(
+                                                                                uid: user.uid,
+                                                                                showLoading: true,
+                                                                                membership: 'Free',
+                                                                                loadingFor: "membership");
+                                                                          },
+                                                                          child: Container(
+                                                                            decoration:
+                                                                                BoxDecoration(color: AppColors.bgColor, borderRadius: BorderRadius.circular(10)),
+                                                                            child:
+                                                                                const Padding(
+                                                                              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 1),
+                                                                              child: Text('Bronze', style: TextStyle(fontSize: 10, color: Colors.white)),
+                                                                            ),
+                                                                          ))),
+                                                                  Opacity(
+                                                                      opacity: user.membership ==
+                                                                              'Silver'
+                                                                          ? 1
+                                                                          : 0.5,
+                                                                      child: InkWell(
+                                                                          onTap: () {
+                                                                            p.setMembershipUserF(
+                                                                                uid: user.uid,
+                                                                                showLoading: true,
+                                                                                membership: 'Silver',
+                                                                                loadingFor: "membership");
+                                                                          },
+                                                                          child: Container(
+                                                                            decoration:
+                                                                                BoxDecoration(color: AppColors.bgColor, borderRadius: BorderRadius.circular(10)),
+                                                                            child:
+                                                                                const Padding(
+                                                                              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 1),
+                                                                              child: Text('Silver', style: TextStyle(fontSize: 10, color: Colors.white)),
+                                                                            ),
+                                                                          ))),
+                                                                  Opacity(
+                                                                      opacity: user.membership ==
+                                                                              'Gold'
+                                                                          ? 1
+                                                                          : 0.5,
+                                                                      child: InkWell(
+                                                                          onTap: () {
+                                                                            p.setMembershipUserF(
+                                                                                uid: user.uid,
+                                                                                showLoading: true,
+                                                                                membership: "Gold",
+                                                                                loadingFor: "membership");
+                                                                          },
+                                                                          child: Container(
+                                                                            decoration:
+                                                                                BoxDecoration(color: AppColors.bgColor, borderRadius: BorderRadius.circular(10)),
+                                                                            child:
+                                                                                const Padding(
+                                                                              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 1),
+                                                                              child: Text('Gold', style: TextStyle(fontSize: 10, color: Colors.white)),
+                                                                            ),
+                                                                          ))),
+                                                                ]),
                                                           ),
                                                         ),
                                                       ),
                                                     ),
                                                     DataCell(
-                                                         Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    InkWell(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      onTap: () {
-                                                        p.activeOrBanUserF(
-                                                            showLoading: true,
-                                                            loadingFor: 'block',
-                                                            docId: user
-                                                                .uid!,
-                                                            status: false);
-                                                      },
-                                                      child: Opacity(
-                                                        opacity: !user
-                                                                .enable!
-                                                            ? 1
-                                                            : 0.5,
-                                                        child: Row(children: [
-                                                          Opacity(
-                                                              opacity: user
-                                                                      .enable!
-                                                                  ? 0.5
-                                                                  : 1,
-                                                              child: const Icon(
-                                                                  Icons.cancel,
-                                                                  size: 18,
-                                                                  color: AppColors
-                                                                      .textRed)),
-                                                          p.isLoading &&
-                                                                  p.isLoadingFor ==
-                                                                      "block"
-                                                              ? const DotLoader()
-                                                              : const Text(
-                                                                  ' Block',
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          10))
-                                                        ]),
-                                                      ),
-                                                    ),
-                                                    InkWell(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                        onTap: () {
-                                                          p.activeOrBanUserF(
-                                                              showLoading: true,
-                                                              loadingFor:
-                                                                  'active',
-                                                              docId: user
-                                                                  .uid!,
-                                                              status: true);
-                                                        },
-                                                        child: Opacity(
-                                                          opacity: user
-                                                                  .enable!
-                                                              ? 1
-                                                              : 0.5,
-                                                          child: Row(children: [
-                                                            const Icon(
-                                                                Icons
-                                                                    .check_circle,
-                                                                size: 18,
-                                                                color: AppColors
-                                                                    .textGreen),
-                                                            p.isLoading &&
-                                                                    p.isLoadingFor ==
-                                                                        "active"
-                                                                ? const DotLoader()
-                                                                : const Text(
-                                                                    ' Active',
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            10))
+                                                      Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceEvenly,
+                                                          children: [
+                                                            InkWell(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                              onTap: () {
+                                                                p.activeOrBanUserF(
+                                                                    showLoading:
+                                                                        true,
+                                                                    loadingFor:
+                                                                        'block',
+                                                                    docId: user
+                                                                        .uid!,
+                                                                    status:
+                                                                        false);
+                                                              },
+                                                              child: Opacity(
+                                                                opacity: !user
+                                                                        .enable!
+                                                                    ? 1
+                                                                    : 0.5,
+                                                                child: Row(
+                                                                    children: [
+                                                                      Opacity(
+                                                                          opacity: user.enable!
+                                                                              ? 0.5
+                                                                              : 1,
+                                                                          child: const Icon(
+                                                                              Icons.cancel,
+                                                                              size: 18,
+                                                                              color: AppColors.textRed)),
+                                                                      p.isLoading &&
+                                                                              p.isLoadingFor ==
+                                                                                  "block"
+                                                                          ? const DotLoader()
+                                                                          : const Text(
+                                                                              ' Block',
+                                                                              style: TextStyle(fontSize: 10))
+                                                                    ]),
+                                                              ),
+                                                            ),
+                                                            InkWell(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                                onTap: () {
+                                                                  p.activeOrBanUserF(
+                                                                      showLoading:
+                                                                          true,
+                                                                      loadingFor:
+                                                                          'active',
+                                                                      docId: user
+                                                                          .uid!,
+                                                                      status:
+                                                                          true);
+                                                                },
+                                                                child: Opacity(
+                                                                  opacity:
+                                                                      user.enable!
+                                                                          ? 1
+                                                                          : 0.5,
+                                                                  child: Row(
+                                                                      children: [
+                                                                        const Icon(
+                                                                            Icons
+                                                                                .check_circle,
+                                                                            size:
+                                                                                18,
+                                                                            color:
+                                                                                AppColors.textGreen),
+                                                                        p.isLoading &&
+                                                                                p.isLoadingFor == "active"
+                                                                            ? const DotLoader()
+                                                                            : const Text(' Active', style: TextStyle(fontSize: 10))
+                                                                      ]),
+                                                                ))
                                                           ]),
-                                                        ))
-                                                  ]),
-                                                      ),
+                                                    ),
                                                     DataCell(Row(children: [
                                                       InkWell(
                                                           onTap: () {
@@ -1421,140 +1519,138 @@ SizedBox(height: isPhone? 10: 0),
                               //           ]),
                               //         ]))
                               //     : const SizedBox.shrink(),
-                           
-                           
-                           
+
                               // Flex(
                               //     direction:
                               //         isPhone ? Axis.vertical : Axis.horizontal,
                               //     mainAxisAlignment: MainAxisAlignment.start,
                               //     crossAxisAlignment: CrossAxisAlignment.start,
                               //     children: [
-                                  //   p.geted13usersList.isEmpty
-                                  //       ? const SizedBox.shrink()
-                                  //       : CardWidget(
-                                  //           widthRatio: isPhone ? 1 : 0.12,
-                                  //           padding: const EdgeInsets.all(15),
-                                  //           child: Column(children: [
-                                  //             Text("Selection",
-                                  //                 style: TextTheme.of(context)
-                                  //                     .headlineSmall),
-                                  //             ElevatedButton(
-                                  //                 style:
-                                  //                     ElevatedButton.styleFrom(
-                                  //                         backgroundColor:
-                                  //                             AppColors.gold),
-                                  //                 onPressed: () {},
-                                  //                 child: const Text(
-                                  //                     "Selection is on",
-                                  //                     style: TextStyle(
-                                  //                         color:
-                                  //                             Colors.white))),
-                                  //           ])),
-                                  //   p.geted13usersList.isEmpty
-                                  //       ? const SizedBox.shrink()
-                                  //       : CardWidget(
-                                  //           widthRatio: isPhone ? 1 : 0.12,
-                                  //           padding: const EdgeInsets.all(15),
-                                  //           child: Column(children: [
-                                  //             Text("Action",
-                                  //                 style: TextTheme.of(context)
-                                  //                     .headlineSmall),
-                                  //             const SizedBox(height: 12),
-                                  //             Row(
-                                  //                 mainAxisAlignment:
-                                  //                     MainAxisAlignment
-                                  //                         .spaceEvenly,
-                                  //                 children: [
-                                  //                   InkWell(
-                                  //                     borderRadius:
-                                  //                         BorderRadius.circular(
-                                  //                             10),
-                                  //                     onTap: () {
-                                  //                       p.activeOrBanUserF(
-                                  //                           showLoading: true,
-                                  //                           loadingFor: 'block',
-                                  //                           docId: p
-                                  //                               .geted13usersList[
-                                  //                                   p.selectedUserIndex]
-                                  //                               .uid!,
-                                  //                           status: false);
-                                  //                     },
-                                  //                     child: Opacity(
-                                  //                       opacity: !p
-                                  //                               .geted13usersList[
-                                  //                                   p.selectedUserIndex]
-                                  //                               .enable!
-                                  //                           ? 1
-                                  //                           : 0.5,
-                                  //                       child: Row(children: [
-                                  //                         Opacity(
-                                  //                             opacity: p
-                                  //                                     .geted13usersList[p
-                                  //                                         .selectedUserIndex]
-                                  //                                     .enable!
-                                  //                                 ? 0.5
-                                  //                                 : 1,
-                                  //                             child: const Icon(
-                                  //                                 Icons.cancel,
-                                  //                                 size: 18,
-                                  //                                 color: AppColors
-                                  //                                     .textRed)),
-                                  //                         p.isLoading &&
-                                  //                                 p.isLoadingFor ==
-                                  //                                     "block"
-                                  //                             ? const DotLoader()
-                                  //                             : const Text(
-                                  //                                 ' Block',
-                                  //                                 style: TextStyle(
-                                  //                                     fontSize:
-                                  //                                         10))
-                                  //                       ]),
-                                  //                     ),
-                                  //                   ),
-                                  //                   InkWell(
-                                  //                       borderRadius:
-                                  //                           BorderRadius
-                                  //                               .circular(10),
-                                  //                       onTap: () {
-                                  //                         p.activeOrBanUserF(
-                                  //                             showLoading: true,
-                                  //                             loadingFor:
-                                  //                                 'active',
-                                  //                             docId: p
-                                  //                                 .geted13usersList[
-                                  //                                     p.selectedUserIndex]
-                                  //                                 .uid!,
-                                  //                             status: true);
-                                  //                       },
-                                  //                       child: Opacity(
-                                  //                         opacity: p
-                                  //                                 .geted13usersList[
-                                  //                                     p.selectedUserIndex]
-                                  //                                 .enable!
-                                  //                             ? 1
-                                  //                             : 0.5,
-                                  //                         child: Row(children: [
-                                  //                           const Icon(
-                                  //                               Icons
-                                  //                                   .check_circle,
-                                  //                               size: 18,
-                                  //                               color: AppColors
-                                  //                                   .textGreen),
-                                  //                           p.isLoading &&
-                                  //                                   p.isLoadingFor ==
-                                  //                                       "active"
-                                  //                               ? const DotLoader()
-                                  //                               : const Text(
-                                  //                                   ' Active',
-                                  //                                   style: TextStyle(
-                                  //                                       fontSize:
-                                  //                                           10))
-                                  //                         ]),
-                                  //                       ))
-                                  //                 ]),
-                                  //           ])),
-                                  // ]),
+                              //   p.geted13usersList.isEmpty
+                              //       ? const SizedBox.shrink()
+                              //       : CardWidget(
+                              //           widthRatio: isPhone ? 1 : 0.12,
+                              //           padding: const EdgeInsets.all(15),
+                              //           child: Column(children: [
+                              //             Text("Selection",
+                              //                 style: TextTheme.of(context)
+                              //                     .headlineSmall),
+                              //             ElevatedButton(
+                              //                 style:
+                              //                     ElevatedButton.styleFrom(
+                              //                         backgroundColor:
+                              //                             AppColors.gold),
+                              //                 onPressed: () {},
+                              //                 child: const Text(
+                              //                     "Selection is on",
+                              //                     style: TextStyle(
+                              //                         color:
+                              //                             Colors.white))),
+                              //           ])),
+                              //   p.geted13usersList.isEmpty
+                              //       ? const SizedBox.shrink()
+                              //       : CardWidget(
+                              //           widthRatio: isPhone ? 1 : 0.12,
+                              //           padding: const EdgeInsets.all(15),
+                              //           child: Column(children: [
+                              //             Text("Action",
+                              //                 style: TextTheme.of(context)
+                              //                     .headlineSmall),
+                              //             const SizedBox(height: 12),
+                              //             Row(
+                              //                 mainAxisAlignment:
+                              //                     MainAxisAlignment
+                              //                         .spaceEvenly,
+                              //                 children: [
+                              //                   InkWell(
+                              //                     borderRadius:
+                              //                         BorderRadius.circular(
+                              //                             10),
+                              //                     onTap: () {
+                              //                       p.activeOrBanUserF(
+                              //                           showLoading: true,
+                              //                           loadingFor: 'block',
+                              //                           docId: p
+                              //                               .geted13usersList[
+                              //                                   p.selectedUserIndex]
+                              //                               .uid!,
+                              //                           status: false);
+                              //                     },
+                              //                     child: Opacity(
+                              //                       opacity: !p
+                              //                               .geted13usersList[
+                              //                                   p.selectedUserIndex]
+                              //                               .enable!
+                              //                           ? 1
+                              //                           : 0.5,
+                              //                       child: Row(children: [
+                              //                         Opacity(
+                              //                             opacity: p
+                              //                                     .geted13usersList[p
+                              //                                         .selectedUserIndex]
+                              //                                     .enable!
+                              //                                 ? 0.5
+                              //                                 : 1,
+                              //                             child: const Icon(
+                              //                                 Icons.cancel,
+                              //                                 size: 18,
+                              //                                 color: AppColors
+                              //                                     .textRed)),
+                              //                         p.isLoading &&
+                              //                                 p.isLoadingFor ==
+                              //                                     "block"
+                              //                             ? const DotLoader()
+                              //                             : const Text(
+                              //                                 ' Block',
+                              //                                 style: TextStyle(
+                              //                                     fontSize:
+                              //                                         10))
+                              //                       ]),
+                              //                     ),
+                              //                   ),
+                              //                   InkWell(
+                              //                       borderRadius:
+                              //                           BorderRadius
+                              //                               .circular(10),
+                              //                       onTap: () {
+                              //                         p.activeOrBanUserF(
+                              //                             showLoading: true,
+                              //                             loadingFor:
+                              //                                 'active',
+                              //                             docId: p
+                              //                                 .geted13usersList[
+                              //                                     p.selectedUserIndex]
+                              //                                 .uid!,
+                              //                             status: true);
+                              //                       },
+                              //                       child: Opacity(
+                              //                         opacity: p
+                              //                                 .geted13usersList[
+                              //                                     p.selectedUserIndex]
+                              //                                 .enable!
+                              //                             ? 1
+                              //                             : 0.5,
+                              //                         child: Row(children: [
+                              //                           const Icon(
+                              //                               Icons
+                              //                                   .check_circle,
+                              //                               size: 18,
+                              //                               color: AppColors
+                              //                                   .textGreen),
+                              //                           p.isLoading &&
+                              //                                   p.isLoadingFor ==
+                              //                                       "active"
+                              //                               ? const DotLoader()
+                              //                               : const Text(
+                              //                                   ' Active',
+                              //                                   style: TextStyle(
+                              //                                       fontSize:
+                              //                                           10))
+                              //                         ]),
+                              //                       ))
+                              //                 ]),
+                              //           ])),
+                              // ]),
                               p.geted13usersList.isEmpty
                                   ? const SizedBox.shrink()
                                   : CardWidget(
@@ -1574,39 +1670,49 @@ SizedBox(height: isPhone? 10: 0),
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           110),
-                                                  child: CircleAvatar(
-                                                      radius: 30,
-                                                      backgroundColor:
-                                                          AppColors.silverGold,
-                                                      child: ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(110),
-                                                        child: CircleAvatar(
-                                                            backgroundColor:
-                                                                AppColors
-                                                                    .bgColor,
-                                                            radius: 28,
-                                                            child: CachedNetworkImage(
-                                                                imageUrl:
-                                                                    "${p.geted13usersList[p.selectedUserIndex].image}",
-                                                                fit: BoxFit
-                                                                    .cover,
-                                                                errorWidget: (context,
-                                                                        url,
-                                                                        error) =>
-                                                                    Opacity(
-                                                                        opacity:
-                                                                            0.5,
-                                                                        child: Image.asset(AppImages
-                                                                            .profiledarkgold)),
-                                                                progressIndicatorBuilder: (context,
-                                                                        url,
-                                                                        progress) =>
-                                                                    const Center(
-                                                                        child:
-                                                                            Padding(padding: EdgeInsets.all(5), child: CircularProgressIndicator(color: AppColors.primary, strokeWidth: 1))))),
-                                                      ))),
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      imagePreview(context,
+                                                          imageUrl: p
+                                                              .geted13usersList[
+                                                                  p.selectedUserIndex]
+                                                              .image!);
+                                                    },
+                                                    child: CircleAvatar(
+                                                        radius: 30,
+                                                        backgroundColor:
+                                                            AppColors
+                                                                .silverGold,
+                                                        child: ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      110),
+                                                          child: CircleAvatar(
+                                                              backgroundColor:
+                                                                  AppColors
+                                                                      .bgColor,
+                                                              radius: 28,
+                                                              child: CachedNetworkImage(
+                                                                  imageUrl:
+                                                                      "${p.geted13usersList[p.selectedUserIndex].image}",
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                  errorWidget: (context,
+                                                                          url,
+                                                                          error) =>
+                                                                      Opacity(
+                                                                          opacity:
+                                                                              0.5,
+                                                                          child: Image.asset(AppImages
+                                                                              .profiledarkgold)),
+                                                                  progressIndicatorBuilder: (context,
+                                                                          url,
+                                                                          progress) =>
+                                                                      const Center(
+                                                                          child: Padding(padding: EdgeInsets.all(5), child: CircularProgressIndicator(color: AppColors.primary, strokeWidth: 1))))),
+                                                        )),
+                                                  )),
                                               // CircleAvatar(
                                               //     radius: 30,
                                               //     backgroundColor:
@@ -1622,7 +1728,7 @@ SizedBox(height: isPhone? 10: 0),
                                               style: TextStyle(
                                                   color: AppColors.silverGold)),
                                           Text(
-                                            " ${p.geted13usersList[p.selectedUserIndex].firstname}",
+                                            " ${p.geted13usersList[p.selectedUserIndex].firstname} ${p.geted13usersList[p.selectedUserIndex].lastname}",
                                           ),
                                         ]),
                                         const SizedBox(height: 7),
