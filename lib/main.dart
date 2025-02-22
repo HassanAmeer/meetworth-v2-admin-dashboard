@@ -189,17 +189,24 @@ class _SplashPageState extends ConsumerState<SplashPage> {
                                 .headlineLarge!
                                 .copyWith(
                                     fontWeight: FontWeight.bold,
-                                    color: AppColors.primary[400],
+                                    color: AppColors.textSilverDark,
                                     shadows: [
-                                  BoxShadow(
-                                      color: AppColors.primary[900]!,
-                                      offset: const Offset(1, 1),
+                                  const BoxShadow(
+                                      color: Colors.black,
+                                      offset: Offset(1, 1),
                                       blurRadius: 1)
                                 ]))
                         .animate(onPlay: (controller) => controller.repeat())
+                        .shimmer(colors: [
+                          AppColors.textSilverDark,
+                          AppColors.textGold
+                        ], duration: const Duration(seconds: 3))
                         .shimmer(
-                            duration: const Duration(seconds: 2),
-                            delay: const Duration(milliseconds: 1500))
+                            color: AppColors.gold,
+                            duration: const Duration(seconds: 2))
+                        .shimmer(
+                            color: AppColors.textSilverDark,
+                            duration: const Duration(seconds: 2))
                   ]);
             })));
   }

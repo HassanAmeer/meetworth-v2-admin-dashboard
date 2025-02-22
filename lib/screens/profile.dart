@@ -115,42 +115,40 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                             SizedBox(
                                 width: isPhone ? w * 0.8 : w * 0.3,
                                 child: OutlinedButton(
-                                        onPressed: () {
-                                          if (emailController.text !=
-                                              "team@meetworth.com") {
-                                            EasyLoading.showError(
-                                                "Invalid Email");
-                                            return;
-                                          }
-                                          p
-                                              .forgotPasswordF(
-                                                  showLoading: true,
-                                                  loadingFor: 'resetBtn',
-                                                  email: emailController.text)
-                                              .then((v) {
-                                            emailController.clear();
-                                          });
-                                        },
-                                        style: OutlinedButton.styleFrom(
-                                            side: const BorderSide(
-                                                width: 1,
-                                                color: AppColors.textGold)),
-                                        child: p.isLoading &&
-                                                p.isLoadingFor == "resetBtn"
-                                            ? const DotLoader()
-                                            : Text("Reset Password",
-                                                style: TextTheme.of(context)
-                                                    .labelSmall!
-                                                    .copyWith(
-                                                        color: AppColors
-                                                            .textGold)))
-                                    .animate(
-                                        onPlay: (controller) =>
-                                            controller.repeat())
-                                    .shimmer(
-                                        color: AppColors.primary,
-                                        duration: const Duration(seconds: 2))),
-
+                                    onPressed: () {
+                                      if (emailController.text !=
+                                          "team@meetworth.com") {
+                                        EasyLoading.showError("Invalid Email");
+                                        return;
+                                      }
+                                      p
+                                          .forgotPasswordF(
+                                              showLoading: true,
+                                              loadingFor: 'resetBtn',
+                                              email: emailController.text)
+                                          .then((v) {
+                                        emailController.clear();
+                                      });
+                                    },
+                                    style: OutlinedButton.styleFrom(
+                                        side: const BorderSide(
+                                            width: 1,
+                                            color: AppColors.textGold)),
+                                    child: p.isLoading &&
+                                            p.isLoadingFor == "resetBtn"
+                                        ? const DotLoader()
+                                        : Text("Reset Password",
+                                            style: TextTheme.of(context)
+                                                .labelSmall!
+                                                .copyWith(
+                                                    color: AppColors.textGold)))
+                                // .animate(
+                                //     onPlay: (controller) =>
+                                //         controller.repeat())
+                                // .shimmer(
+                                //     color: AppColors.primary,
+                                //     duration: const Duration(seconds: 2))
+                                ),
                             const SizedBox(height: 30),
                           ])),
                 ]),
