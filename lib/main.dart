@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
             appBarTheme: AppBarTheme(
                 centerTitle: true,
                 titleTextStyle: TextStyle(color: AppColors.primaryMid))),
-        home: const SidebarWidget(),
+        home: const SplashPage(),
         builder: EasyLoading.init());
   }
 }
